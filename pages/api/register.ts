@@ -22,12 +22,10 @@ export default async function handler(
       typeof request.body.password !== 'string' ||
       typeof request.body.name !== 'string' ||
       typeof request.body.email !== 'string' ||
-      typeof request.body.phoneNumber !== 'string' ||
       !request.body.username ||
       !request.body.password ||
       !request.body.name ||
-      !request.body.email ||
-      !request.body.phoneNumber
+      !request.body.email
     ) {
       return response
         .status(400)
@@ -51,7 +49,7 @@ export default async function handler(
       passwordHash,
       request.body.name,
       request.body.email,
-      request.body.phoneNumber,
+      request.body.phoneNumber || null,
     );
 
     // 4.Create a session token and serialize a cookie with the token
