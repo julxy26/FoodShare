@@ -4,6 +4,9 @@ export type User = {
   id: number;
   username: string;
   passwordHash: string;
+  name: string;
+  email: string;
+  phoneNumber: number;
 };
 
 export async function getUserByUsername(username: string) {
@@ -56,12 +59,18 @@ export async function getUserBySessionToken(token: string) {
   return user;
 }
 
-export async function createUser(username: string, password_hash: string) {
-  const [userWithoutPassword] = await sql<{ id: number; username: string }[]>`
+export async function createUser(
+  username: string,
+  password_hash: string,
+  name: string,
+  email: string,
+  phone_number: number,
+) {
+  const [userWithoutPassword] = await sql<User[]>`
   INSERT INTO users
-    (username, password_hash)
+    (username, password_hash, name, email, phone_number)
   VALUES
-    (${username}, ${password_hash})
+    (${username}, ${password_hash}, ${name}, ${email}, ${phone_number})
   RETURNING
     id,
     username
