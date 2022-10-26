@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-export default function AfterLogin() {
+export default function SingleUserPost() {
   return (
     <div>
       <Head>
