@@ -23,11 +23,21 @@ export default function SignIn() {
       <div>
         <label htmlFor="username">Username</label>
         <br />
-        <input value={username} />
+        <input
+          value={username}
+          onChange={(event) => {
+            setUsername(event.currentTarget.value.toLowerCase());
+          }}
+        />
         <br />
         <label htmlFor="password">Password</label>
         <br />
-        <input value={password} />
+        <input
+          value={password}
+          onChange={(event) => {
+            setPassword(event.currentTarget.value);
+          }}
+        />
       </div>
 
       <button>Sign in</button>
