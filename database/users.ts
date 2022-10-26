@@ -35,7 +35,7 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   FROM
     users
   WHERE
-    user.username = ${username}
+    users.username = ${username}
   `;
 
   return user;
