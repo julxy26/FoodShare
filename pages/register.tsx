@@ -14,6 +14,7 @@ export default function Register() {
       <Head>
         <title>Register</title>
         <meta name="description" content="Register to FoodShare" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href="/">
