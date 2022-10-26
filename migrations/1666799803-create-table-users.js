@@ -6,7 +6,7 @@ export async function up(sql) {
       password_hash varchar(70) NOT NULL UNIQUE,
       name varchar(90) NOT NULL,
       email varchar(90) NOT NULL,
-      phone_number integer
+      phone_number integer NOT NULL
     )
   `;
 }

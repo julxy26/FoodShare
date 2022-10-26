@@ -22,10 +22,12 @@ export default async function handler(
       typeof request.body.password !== 'string' ||
       typeof request.body.name !== 'string' ||
       typeof request.body.email !== 'string' ||
+      typeof request.body.phoneNumber !== 'string' ||
       !request.body.username ||
       !request.body.password ||
       !request.body.name ||
-      !request.body.email
+      !request.body.email ||
+      !request.body.phoneNumber
     ) {
       return response
         .status(400)

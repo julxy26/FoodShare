@@ -21,7 +21,7 @@ export default function Register(props: Props) {
   const [errors, setErrors] = useState<{ message: string }[]>([]);
 
   async function registerHandler() {
-    const registerResponse = await fetch('/register', {
+    const registerResponse = await fetch('/api/register', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -55,7 +55,7 @@ export default function Register(props: Props) {
     // refresh the user on state
     await props.refreshUserProfile();
     // redirect user to user profile
-    await router.push(`/`);
+    await router.push(`/profile`);
   }
 
   return (

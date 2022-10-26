@@ -1,34 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserBySessionToken } from '../../database/users';
+import Head from 'next/head';
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse,
-) {
-  if (request.method === 'GET') {
-    // 1. Get the cookie from the request
-    const token = request.cookies.sessionToken;
+export default function Profile() {
+  return (
+    <div>
+      <Head>
+        <title>My profile</title>
+        <meta name="description" content="This is my profile" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-    if (!token) {
-      response
-        .status(400)
-        .json({ errors: [{ message: 'No session token passed' }] });
-      return;
-    }
-
-    // 2. Get the user from the token
-    const user = await getUserBySessionToken(token);
-
-    if (!user) {
-      response
-        .status(400)
-        .json({ errors: [{ message: 'Session token not valid' }] });
-      return;
-    }
-
-    // return the user from the session token
-    response.status(200).json({ user: user });
-  } else {
-    response.status(405).json({ errors: [{ message: 'method not allowed' }] });
-  }
+      <h1>My Profile</h1>
+    </div>
+  );
 }
