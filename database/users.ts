@@ -64,7 +64,7 @@ export async function createUser(
   password_hash: string,
   name: string,
   email: string,
-  phone_number: number,
+  phone_number: number | null,
 ) {
   const [userWithoutPassword] = await sql<User[]>`
   INSERT INTO users
