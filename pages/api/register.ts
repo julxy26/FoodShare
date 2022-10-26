@@ -20,12 +20,16 @@ export default async function handler(
     if (
       typeof request.body.username !== 'string' ||
       typeof request.body.password !== 'string' ||
+      typeof request.body.name !== 'string' ||
+      typeof request.body.email !== 'string' ||
       !request.body.username ||
-      !request.body.password
+      !request.body.password ||
+      !request.body.name ||
+      !request.body.email
     ) {
       return response
         .status(400)
-        .json({ errors: [{ message: 'username or password not provided' }] });
+        .json({ errors: [{ message: 'required fields must be filled out' }] });
     }
     // 2.we check if the user already exist
     const user = await getUserByUsername(request.body.username);
@@ -43,6 +47,9 @@ export default async function handler(
     const userWithoutPassword = await createUser(
       request.body.username,
       passwordHash,
+      request.body.name,
+      request.body.email,
+      request.body.phoneNumber,
     );
 
     // 4.Create a session token and serialize a cookie with the token

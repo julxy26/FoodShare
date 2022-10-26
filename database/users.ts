@@ -12,10 +12,11 @@ export type User = {
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
-  const [user] = await sql<{ id: number; username: string }[]>`
+  const [user] = await sql<{ username: string; name: string; email: string }[]>`
   SELECT
-    id,
-    username
+    username,
+    name,
+    email
   FROM
     users
   WHERE
@@ -34,7 +35,7 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   FROM
     users
   WHERE
-    users.username = ${username}
+    user.username = ${username}
   `;
 
   return user;
@@ -64,7 +65,7 @@ export async function createUser(
   password_hash: string,
   name: string,
   email: string,
-  phone_number: number | null,
+  phone_number: number,
 ) {
   const [userWithoutPassword] = await sql<User[]>`
   INSERT INTO users
@@ -73,7 +74,10 @@ export async function createUser(
     (${username}, ${password_hash}, ${name}, ${email}, ${phone_number})
   RETURNING
     id,
-    username
+    username,
+    name,
+    email,
+    phone_number
   `;
 
   return userWithoutPassword!;

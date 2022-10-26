@@ -4,17 +4,24 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getValidSessionByToken } from '../database/sessions';
+import { RegisterResponseBody } from './api/register';
 
-export default function Register(props) {
+type Props = {
+  refreshUserProfile: () => Promise<void>;
+};
+
+export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const router = useRouter();
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
 
   async function registerHandler() {
-    const registerResponse = await fetch('/api/register', {
+    const registerResponse = await fetch('/register', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -48,7 +55,7 @@ export default function Register(props) {
     // refresh the user on state
     await props.refreshUserProfile();
     // redirect user to user profile
-    await router.push(`/private-profile`);
+    await router.push(`/`);
   }
 
   return (
@@ -56,7 +63,6 @@ export default function Register(props) {
       <Head>
         <title>Register</title>
         <meta name="description" content="Register to FoodShare" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href="/">
@@ -71,26 +77,56 @@ export default function Register(props) {
         height="100"
         alt="user profile picture"
       />
+
+      {errors.map((error) => {
+        return <p key={error.message}>ERROR: {error.message}</p>;
+      })}
       <div>
         <label htmlFor="username">Username</label>
         <br />
-        <input value={username} />
+        <input
+          value={username}
+          onChange={(event) => {
+            setUsername(event.currentTarget.value.toLowerCase());
+          }}
+        />
         <br />
         <label htmlFor="password">Password</label>
         <br />
-        <input value={password} />
+        <input
+          type="password"
+          value={password}
+          onChange={(event) => {
+            setPassword(event.currentTarget.value);
+          }}
+        />
         <br />
         <label htmlFor="name">Name</label>
         <br />
-        <input value={password} />
+        <input
+          value={name}
+          onChange={(event) => {
+            setName(event.currentTarget.value);
+          }}
+        />
         <br />
         <label htmlFor="email">E-mail</label>
         <br />
-        <input value={password} />
+        <input
+          value={email}
+          onChange={(event) => {
+            setEmail(event.currentTarget.value);
+          }}
+        />
         <br />
         <label htmlFor="phone-number">Phone Number</label>
         <br />
-        <input value={password} />
+        <input
+          value={phoneNumber}
+          onChange={(event) => {
+            setPhoneNumber(event.currentTarget.value);
+          }}
+        />
       </div>
       <button
         onClick={async () => {

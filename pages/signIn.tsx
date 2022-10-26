@@ -10,7 +10,6 @@ export default function SignIn() {
       <Head>
         <title>Sign in to FoodShare</title>
         <meta name="description" content="Sign in to FoodShare" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -33,7 +32,7 @@ export default function SignIn() {
 
       <button>Sign in</button>
       <br />
-      <Link href="/register">I have an account yet!</Link>
+      <Link href="/register">I don't have an account yet!</Link>
     </div>
   );
 }
