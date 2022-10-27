@@ -50,13 +50,11 @@ export async function createPost(
 ) {
   const [post] = await sql<
     {
-      id: number;
       title: string;
       price: number;
       description: string;
       street: string;
       district: number;
-      userId: number;
       imageUrl: string;
     }[]
   >`
@@ -64,8 +62,14 @@ export async function createPost(
     (title, price, description, street, district, user_id, image_url)
   VALUES
     (${title}, ${price}, ${description}, ${street}, ${district}, ${user_id}, ${image_url})
-  RETURNING *
+  RETURNING
+    title,
+    price,
+    description,
+    street,
+    district,
+    image_url
   `;
 
-  return post!;
+  return post;
 }
