@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Profile() {
   return (
@@ -10,6 +11,8 @@ export default function Profile() {
       </Head>
 
       <h1>My Profile</h1>
+
+      <Link href="/posts">My Posts</Link>
     </div>
   );
 }
