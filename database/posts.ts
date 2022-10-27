@@ -11,6 +11,33 @@ export type Posts = {
   imageUrl: string;
 };
 
+export async function getSinglePostByPostId(id: number) {
+  const [post] = await sql<
+    {
+      title: string;
+      price: number;
+      description: string;
+      street: string;
+      district: number;
+      imageUrl: string;
+    }[]
+  >`
+  SELECT
+    title,
+    price,
+    description,
+    street,
+    district,
+    image_url
+  FROM
+    posts
+  WHERE
+    posts.id = ${id}
+  `;
+
+  return post;
+}
+
 export async function getPostsByUserId(userId: number) {
   const [posts] = await sql<
     {
