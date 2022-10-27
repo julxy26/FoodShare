@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const h1Styles = css``;
+
 export default function Home() {
   return (
     <div>
@@ -12,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>
+      <h1 css={h1Styles}>
         Welcome to <div>FoodShare!</div>
       </h1>
 
