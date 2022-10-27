@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -6,6 +7,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { getValidSessionByToken } from '../database/sessions';
 import { RegisterResponseBody } from './api/register';
+
+const avatarStyles = css`
+  border-radius: 50px;
+`;
 
 type Props = {
   refreshUserProfile: () => Promise<void>;
@@ -69,6 +74,7 @@ export default function Register(props: Props) {
       <h1>Register</h1>
 
       <Image
+        css={avatarStyles}
         src="/profile-pic.jpg"
         width="100"
         height="100"
@@ -116,7 +122,7 @@ export default function Register(props: Props) {
           }}
         />
         <br />
-        <label htmlFor="phone-number">Phone Number</label>
+        <label htmlFor="phone-number">Phone number (optional)</label>
         <br />
         <input
           value={phoneNumber}

@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <div>
+    <header>
       <Link href="/">
         {/* <Image /> */}
-        Back
-      </Link>
-      <header>FoodShare</header>
-    </div>
+        back
+      </Link>{' '}
+      <span>FoodShare</span>
+    </header>
   );
 }
