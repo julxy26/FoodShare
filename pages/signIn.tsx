@@ -61,11 +61,6 @@ export default function SignIn(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Link href="/">
-        {/* <Image /> */}
-        Back
-      </Link>
-
       <h1>Welcome back!</h1>
 
       {errors.map((error) => {
@@ -85,6 +80,7 @@ export default function SignIn(props: Props) {
         <label htmlFor="password">Password</label>
         <br />
         <input
+          type="password"
           value={password}
           onChange={(event) => {
             setPassword(event.currentTarget.value);

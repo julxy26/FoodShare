@@ -1,7 +1,7 @@
 import { sql } from './connect';
 import { User } from './users';
 
-type Session = {
+export type Session = {
   id: number;
   token: string;
 };

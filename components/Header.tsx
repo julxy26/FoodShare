@@ -1,3 +1,13 @@
+import Link from 'next/link';
+
 export default function Header() {
-  return <header>FoodShare</header>;
+  return (
+    <div>
+      <Link href="/">
+        {/* <Image /> */}
+        Back
+      </Link>
+      <header>FoodShare</header>
+    </div>
+  );
 }

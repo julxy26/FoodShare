@@ -65,10 +65,7 @@ export default function Register(props: Props) {
         <meta name="description" content="Register to FoodShare" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href="/">
-        {/* <Image /> */}
-        Back
-      </Link>
+
       <h1>Register</h1>
 
       <Image
