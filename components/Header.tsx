@@ -1,12 +1,12 @@
-import Link from 'next/link';
+import Router from 'next/router';
 
 export default function Header() {
   return (
     <header>
-      <Link href="/">
+      <button onClick={() => Router.back()}>
         {/* <Image /> */}
         back
-      </Link>{' '}
+      </button>{' '}
       <span>FoodShare</span>
     </header>
   );
