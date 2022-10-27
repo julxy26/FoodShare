@@ -4,11 +4,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getValidSessionByToken } from '../database/sessions';
+import { User } from '../database/users';
 
 const h1Styles = css``;
 
 type Props = {
   userIsSignedIn: string;
+  user?: User;
 };
 
 export default function Home(props: Props) {
@@ -31,6 +33,8 @@ export default function Home(props: Props) {
           <Link href="/posts">See all posts</Link>
 
           <p>Recently added</p>
+
+          <Link href="/logout">Logout</Link>
         </div>
       ) : (
         <div>
