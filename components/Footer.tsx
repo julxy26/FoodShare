@@ -22,8 +22,6 @@ export default function Footer(props: Props) {
   useEffect(() => {
     const initialValue = props.userIsSignedIn;
 
-    console.log(props.userIsSignedIn);
-
     if (!initialValue) {
       setIsSignedIn(false);
 
@@ -36,7 +34,7 @@ export default function Footer(props: Props) {
       <footer>
         <div>
           <Link href="/">Home</Link> <Link href="/posts">Posts</Link>{' '}
-          <Link href="/">Profile</Link>{' '}
+          <Link href="/profile">Profile</Link>{' '}
         </div>
 
         {/* <div>copyright FoodShare 2023</div> */}

@@ -26,7 +26,7 @@ export default function Home(props: Props) {
             Welcome to <div>FoodShare!</div>
           </h1>
 
-          <Image src="/profile-pic.jpg" width="400" height="400" alt="" />
+          <Image src="/placeholder2.jpg" width="400" height="400" alt="" />
 
           <Link href="/posts">See all posts</Link>
 

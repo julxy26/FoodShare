@@ -4,7 +4,11 @@ import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createSession } from '../../database/sessions';
-import { createUser, getUserByUsername } from '../../database/users';
+import {
+  createUser,
+  getUserByEmail,
+  getUserByUsername,
+} from '../../database/users';
 import { createSerializedRegisterSessionTokenCookie } from '../../utils/cookies';
 
 export type RegisterResponseBody =
@@ -32,12 +36,17 @@ export default async function handler(
         .json({ errors: [{ message: 'required fields must be filled out' }] });
     }
     // 2.we check if the user already exist
-    const user = await getUserByUsername(request.body.username);
-
-    if (user) {
+    const userUsername = await getUserByUsername(request.body.username);
+    const userEmail = await getUserByEmail(request.body.email);
+    if (userUsername) {
       return response
         .status(401)
         .json({ errors: [{ message: 'username is already taken' }] });
+    }
+    if (userEmail) {
+      return response
+        .status(401)
+        .json({ errors: [{ message: 'email already exists' }] });
     }
 
     // 3. we hash the password

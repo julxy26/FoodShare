@@ -5,15 +5,10 @@ export type Tag = {
   name: string;
 };
 
-
-export async function createTag(
-  id: number,
-  name: string
-) {
+export async function createTag(id: number, name: string) {
   const [tag] = await sql<
     {
-
-  name: string;
+      name: string;
     }[]
   >`
   INSERT INTO tags

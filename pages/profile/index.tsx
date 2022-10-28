@@ -26,13 +26,14 @@ type Props = {
 };
 
 function deleteHandler() {}
+function updateHandler() {}
 
 export default function Profile(props: Props) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [username, setUsername] = useState(props.user?.username);
+  const [password, setPassword] = useState('***');
+  const [name, setName] = useState(props.user?.name);
+  const [email, setEmail] = useState(props.user?.email);
+  const [phoneNumber, setPhoneNumber] = useState(props.user?.phoneNumber || '');
 
   return (
     <div>
@@ -101,8 +102,7 @@ export default function Profile(props: Props) {
             }}
           />
           <br />
-          <button>Cancel</button>
-          <button>Save</button>
+          <button onClick={() => updateHandler()}>Save</button>
         </div>
 
         <br />
@@ -111,9 +111,9 @@ export default function Profile(props: Props) {
         <br />
 
         {props.user ? (
-          <a>
-            <Link href="/logout">Logout</Link>
-          </a>
+          <Link href="/logout">
+            <a>Logout</a>
+          </Link>
         ) : (
           ' '
         )}

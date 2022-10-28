@@ -50,7 +50,7 @@ export default function SignIn(props: Props) {
     // refresh the user on state
     await props.refreshUserProfile();
     // redirect user to user profile
-    await router.push(`/`);
+    await router.push(`/profile`);
   }
 
   return (
@@ -96,6 +96,7 @@ export default function SignIn(props: Props) {
         Sign in
       </button>
       <br />
+
       <Link href="/register">I don't have an account yet!</Link>
     </div>
   );

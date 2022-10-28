@@ -139,6 +139,7 @@ export default function Register(props: Props) {
         Sign Up
       </button>
       <br />
+
       <Link href="/signIn">I already have an account!</Link>
     </div>
   );

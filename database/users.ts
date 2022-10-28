@@ -34,6 +34,31 @@ export async function getUserByUsername(username: string) {
   return user;
 }
 
+export async function getUserByEmail(email: string) {
+  if (!email) return undefined;
+
+  const [user] = await sql<
+    {
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: number | null;
+    }[]
+  >`
+  SELECT
+    username,
+    name,
+    email,
+    phone_number
+  FROM
+    users
+  WHERE
+    users.email = ${email}
+  `;
+
+  return user;
+}
+
 export async function getUserWithPasswordHashByUsername(username: string) {
   if (!username) return undefined;
 
@@ -52,10 +77,22 @@ export async function getUserWithPasswordHashByUsername(username: string) {
 export async function getUserBySessionToken(token: string) {
   if (!token) return undefined;
 
-  const [user] = await sql<{ id: number; username: string }[]>`
+  const [user] = await sql<
+    {
+      id: number;
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: number | null;
+    }[]
+  >`
   SELECT
     users.id,
-    users.username
+    users.username,
+    users.name,
+    users.email,
+    users.phone_number
+
   FROM
     users,
     sessions
