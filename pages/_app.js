@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
             margin: 20px 0;
             display: flex;
             justify-content: center;
-            align-content: center;
+            overflow: hidden;
           }
 
           a,
