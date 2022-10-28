@@ -1,6 +1,6 @@
 import { sql } from './connect';
 
-export type Posts = {
+export type Post = {
   id: number;
   title: string;
   price: number;

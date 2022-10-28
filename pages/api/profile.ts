@@ -5,7 +5,7 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
-  if (request.method === 'GET') {
+  if (request.method === 'GET' || request.method === 'PUT') {
     // 1. Get the cookie from the request
     const token = request.cookies.sessionToken;
 

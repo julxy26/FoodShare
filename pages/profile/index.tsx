@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const avatarStyles = css`
@@ -24,7 +25,15 @@ type Props = {
   user?: User;
 };
 
+function deleteHandler() {}
+
 export default function Profile(props: Props) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
   return (
     <div>
       <Head>
@@ -45,6 +54,59 @@ export default function Profile(props: Props) {
           />
         </span>
 
+        <div>
+          <label htmlFor="username">Username</label>
+          <br />
+          <input
+            value={username}
+            onChange={(event) => {
+              setUsername(event.currentTarget.value.toLowerCase());
+            }}
+          />
+          <br />
+          <label htmlFor="password">Password</label>
+          <br />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.currentTarget.value);
+            }}
+          />
+          <br />
+          <label htmlFor="name">Name</label>
+          <br />
+          <input
+            value={name}
+            onChange={(event) => {
+              setName(event.currentTarget.value);
+            }}
+          />
+          <br />
+          <label htmlFor="email">E-mail</label>
+          <br />
+          <input
+            value={email}
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+          />
+          <br />
+          <label htmlFor="phone-number">Phone number (optional)</label>
+          <br />
+          <input
+            value={phoneNumber}
+            onChange={(event) => {
+              setPhoneNumber(event.currentTarget.value);
+            }}
+          />
+          <br />
+          <button>Cancel</button>
+          <button>Save</button>
+        </div>
+
+        <br />
+
         <Link href="/profile/my-posts">My Posts</Link>
         <br />
 
@@ -55,6 +117,8 @@ export default function Profile(props: Props) {
         ) : (
           ' '
         )}
+        <br />
+        <button onClick={() => deleteHandler()}>Delete profile</button>
       </div>
     </div>
   );

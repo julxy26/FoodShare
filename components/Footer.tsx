@@ -36,7 +36,7 @@ export default function Footer(props: Props) {
       <footer>
         <div>
           <Link href="/">Home</Link> <Link href="/posts">Posts</Link>{' '}
-          <Link href="/profile">Profile</Link>{' '}
+          <Link href="/">Profile</Link>{' '}
         </div>
 
         {/* <div>copyright FoodShare 2023</div> */}
