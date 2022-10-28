@@ -12,7 +12,7 @@ const containerStyles = (notSignedIn: boolean | undefined) => css`
 
   ${!notSignedIn &&
   css`
-    opacity: 0.3;
+    opacity: 0.5;
   `}
 `;
 
