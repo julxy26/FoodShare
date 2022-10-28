@@ -6,14 +6,19 @@ export type User = {
   passwordHash: string;
   name: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: number | null;
 };
 
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
   const [user] = await sql<
-    { username: string; name: string; email: string; phoneNumber: number }[]
+    {
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: number | null;
+    }[]
   >`
   SELECT
     username,
@@ -76,7 +81,7 @@ export async function createUser(
       username: string;
       name: string;
       email: string;
-      phoneNumber: number;
+      phoneNumber: number | null;
     }[]
   >`
   INSERT INTO users

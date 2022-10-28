@@ -1,4 +1,27 @@
 import cookie from 'cookie';
+import Cookies from 'js-cookie';
+
+export type SessionCookieItem = {
+  sessionToken: string | undefined;
+};
+
+export function getParsedCookie(key: string): SessionCookieItem[] | undefined {
+  const cookieValue = Cookies.get(key); // Type string | Undefined
+
+  if (!cookieValue) {
+    return undefined;
+  }
+
+  try {
+    return JSON.parse(cookieValue); // Type should be a string
+  } catch (err) {
+    return undefined;
+  }
+}
+
+export function stringifyCookieValue(value: SessionCookieItem[]) {
+  return JSON.stringify(value);
+}
 
 export function createSerializedRegisterSessionTokenCookie(token: string) {
   // check if we are in production e.g Fly.io

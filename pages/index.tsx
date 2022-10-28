@@ -7,7 +7,7 @@ import { getValidSessionByToken } from '../database/sessions';
 
 const h1Styles = css``;
 
-type Props = {
+export type Props = {
   userIsSignedIn: string;
 };
 
@@ -55,7 +55,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const userIsSignedIn = token && (await getValidSessionByToken(token));
 
-  console.log(userIsSignedIn);
   return {
     props: {
       userIsSignedIn: userIsSignedIn || null,

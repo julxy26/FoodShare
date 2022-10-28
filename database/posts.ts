@@ -8,7 +8,7 @@ export type Posts = {
   street: string;
   district: number;
   userId: number;
-  imageUrl: string;
+  imageUrl: string | null;
 };
 
 export async function getSinglePostByPostId(id: number) {
@@ -19,7 +19,7 @@ export async function getSinglePostByPostId(id: number) {
       description: string;
       street: string;
       district: number;
-      imageUrl: string;
+      imageUrl: string | null;
     }[]
   >`
   SELECT
@@ -46,7 +46,7 @@ export async function getPostsByUserId(userId: number) {
       description: string;
       street: string;
       district: number;
-      imageUrl: string;
+      imageUrl: string | null;
     }[]
   >`
   SELECT
@@ -82,7 +82,7 @@ export async function createPost(
       description: string;
       street: string;
       district: number;
-      imageUrl: string;
+      imageUrl: string | null;
     }[]
   >`
   INSERT INTO posts

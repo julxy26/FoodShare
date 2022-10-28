@@ -4,6 +4,7 @@ import Header from './Header';
 
 type Props = {
   children: React.ReactNode;
+  userIsSignedIn: string;
 };
 
 export default function Layout(props: Props) {
@@ -17,7 +18,7 @@ export default function Layout(props: Props) {
 
       <main>{props.children}</main>
 
-      <Footer />
+      <Footer userIsSignedIn={props.userIsSignedIn} />
     </>
   );
 }
