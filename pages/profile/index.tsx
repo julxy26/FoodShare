@@ -21,7 +21,7 @@ const mainBodyStyles = css`
   }
 `;
 
-type Props = {
+export type Props = {
   user?: User;
 };
 

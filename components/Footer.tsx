@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Props } from '../pages';
+import { Props } from '../pages/profile';
 
-const containerStyles = (notSignedIn: boolean | undefined) => css`
+const containerStyles = (notSignedIn: boolean) => css`
   margin-top: 20px;
   width: 100%;
   text-align: center;
@@ -17,28 +17,32 @@ const containerStyles = (notSignedIn: boolean | undefined) => css`
 `;
 
 export default function Footer(props: Props) {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>();
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    const initialValue = props.userIsSignedIn;
-
-    if (!initialValue) {
-      setIsSignedIn(false);
-
-      props.userIsSignedIn ? setIsSignedIn(true) : setIsSignedIn(false);
-    }
-  }, [props.userIsSignedIn]);
+    props.user ? setIsSignedIn(true) : setIsSignedIn(false);
+  }, [props.user]);
 
   return (
     <div css={containerStyles(isSignedIn)}>
-      <footer>
+      {isSignedIn ? (
         <div>
-          <Link href="/">Home</Link> <Link href="/posts">Posts</Link>{' '}
-          <Link href="/profile">Profile</Link>{' '}
+          <footer>
+            <Link href="/">
+              <a>Home</a>
+            </Link>{' '}
+            <Link href="/posts">
+              <a>Posts</a>
+            </Link>{' '}
+            <Link href="/profile">
+              <a>Profile</a>
+            </Link>{' '}
+            {/* <div>copyright FoodShare 2023</div> */}
+          </footer>
         </div>
-
-        {/* <div>copyright FoodShare 2023</div> */}
-      </footer>
+      ) : (
+        <div>no session</div>
+      )}
     </div>
   );
 }
