@@ -1,31 +1,26 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Props } from '../pages/profile';
+import { User } from '../database/users';
 
 const containerStyles = (notSignedIn: boolean) => css`
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
-  justify-content: center;
-  opacity: 1;
-
-  ${!notSignedIn &&
+  ${notSignedIn &&
   css`
-    opacity: 0.5;
+    width: 100%;
+    text-align: center;
+    opacity: 1;
   `}
 `;
 
+
+type Props = {
+  user: User | undefined;
+};
+
 export default function Footer(props: Props) {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
-
-  useEffect(() => {
-    props.user ? setIsSignedIn(true) : setIsSignedIn(false);
-  }, [props.user]);
-
   return (
-    <div css={containerStyles(isSignedIn)}>
-      {isSignedIn ? (
+    <div css={containerStyles(!props.user)}>
+      {props.user ? (
         <div>
           <footer>
             <Link href="/">
@@ -41,8 +36,19 @@ export default function Footer(props: Props) {
           </footer>
         </div>
       ) : (
-        <div>no session</div>
+        ' '
       )}
     </div>
   );
+}
+
+export function getServerSideProps(context: GetServerSidePropsContext) {
+  const token = context.req.cookies.sessionToken;
+
+  const userIsSignedIn = token;
+  return {
+    props: {
+      userIsSignedIn: userIsSignedIn || null,
+    },
+  };
 }

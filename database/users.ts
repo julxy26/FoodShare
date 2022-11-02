@@ -9,6 +9,32 @@ export type User = {
   phoneNumber: number | null;
 };
 
+export async function updateUserByUsername(
+  username: string,
+  passwordHash: string,
+  name: string,
+  email: string,
+  phoneNumber: number,
+) {
+  const [user] = await sql<User[]>`
+    UPDATE
+      users
+    SET
+      username = ${username},
+      password_hash = ${passwordHash},
+      name = ${name},
+      email = ${email},
+      phone_number = ${phoneNumber}
+
+    WHERE
+      users.username = ${username}
+    OR
+      users.email = ${email}
+    RETURNING *
+  `;
+  return user;
+}
+
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 

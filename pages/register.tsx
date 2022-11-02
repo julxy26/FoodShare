@@ -54,6 +54,7 @@ export default function Register(props: Props) {
       // (because this is untrusted user input)
       /^\/[a-zA-Z0-9-?=/]*$/.test(returnTo)
     ) {
+      await props.refreshUserProfile();
       return await router.push(returnTo);
     }
 

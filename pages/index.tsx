@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import Anchor from '../components/Anchor';
 import { getValidSessionByToken } from '../database/sessions';
 
 const h1Styles = css``;
@@ -31,8 +32,6 @@ export default function Home(props: Props) {
           <Link href="/posts">See all posts</Link>
 
           <p>Recently added</p>
-
-          <Link href="/logout">Logout</Link>
         </div>
       ) : (
         <div>

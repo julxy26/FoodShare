@@ -43,6 +43,7 @@ function MyApp({ Component, pageProps }) {
           a,
           a:visited {
             color: #5e756d;
+            text-decoration: none;
           }
         `}
       />

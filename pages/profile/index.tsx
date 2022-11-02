@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import Anchor from '../../components/Anchor';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const avatarStyles = css`
@@ -22,18 +23,38 @@ const mainBodyStyles = css`
 `;
 
 export type Props = {
-  user?: User;
+  user: User;
 };
 
 function deleteHandler() {}
-function updateHandler() {}
 
 export default function Profile(props: Props) {
-  const [username, setUsername] = useState(props.user?.username);
-  const [password, setPassword] = useState('***');
-  const [name, setName] = useState(props.user?.name);
-  const [email, setEmail] = useState(props.user?.email);
-  const [phoneNumber, setPhoneNumber] = useState(props.user?.phoneNumber || '');
+  const [updatedMessage, setUpdatedMessage] = useState('');
+  const [username, setUsername] = useState(props.user.username);
+  const [password, setPassword] = useState('******');
+  const [name, setName] = useState(props.user.name);
+  const [email, setEmail] = useState(props.user.email);
+  const [phoneNumber, setPhoneNumber] = useState(props.user.phoneNumber || '');
+
+  async function updateUserFromApiByUsername(username: string) {
+    const response = await fetch(`/api/profile`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        name: name,
+        password: password,
+        email: email,
+        phoneNumber: phoneNumber,
+      }),
+    });
+
+    const updatedUserFromApi = (await response.json()) as User;
+    setUpdatedMessage('Changes are saved');
+    return updatedUserFromApi;
+  }
 
   return (
     <div>
@@ -43,7 +64,7 @@ export default function Profile(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div css={mainBodyStyles}>
-        <h1>{props.user && props.user.username}'s Profile</h1>
+        <h1>{props.user.username}'s Profile</h1>
 
         <span>
           <Image
@@ -102,7 +123,12 @@ export default function Profile(props: Props) {
             }}
           />
           <br />
-          <button onClick={() => updateHandler()}>Save</button>
+          <button
+            onClick={async () => await updateUserFromApiByUsername(username)}
+          >
+            Save
+          </button>
+          <div>{updatedMessage}</div>
         </div>
 
         <br />
@@ -110,10 +136,10 @@ export default function Profile(props: Props) {
         <Link href="/profile/my-posts">My Posts</Link>
         <br />
 
-        {props.user ? (
-          <Link href="/logout">
-            <a>Logout</a>
-          </Link>
+        {props.user.id ? (
+          <Anchor>
+            <Link href="/logout">Logout</Link>
+          </Anchor>
         ) : (
           ' '
         )}

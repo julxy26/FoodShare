@@ -1,10 +1,11 @@
 import Head from 'next/head';
+import { User } from '../database/users';
 import Footer from './Footer';
 import Header from './Header';
 
 type Props = {
   children: React.ReactNode;
-  userIsSignedIn: string;
+  user: User;
 };
 
 export default function Layout(props: Props) {
@@ -18,7 +19,7 @@ export default function Layout(props: Props) {
 
       <main>{props.children}</main>
 
-      <Footer userIsSignedIn={props.userIsSignedIn} />
+      <Footer user={props.user} />
     </>
   );
 }

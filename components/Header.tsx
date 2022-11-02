@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Router from 'next/router';
 
 export default function Header() {
@@ -7,7 +8,7 @@ export default function Header() {
         {/* <Image /> */}
         back
       </button>{' '}
-      <span>FoodShare</span>
+      <Link href="/">FoodShare</Link>
     </header>
   );
 }
