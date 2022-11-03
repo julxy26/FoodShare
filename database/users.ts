@@ -9,6 +9,19 @@ export type User = {
   phoneNumber: number | null;
 };
 
+export async function deleteUserByUsername(username: string) {
+  console.log(username);
+  const [user] = await sql<User[]>`
+    DELETE FROM
+      users
+    WHERE
+      username = ${username}
+    RETURNING
+      *
+  `;
+  return user;
+}
+
 export async function updateUserByUsername(
   username: string,
   passwordHash: string,
@@ -27,7 +40,7 @@ export async function updateUserByUsername(
       phone_number = ${phoneNumber}
 
     WHERE
-      users.username = ${username}
+      username = ${username}
     OR
       users.email = ${email}
     RETURNING *

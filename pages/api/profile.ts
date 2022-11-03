@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
+  deleteUserByUsername,
   getUserBySessionToken,
   updateUserByUsername,
 } from '../../database/users';
@@ -34,10 +35,10 @@ export default async function handler(
     response.status(200).json({ user: user });
   }
 
-  const passwordHash = await bcrypt.hash(request.body?.password, 12);
-
   if (request.method === 'PUT') {
-    const username = request.body.username;
+    const passwordHash = await bcrypt.hash(request.body?.password, 12);
+
+    const username = request.body?.username;
     const password = passwordHash;
     const name = request.body?.name;
     const email = request.body?.email;
@@ -49,17 +50,20 @@ export default async function handler(
 
     const newUser = await updateUserByUsername(
       username,
-      passwordHash,
+      password,
       name,
       email,
       phoneNumber,
     );
 
-    if (!newUser) {
-      return response.status(404).json({ message: 'Not a valid username' });
-    }
-
     return response.status(200).json(newUser);
+  }
+
+  if (request.method === 'DELETE') {
+    const username = request.body?.username;
+    const deletedUser = await deleteUserByUsername(username);
+    console.log(request.body);
+    return response.status(200).json(deletedUser);
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }

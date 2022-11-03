@@ -3,5 +3,9 @@ type Props = {
 };
 
 export default function Anchor(props: Props, { ...restProps }) {
-  return <a {...restProps}>{props.children}</a>;
+  return (
+    <a href="/logout" {...restProps}>
+      {props.children}
+    </a>
+  );
 }

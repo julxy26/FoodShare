@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Anchor from '../../components/Anchor';
 import { getUserBySessionToken, User } from '../../database/users';
 
@@ -24,17 +24,39 @@ const mainBodyStyles = css`
 
 export type Props = {
   user: User;
+  errors: { message: string }[];
 };
 
-function deleteHandler() {}
-
 export default function Profile(props: Props) {
-  const [updatedMessage, setUpdatedMessage] = useState('');
+  const [message, setMessage] = useState('');
   const [username, setUsername] = useState(props.user.username);
   const [password, setPassword] = useState('******');
   const [name, setName] = useState(props.user.name);
   const [email, setEmail] = useState(props.user.email);
   const [phoneNumber, setPhoneNumber] = useState(props.user.phoneNumber || '');
+
+  async function getUserFromApi() {
+    const response = await fetch('/api/profile');
+    const userFromApi = await response.json();
+    return userFromApi;
+  }
+
+  async function deleteUserFromApiByUsername() {
+    const response = await fetch(`/api/profile`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+      }),
+    });
+
+    const deletedUser = (await response.json()) as User;
+    console.log(deletedUser);
+    setMessage('Profile deleted');
+    return deletedUser;
+  }
 
   async function updateUserFromApiByUsername(username: string) {
     const response = await fetch(`/api/profile`, {
@@ -52,8 +74,24 @@ export default function Profile(props: Props) {
     });
 
     const updatedUserFromApi = (await response.json()) as User;
-    setUpdatedMessage('Changes are saved');
+    setMessage('Changes are saved');
     return updatedUserFromApi;
+  }
+
+  useEffect(() => {
+    getUserFromApi().catch((err) => {
+      console.log(err);
+    });
+  }, []);
+
+  if ('errors' in props) {
+    return (
+      <div>
+        {props.errors.map((error) => {
+          return <div key={error.message}>{error.message}</div>;
+        })}
+      </div>
+    );
   }
 
   return (
@@ -128,7 +166,7 @@ export default function Profile(props: Props) {
           >
             Save
           </button>
-          <div>{updatedMessage}</div>
+          <div>{message}</div>
         </div>
 
         <br />
@@ -136,15 +174,17 @@ export default function Profile(props: Props) {
         <Link href="/profile/my-posts">My Posts</Link>
         <br />
 
-        {props.user.id ? (
-          <Anchor>
-            <Link href="/logout">Logout</Link>
-          </Anchor>
-        ) : (
-          ' '
-        )}
+        {props.user.id ? <Anchor>Logout</Anchor> : ' '}
         <br />
-        <button onClick={() => deleteHandler()}>Delete profile</button>
+        <Anchor>
+          <button
+            onClick={async () => {
+              await deleteUserFromApiByUsername();
+            }}
+          >
+            Delete profile
+          </button>
+        </Anchor>
       </div>
     </div>
   );
