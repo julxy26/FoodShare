@@ -9,47 +9,64 @@ export type Post = {
   district: number;
   userId: number;
   imageUrl: string | null;
-};
+}[];
+
+export async function deleteSinglePostByPostId(id: number) {
+  const [post] = await sql<Post[]>`
+    DELETE FROM
+      posts
+    WHERE
+      id = ${id}
+    RETURNING
+      *
+  `;
+  return post;
+}
+
+export async function updateSinglePostById(
+  title: string,
+  price: number,
+  description: string,
+  street: string,
+  district: number,
+  imageUrl: string,
+) {
+  const [post] = await sql<Post[]>`
+    UPDATE
+      posts
+    SET
+    title = ${title},
+    price = ${price},
+    description = ${description},
+    street = ${street},
+    district = ${district},
+    image_url = ${imageUrl}
+
+    WHERE
+      id = posts.id
+
+    RETURNING *
+  `;
+  return post;
+}
 
 export async function getSinglePostByPostId(id: number) {
-  const [post] = await sql<
-    {
-      title: string;
-      price: number;
-      description: string;
-      street: string;
-      district: number;
-      imageUrl: string;
-    }[]
-  >`
+  const [post] = await sql<Post[]>`
   SELECT
-    title,
-    price,
-    description,
-    street,
-    district,
-    image_url
+    *
   FROM
     posts
   WHERE
-    posts.id = ${id}
+    id = ${id}
   `;
 
   return post;
 }
 
 export async function getPostsByUserId(userId: number) {
-  const [posts] = await sql<
-    {
-      title: string;
-      price: number;
-      description: string;
-      street: string;
-      district: number;
-      imageUrl: string;
-    }[]
-  >`
+  const posts = await sql<Post[]>`
   SELECT
+    posts.id,
     title,
     price,
     description,
@@ -60,8 +77,10 @@ export async function getPostsByUserId(userId: number) {
     posts,
     users
   WHERE
-    users.id = ${userId}
+    ${userId} = posts.user_id
   `;
+
+  if (!posts) return undefined;
 
   return posts;
 }

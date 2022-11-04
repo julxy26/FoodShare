@@ -4,7 +4,7 @@ import {
   deleteUserByUsername,
   getUserBySessionToken,
   updateUserByUsername,
-} from '../../database/users';
+} from '../../../database/users';
 
 export default async function handler(
   request: NextApiRequest,
@@ -62,7 +62,6 @@ export default async function handler(
   if (request.method === 'DELETE') {
     const username = request.body?.username;
     const deletedUser = await deleteUserByUsername(username);
-    console.log(request.body);
     return response.status(200).json(deletedUser);
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });

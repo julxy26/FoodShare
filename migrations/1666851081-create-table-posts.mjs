@@ -2,9 +2,9 @@ export async function up(sql) {
   await sql`
     CREATE TABLE posts (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      title varchar(90) NOT NULL UNIQUE,
+      title varchar(90) NOT NULL ,
       price integer NOT NULL,
-      description varchar(70) NOT NULL UNIQUE,
+      description varchar(70) NOT NULL ,
       street varchar(90) NOT NULL,
       district integer NOT NULL,
       user_id integer NOT NULL,
