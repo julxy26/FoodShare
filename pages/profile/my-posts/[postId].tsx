@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,7 +8,16 @@ import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 type Props =
   | {
-      post: Post;
+      post: {
+        id: number;
+        title: string;
+        price: number;
+        description: string;
+        street: string;
+        district: number;
+        userId: number;
+        imageUrls: string | null;
+      };
     }
   | {
       error: string;
@@ -42,9 +51,7 @@ export default function SinglePost(props: Props) {
   );
 }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<Props>> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
   if (typeof postId === 'undefined') {

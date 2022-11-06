@@ -105,7 +105,7 @@ export async function createPost(
     }[]
   >`
   INSERT INTO posts
-    (title, price, description, street, district, user_id, image_url)
+    (title, price, description, street, district, user_id, image_urls)
   VALUES
     (${title}, ${price}, ${description}, ${street}, ${district}, ${user_id}, ${image_url})
   RETURNING
@@ -114,7 +114,7 @@ export async function createPost(
     description,
     street,
     district,
-    image_url
+    image_urls
   `;
 
   return post;

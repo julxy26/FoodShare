@@ -47,7 +47,7 @@ export default async function handler(
     const description = request.body.description;
     const street = request.body.street;
     const district = request.body.district;
-    const imageUrl = request.body.imageUrl;
+    const imageUrls = request.body.imageUrls;
 
     // Check all the information to create the post exists
     if (!(title && price && description)) {
@@ -65,7 +65,7 @@ export default async function handler(
       description,
       street,
       district,
-      imageUrl,
+      imageUrls,
     );
 
     if (!newAnimal) {
