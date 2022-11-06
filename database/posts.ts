@@ -8,8 +8,8 @@ export type Post = {
   street: string;
   district: number;
   userId: number;
-  imageUrl: string | null;
-}[];
+  imageUrls: string[] | null;
+};
 
 export async function deleteSinglePostByPostId(id: number) {
   const [post] = await sql<Post[]>`
@@ -29,7 +29,7 @@ export async function updateSinglePostById(
   description: string,
   street: string,
   district: number,
-  imageUrl: string,
+  imageUrls: string[],
 ) {
   const [post] = await sql<Post[]>`
     UPDATE
@@ -40,7 +40,7 @@ export async function updateSinglePostById(
     description = ${description},
     street = ${street},
     district = ${district},
-    image_url = ${imageUrl}
+    image_urls = ${imageUrls}
 
     WHERE
       id = posts.id
@@ -72,7 +72,7 @@ export async function getPostsByUserId(userId: number) {
     description,
     street,
     district,
-    image_url
+    image_urls
   FROM
     posts,
     users
@@ -92,7 +92,7 @@ export async function createPost(
   street: string,
   district: number,
   user_id: number,
-  image_url: string,
+  image_urls: string[],
 ) {
   const [post] = await sql<
     {
@@ -101,13 +101,13 @@ export async function createPost(
       description: string;
       street: string;
       district: number;
-      imageUrl: string;
+      imageUrls: string;
     }[]
   >`
   INSERT INTO posts
     (title, price, description, street, district, user_id, image_urls)
   VALUES
-    (${title}, ${price}, ${description}, ${street}, ${district}, ${user_id}, ${image_url})
+    (${title}, ${price}, ${description}, ${street}, ${district}, ${user_id}, ${image_urls})
   RETURNING
     title,
     price,

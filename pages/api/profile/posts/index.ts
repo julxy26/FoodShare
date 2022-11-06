@@ -1,10 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  createPost,
-  getPostsByUserId,
-  getSinglePostByPostId,
-  updateSinglePostById,
-} from '../../../../database/posts';
+import { createPost, getPostsByUserId } from '../../../../database/posts';
 import { getUserBySessionToken } from '../../../../database/users';
 
 export default async function handler(
@@ -28,39 +23,50 @@ export default async function handler(
   }
 
   if (request.method === 'POST') {
-    const title = request.body;
-    const price = request.body;
-    const description = request.body;
-    const street = request.body;
-    const district = request.body;
-    const userId = request.body?.id;
-    const imageUrls = request.body;
-    // 1. make sure the data exist
-    if (
-      typeof request.body.title !== 'string' ||
-      typeof request.body.price !== 'number' ||
-      typeof request.body.description !== 'string' ||
-      typeof request.body.district !== 'string' ||
-      !request.body.title ||
-      !request.body.password ||
-      !request.body.description ||
-      !request.body.district
-    ) {
-      return response
-        .status(400)
-        .json({ errors: [{ message: 'required fields must be filled out' }] });
-    }
+    const token = request.cookies.sessionToken;
+    const user = token && (await getUserBySessionToken(token));
 
-    // 4. sql query to create the record
-    const post = await createPost(
-      title,
-      price,
-      description,
-      street,
-      district,
-      userId,
-      imageUrls,
-    );
+    if (user) {
+      const id = user.id;
+
+      const title = request.body.title;
+      const price = request.body.price;
+      const description = request.body.description;
+      const street = request.body.street;
+      const district = request.body.district;
+      const userId = id;
+      const imageUrls = request.body.imageUrls;
+
+      // 1. make sure the data exist
+      if (
+        typeof request.body.title !== 'string' ||
+        typeof request.body.price !== 'number' ||
+        typeof request.body.description !== 'string' ||
+        typeof request.body.street !== 'string' ||
+        typeof request.body.district !== 'number' ||
+        !request.body.title ||
+        !request.body.price ||
+        !request.body.description ||
+        !request.body.street ||
+        !request.body.district
+      ) {
+        return response.status(400).json({
+          errors: [{ message: 'required fields must be filled out' }],
+        });
+      }
+
+      // 4. sql query to create the record
+      const post = await createPost(
+        title,
+        price,
+        description,
+        street,
+        district,
+        userId,
+        imageUrls,
+      );
+      return response.status(200).json({ post: post });
+    }
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }

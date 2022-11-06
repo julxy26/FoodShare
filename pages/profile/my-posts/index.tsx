@@ -48,14 +48,15 @@ export default function UserPosts(props: Props) {
           );
         })
       )}
-
-      <button
-        onClick={() => {
-          addNewPost();
-        }}
-      >
-        Add new post
-      </button>
+      <Link href="/profile/my-posts/add-post">
+        <button
+          onClick={() => {
+            addNewPost();
+          }}
+        >
+          Add new post
+        </button>
+      </Link>
     </div>
   );
 }

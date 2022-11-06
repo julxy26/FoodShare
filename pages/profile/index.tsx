@@ -53,7 +53,6 @@ export default function Profile(props: Props) {
     });
 
     const deletedUser = (await response.json()) as User;
-    console.log(deletedUser);
     setMessage('Profile deleted');
     return deletedUser;
   }
