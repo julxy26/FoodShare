@@ -9,7 +9,7 @@ export type Post = {
   district: number;
   userId: number;
   imageUrls: string[] | null;
-};
+}[];
 
 export async function deleteSinglePostByPostId(id: number) {
   const [post] = await sql<Post[]>`

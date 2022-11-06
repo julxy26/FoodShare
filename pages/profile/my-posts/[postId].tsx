@@ -3,36 +3,53 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
-type Props =
-  | {
-      post: {
-        id: number;
-        title: string;
-        price: number;
-        description: string;
-        street: string;
-        district: number;
-        userId: number;
-        imageUrls: string | null;
-      };
-    }
-  | {
-      error: string;
-    };
+type Props = {
+  post: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    street: string;
+    district: number;
+    userId: number;
+    imageUrls: string | null;
+  };
+};
 
 export default function SinglePost(props: Props) {
-  if ('error' in props) {
+  const [title, setTitle] = useState<string>(props.post.title);
+  const [price, setPrice] = useState<number>(props.post.price);
+  const [description, setDescription] = useState<string>(
+    props.post.description,
+  );
+  const [street, setStreet] = useState<string>(props.post.street);
+  const [district, setDistrict] = useState<number>(props.post.district);
+  const [imageUrls, setImageUrls] = useState([]);
+
+  const [buttonText, setButtonText] = useState('Edit');
+
+  const [onEdit, setOnEdit] = useState<boolean>(true);
+
+  function savePostHandler() {
+    setOnEdit(true);
+    setButtonText('Edit');
+  }
+
+  if (props.post.title === null) {
     return (
       <div>
         <Head>
           <title>Post not found</title>
-          <meta name="description" content="Animal not found" />
+          <meta name="description" content="Post not found" />
         </Head>
-        <h1>{props.error}</h1>
-        Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
+        <main>
+          <h1>Post not found</h1>
+          Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
+        </main>
       </div>
     );
   }
@@ -43,10 +60,64 @@ export default function SinglePost(props: Props) {
         <title>{props.post.title}</title>
         <meta name="description" content={`${props.post.title}`} />
       </Head>
-      <h2>{props.post.title}</h2>
-      <Image src="/placeholder2.jpg" alt="" width="200" height="200" />
-      <div>{props.post.price}€</div>
-      <div>description: {props.post.description}</div>
+
+      <main>
+        <form onSubmit={(event) => event.preventDefault()}>
+          <input
+            value={title}
+            autoComplete="off"
+            disabled={onEdit}
+            onChange={(event) => setTitle(event.currentTarget.value)}
+          />
+          <br />
+          <Image src="/placeholder2.jpg" alt="" width="200" height="200" />
+          <br />
+          <input
+            value={price}
+            autoComplete="off"
+            disabled={onEdit}
+            type="number"
+            onChange={(event) => setPrice(parseInt(event.currentTarget.value))}
+          />
+          <br />
+          <input
+            value={description}
+            autoComplete="off"
+            disabled={onEdit}
+            onChange={(event) => setDescription(event.currentTarget.value)}
+          />
+          <br />
+          <input
+            value={street}
+            autoComplete="off"
+            disabled={onEdit}
+            onChange={(event) => setStreet(event.currentTarget.value)}
+          />
+          <br />
+          <input
+            value={district}
+            autoComplete="off"
+            disabled={onEdit}
+            type="number"
+            onChange={(event) =>
+              setDistrict(parseInt(event.currentTarget.value))
+            }
+          />
+          <br />
+          <button
+            onClick={() => {
+              if (onEdit) {
+                setOnEdit(false);
+                setButtonText('Save');
+              } else {
+                savePostHandler();
+              }
+            }}
+          >
+            {buttonText}
+          </button>
+        </form>
+      </main>
     </div>
   );
 }
@@ -64,18 +135,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const foundPost = await getSinglePostByPostId(postId);
 
-  if (typeof foundPost === 'undefined') {
+  if (typeof foundPost === null) {
     context.res.statusCode = 404;
-    return {
-      props: {
-        error: 'Post not found',
-      },
-    };
   }
 
   return {
     props: {
-      post: foundPost,
+      post: foundPost || null,
     },
   };
 }

@@ -10,11 +10,7 @@ type Props = {
   posts: Post;
 };
 
-function addNewPost() {}
-
 export default function UserPosts(props: Props) {
-  const [title, setTitle] = useState('');
-
   return (
     <div>
       <Head>
@@ -32,30 +28,29 @@ export default function UserPosts(props: Props) {
         props.posts.map((post) => {
           return (
             <div key={`post-${post.id}`}>
-              <Image
-                src="/placeholder2.jpg"
-                width="80px"
-                height="80px"
-                alt=""
-              />
-              <h3>
-                <Link href={`/profile/my-posts/${post.id}`}>{post.title}</Link>
-              </h3>
+              <Link href={`/profile/my-posts/${post.id}`}>
+                <a>
+                  <Image
+                    src="/placeholder2.jpg"
+                    width="80px"
+                    height="80px"
+                    alt=""
+                  />
+                </a>
+              </Link>
 
-              <div>price: {post.price}</div>
-              <div>description: {post.description}</div>
+              <Link href={`/profile/my-posts/${post.id}`}>
+                <h2>{post.title}</h2>
+              </Link>
+
+              <p>price: {post.price}</p>
+              <p>description: {post.description}</p>
             </div>
           );
         })
       )}
       <Link href="/profile/my-posts/add-post">
-        <button
-          onClick={() => {
-            addNewPost();
-          }}
-        >
-          Add new post
-        </button>
+        <button>Add new post</button>
       </Link>
     </div>
   );

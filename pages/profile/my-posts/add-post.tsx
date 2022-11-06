@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { redirect } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -43,7 +44,7 @@ export default function AddPost() {
 
       <main>
         <h1>New post</h1>
-        <form onClick={(event) => event.preventDefault()}>
+        <form onSubmit={(event) => event.preventDefault()}>
           <label htmlFor="title">Title</label>
           <input
             name="title"
@@ -109,11 +110,10 @@ export default function AddPost() {
             <option value="1230">1230</option>
           </select>
           <br />
-          <a>
-            <Link href="/profile/my-posts">
-              <button onClick={() => addPostHandler()}>Add</button>
-            </Link>
-          </a>
+
+          <button onClick={() => addPostHandler()}>
+            <Link href="/profile/my-posts">Add</Link>
+          </button>
         </form>
       </main>
     </div>
