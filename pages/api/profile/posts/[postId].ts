@@ -42,7 +42,6 @@ export default async function handler(
   // prevent the endpoint to be accessed by cross site requests
 
   if (request.method === 'PUT') {
-    // NOT getting the id from the body since is already on the query
     const title = request.body.title;
     const price = request.body.price;
     const description = request.body.description;
@@ -51,14 +50,14 @@ export default async function handler(
     const imageUrls = request.body.imageUrls;
 
     // Check all the information to create the post exists
-    if (!(title && price && description)) {
+    if (!(title && price && description && street && district)) {
       return response.status(400).json({ message: 'property is missing' });
     }
 
     // TODO: add type checking to the api
 
     // Create the post using the database util function
-    const newAnimal = await updateSinglePostById(
+    const newPost = await updateSinglePostById(
       title,
       price,
       description,
@@ -67,12 +66,12 @@ export default async function handler(
       imageUrls,
     );
 
-    if (!newAnimal) {
+    if (!newPost) {
       return response.status(404).json({ message: 'Not a valid Id' });
     }
 
     // response with the new created animal
-    return response.status(200).json(newAnimal);
+    return response.status(200).json(newPost);
   }
 
   if (request.method === 'DELETE') {

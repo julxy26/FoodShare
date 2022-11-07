@@ -34,9 +34,25 @@ export default function SingleUserPost(props: Props) {
 
   const [onEdit, setOnEdit] = useState<boolean>(true);
 
-  function savePostHandler() {
+  async function savePostHandler(postId: number) {
+    const response = await fetch(`/api/profile/posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: title,
+        price: price,
+        description: description,
+        street: street,
+        district: district,
+        imageUrls: imageUrls,
+      }),
+    });
+    const updatedPostFromApi = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
+    return updatedPostFromApi;
   }
 
   async function deletePostHandler(postId: number) {
@@ -131,7 +147,7 @@ export default function SingleUserPost(props: Props) {
                 setOnEdit(false);
                 setButtonText('Save');
               } else {
-                savePostHandler();
+                savePostHandler(props.post.id);
               }
             }}
           >

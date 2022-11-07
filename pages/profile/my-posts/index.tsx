@@ -48,10 +48,14 @@ export default function UserPosts(props: Props) {
               <p>
                 Location: {post.street}, {post.district}
               </p>
+              <Link href={`/profile/my-posts/${post.id}`}>
+                <button>Edit</button>
+              </Link>
             </div>
           );
         })
       )}
+      <br />
       <Link href="/profile/my-posts/add-post">
         <button>Add new post</button>
       </Link>
