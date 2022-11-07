@@ -52,6 +52,7 @@ export default function AddPost(props: Props) {
           </div>
 
           <label htmlFor="title">Title</label>
+          <br />
           <input
             name="title"
             autoComplete="false"
@@ -60,6 +61,7 @@ export default function AddPost(props: Props) {
           />
           <br />
           <label htmlFor="price">Price</label>
+          <br />
           <input
             name="price"
             autoComplete="off"
@@ -69,7 +71,8 @@ export default function AddPost(props: Props) {
           />
           <br />
           <label htmlFor="description">Description</label>
-          <input
+          <br />
+          <textarea
             name="description"
             autoComplete="false"
             value={description}
@@ -77,6 +80,7 @@ export default function AddPost(props: Props) {
           />
           <br />
           <label htmlFor="street">Street</label>
+          <br />
           <input
             name="street"
             autoComplete="false"
@@ -85,6 +89,7 @@ export default function AddPost(props: Props) {
           />
           <br />
           <label htmlFor="district">District</label>
+          <br />
           <select
             defaultValue=""
             name="district"

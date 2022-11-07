@@ -4,7 +4,7 @@ export async function up(sql) {
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       title varchar(90) NOT NULL ,
       price integer NOT NULL,
-      description varchar(70) NOT NULL ,
+      description varchar(500) NOT NULL ,
       street varchar(100) NOT NULL,
       district integer NOT NULL,
       user_id integer REFERENCES users (id) ON DELETE CASCADE,

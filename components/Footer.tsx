@@ -12,7 +12,6 @@ const containerStyles = (notSignedIn: boolean) => css`
   `}
 `;
 
-
 type Props = {
   user: User | undefined;
 };
@@ -20,7 +19,7 @@ type Props = {
 export default function Footer(props: Props) {
   return (
     <div css={containerStyles(!props.user)}>
-      {props.user ? (
+      {props.user !== undefined ? (
         <div>
           <footer>
             <Link href="/">
