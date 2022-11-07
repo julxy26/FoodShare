@@ -27,7 +27,7 @@ export default function UserPosts(props: Props) {
       ) : (
         props.posts.map((post) => {
           return (
-            <div key={`post-${post.id}`}>
+            <div key={`userPost-${post.id}`}>
               <Link href={`/profile/my-posts/${post.id}`}>
                 <a>
                   <Image

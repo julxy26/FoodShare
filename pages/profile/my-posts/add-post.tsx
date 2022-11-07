@@ -1,10 +1,8 @@
 import { css } from '@emotion/react';
-import { redirect } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import UploadImage, { Props } from '../../../components/UploadImage';
-import { Post } from '../../../database/posts';
 
 export default function AddPost(props: Props) {
   const [title, setTitle] = useState<string>('');
@@ -30,7 +28,7 @@ export default function AddPost(props: Props) {
       }),
     });
 
-    const postsFromApi = (await response.json()) as Post;
+    const postsFromApi = await response.json();
 
     return postsFromApi;
   }

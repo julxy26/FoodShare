@@ -12,7 +12,7 @@ export default async function handler(
 
     if (user) {
       const userId = user.id;
-      const posts = [await getPostsByUserId(userId)];
+      const posts = await getPostsByUserId(userId);
 
       if (!posts) {
         response.status(400).json({ errors: [{ message: 'no posts found' }] });
@@ -38,16 +38,16 @@ export default async function handler(
 
       // 1. make sure the data exist
       if (
-        typeof request.body.title !== 'string' ||
-        typeof request.body.price !== 'number' ||
-        typeof request.body.description !== 'string' ||
-        typeof request.body.street !== 'string' ||
-        typeof request.body.district !== 'number' ||
-        !request.body.title ||
-        !request.body.price ||
-        !request.body.description ||
-        !request.body.street ||
-        !request.body.district
+        typeof title !== 'string' ||
+        typeof price !== 'number' ||
+        typeof description !== 'string' ||
+        typeof street !== 'string' ||
+        typeof district !== 'number' ||
+        !title ||
+        !price ||
+        !description ||
+        !street ||
+        !district
       ) {
         return response.status(400).json({
           errors: [{ message: 'required fields must be filled out' }],
@@ -64,6 +64,7 @@ export default async function handler(
         userId,
         imageUrls,
       );
+
       return response.status(200).json({ post: post });
     }
   } else {

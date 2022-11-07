@@ -11,6 +11,21 @@ export type Post = {
   imageUrls: string[] | null;
 }[];
 
+export async function getAllPosts() {
+  const posts = await sql<Post[]>`
+  SELECT
+    id,
+    title,
+    price,
+    description,
+    street,
+    district
+  FROM
+    posts
+`;
+  return posts;
+}
+
 export async function deletePostByPostId(id: number) {
   const [post] = await sql<Post[]>`
     DELETE FROM
@@ -66,7 +81,7 @@ export async function getSinglePostByPostId(id: number) {
 export async function getPostsByUserId(userId: number) {
   const posts = await sql<Post[]>`
   SELECT
-    posts.id,
+    id,
     title,
     price,
     description,
@@ -74,8 +89,7 @@ export async function getPostsByUserId(userId: number) {
     district,
     image_urls
   FROM
-    posts,
-    users
+    posts
   WHERE
     ${userId} = posts.user_id
   `;
@@ -94,7 +108,7 @@ export async function createPost(
   user_id: number,
   image_urls: string[],
 ) {
-  const [post] = await sql<
+  const post = await sql<
     {
       title: string;
       price: number;
