@@ -32,7 +32,7 @@ export default async function handler(
     }
 
     // return the user from the session token
-    response.status(200).json({ user: user });
+    return response.status(200).json({ user: user });
   }
 
   if (request.method === 'PUT') {
@@ -64,6 +64,8 @@ export default async function handler(
     const deletedUser = await deleteUserByUsername(username);
     return response.status(200).json(deletedUser);
   } else {
-    response.status(405).json({ errors: [{ message: 'method not allowed' }] });
+    return response
+      .status(405)
+      .json({ errors: [{ message: 'method not allowed' }] });
   }
 }
