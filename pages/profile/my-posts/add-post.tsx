@@ -74,7 +74,7 @@ export default function AddPost(props: Props) {
           <br />
           <textarea
             name="description"
-            autoComplete="false"
+            autoComplete="off"
             value={description}
             onChange={(event) => setDescription(event.currentTarget.value)}
           />
@@ -83,7 +83,7 @@ export default function AddPost(props: Props) {
           <br />
           <input
             name="street"
-            autoComplete="false"
+            autoComplete="on"
             value={street}
             onChange={(event) => setStreet(event.currentTarget.value)}
           />

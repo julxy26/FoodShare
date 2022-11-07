@@ -49,7 +49,7 @@ export default function UserPosts(props: Props) {
                 Location: {post.street}, {post.district}
               </p>
               <Link href={`/profile/my-posts/${post.id}`}>
-                <button>Edit</button>
+                <button>Edit post</button>
               </Link>
             </div>
           );
