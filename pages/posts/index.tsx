@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getAllPosts, Post } from '../../database/posts';
 import { getUserBySessionToken } from '../../database/users';
 
@@ -21,14 +22,20 @@ export default function Posts(props: Props) {
       {props.posts.map((post) => {
         return (
           <div key={`post-${post.id}`}>
-            <Image src="/placeholder2.jpg" width="200" height="170" alt="" />
-            <h2>{post.title}</h2>
+            <Link href={`/posts/${post.id}`}>
+              <Image src="/placeholder2.jpg" width="200" height="170" alt="" />
+            </Link>
+            <Link href={`/posts/${post.id}`}>
+              <h2>{post.title}</h2>
+            </Link>
             <p>{post.price}€</p>
             <p>{post.description}</p>
             <p>
               {post.street}, {post.district}
             </p>
-            <button>View post</button>
+            <Link href={`/posts/${post.id}`}>
+              <button>View post</button>
+            </Link>
           </div>
         );
       })}
