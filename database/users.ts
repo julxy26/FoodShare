@@ -48,6 +48,32 @@ export async function updateUserByUsername(
   return user;
 }
 
+export async function getUserById(id: number) {
+  if (!id) return undefined;
+
+  const [user] = await sql<
+    {
+      id: number;
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: number | null;
+    }[]
+  >`
+  SELECT
+    username,
+    name,
+    email,
+    phone_number
+  FROM
+    users
+  WHERE
+    users.id = ${id}
+  `;
+
+  return user;
+}
+
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 

@@ -11,7 +11,7 @@ export default function SingleUserPost(props: Props) {
       </Head>
 
       <div>
-        <UploadImage setImageUrl={props.setImageUrl} />
+        <UploadImage imageUrl={props.imageUrl} />
       </div>
     </div>
   );

@@ -65,14 +65,14 @@ export async function updateSinglePostById(
   return post;
 }
 
-export async function getSinglePostByPostId(id: number) {
+export async function getSinglePostByPostId(postId: number) {
   const [post] = await sql<Post[]>`
   SELECT
     *
   FROM
     posts
   WHERE
-    id = ${id}
+    id = ${postId}
   `;
 
   return post;

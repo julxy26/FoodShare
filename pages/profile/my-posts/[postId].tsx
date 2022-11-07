@@ -71,7 +71,7 @@ export default function SingleUserPost(props: Props) {
     return deletedPost;
   }
 
-  if (props.post.title === null) {
+  if (!props.post) {
     return (
       <div>
         <Head>
@@ -172,13 +172,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const foundPost = await getSinglePostByPostId(postId);
 
-  if (typeof foundPost === null) {
+  if (typeof foundPost === undefined) {
     context.res.statusCode = 404;
   }
 
   return {
     props: {
-      post: foundPost || null,
+      post: foundPost,
     },
   };
 }
