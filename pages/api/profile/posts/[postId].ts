@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
+  deletePostByPostId,
   getSinglePostByPostId,
   updateSinglePostById,
 } from '../../../../database/posts';
@@ -51,9 +52,7 @@ export default async function handler(
 
     // Check all the information to create the post exists
     if (!(title && price && description)) {
-      return response
-        .status(400)
-        .json({ message: 'property firstName, accessory or type missing' });
+      return response.status(400).json({ message: 'property is missing' });
     }
 
     // TODO: add type checking to the api
@@ -76,17 +75,17 @@ export default async function handler(
     return response.status(200).json(newAnimal);
   }
 
-  // if (request.method === 'DELETE') {
-  //   const deletedAnimal = await deleteAnimalById(postId);
+  if (request.method === 'DELETE') {
+    const deletedPost = await deletePostByPostId(postId);
 
-  //   if (!deletedAnimal) {
-  //     return response.status(404).json({ message: 'Not a valid Id' });
-  //   }
+    if (!deletedPost) {
+      return response.status(404).json({ message: 'Not a valid Id' });
+    }
 
-  //   console.log(deletedAnimal);
+    console.log(deletedPost);
 
-  //   return response.status(200).json(deletedAnimal);
-  // }
+    return response.status(200).json(deletedPost);
+  }
 
   return response.status(400).json({ message: 'Method Not Allowed' });
 }

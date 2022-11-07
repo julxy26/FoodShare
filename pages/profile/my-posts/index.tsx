@@ -20,7 +20,7 @@ export default function UserPosts(props: Props) {
       </Head>
       <h1>My Posts</h1>
 
-      {props.posts === null ? (
+      {!props.posts[0] ? (
         <div>
           <p>There are no posts yet</p>
         </div>
@@ -43,8 +43,11 @@ export default function UserPosts(props: Props) {
                 <h2>{post.title}</h2>
               </Link>
 
-              <p>price: {post.price}</p>
-              <p>description: {post.description}</p>
+              <p>Price: {post.price}</p>
+              <p>Description: {post.description}</p>
+              <p>
+                Location: {post.street}, {post.district}
+              </p>
             </div>
           );
         })
@@ -67,7 +70,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        posts: posts || null,
+        posts: posts,
       },
     };
   }

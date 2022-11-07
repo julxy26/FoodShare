@@ -5,10 +5,10 @@ export async function up(sql) {
       title varchar(90) NOT NULL ,
       price integer NOT NULL,
       description varchar(70) NOT NULL ,
-      street varchar(90) NOT NULL,
+      street varchar(100) NOT NULL,
       district integer NOT NULL,
       user_id integer REFERENCES users (id) ON DELETE CASCADE,
-      image_urls varchar(90)
+      image_urls varchar(100)
     )
   `;
 }

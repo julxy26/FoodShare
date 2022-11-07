@@ -11,7 +11,7 @@ export type Post = {
   imageUrls: string[] | null;
 }[];
 
-export async function deleteSinglePostByPostId(id: number) {
+export async function deletePostByPostId(id: number) {
   const [post] = await sql<Post[]>`
     DELETE FROM
       posts

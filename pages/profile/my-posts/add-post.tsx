@@ -3,9 +3,10 @@ import { redirect } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import UploadImage, { Props } from '../../../components/UploadImage';
 import { Post } from '../../../database/posts';
 
-export default function AddPost() {
+export default function AddPost(props: Props) {
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>();
   const [description, setDescription] = useState<string>('');
@@ -44,7 +45,12 @@ export default function AddPost() {
 
       <main>
         <h1>New post</h1>
+
         <form onSubmit={(event) => event.preventDefault()}>
+          <div>
+            <UploadImage setImageUrl={props.setImageUrl} />
+          </div>
+
           <label htmlFor="title">Title</label>
           <input
             name="title"
@@ -85,6 +91,9 @@ export default function AddPost() {
               setDistrict(parseInt(event.currentTarget.value))
             }
           >
+            <option value="" selected disabled hidden>
+              Choose here
+            </option>
             <option value="1010">1010</option>
             <option value="1020">1020</option>
             <option value="1030">1030</option>

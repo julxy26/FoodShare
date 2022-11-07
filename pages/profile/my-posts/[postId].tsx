@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
@@ -20,7 +20,7 @@ type Props = {
   };
 };
 
-export default function SinglePost(props: Props) {
+export default function SingleUserPost(props: Props) {
   const [title, setTitle] = useState<string>(props.post.title);
   const [price, setPrice] = useState<number>(props.post.price);
   const [description, setDescription] = useState<string>(
@@ -37,6 +37,22 @@ export default function SinglePost(props: Props) {
   function savePostHandler() {
     setOnEdit(true);
     setButtonText('Edit');
+  }
+
+  async function deletePostHandler(postId: number) {
+    const response = await fetch(`/api/profile/posts/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        postId: postId,
+      }),
+    });
+
+    const deletedPost = (await response.json()) as Post;
+
+    return deletedPost;
   }
 
   if (props.post.title === null) {
@@ -69,6 +85,11 @@ export default function SinglePost(props: Props) {
             disabled={onEdit}
             onChange={(event) => setTitle(event.currentTarget.value)}
           />
+          <Link href="/profile/my-posts">
+            <button onClick={() => deletePostHandler(props.post.id)}>
+              Delete
+            </button>
+          </Link>
           <br />
           <Image src="/placeholder2.jpg" alt="" width="200" height="200" />
           <br />

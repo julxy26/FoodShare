@@ -31,8 +31,6 @@ function UploadImage({ setImageUrl }: Props) {
     setImageLink(data.secure_url);
   };
 
-  function saveToDatabaseHandler() {}
-
   return (
     <div>
       <label htmlFor="file">Upload an image</label>
@@ -45,14 +43,6 @@ function UploadImage({ setImageUrl }: Props) {
       {!!preview && (
         <Image width={100} height={100} src={String(preview)} alt="preview" />
       )}
-
-      <button
-        onClick={() => {
-          saveToDatabaseHandler();
-        }}
-      >
-        save
-      </button>
     </div>
   );
 }

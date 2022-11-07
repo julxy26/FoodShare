@@ -28,7 +28,6 @@ export default async function handler(
 
     if (user) {
       const id = user.id;
-
       const title = request.body.title;
       const price = request.body.price;
       const description = request.body.description;
