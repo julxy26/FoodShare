@@ -44,7 +44,7 @@ export default async function handler(
     const email = request.body?.email;
     const phoneNumber = request.body?.phoneNumber || null;
 
-    if (!(username && password && name && email)) {
+    if (!(username || password || name || email || phoneNumber)) {
       return response.status(400).json({ message: 'property is missing' });
     }
 
