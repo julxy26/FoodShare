@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/dezeipn4z/**',
+      },
+    ],
+  },
   reactStrictMode: true,
   swcMinify: true,
   compiler: {

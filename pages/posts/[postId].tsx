@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getImagesByPostId, Photo } from '../../database/images';
 import { getSinglePostByPostId, Post } from '../../database/posts';
 import { getUserById, getUserBySessionToken, User } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
@@ -15,10 +16,10 @@ type Props = {
     street: string;
     district: number;
     userId: number;
-    imageUrls: string | null;
   };
-  user1: User;
-  user2: User;
+  user: User;
+
+  photo: [{ urls: string }];
 };
 
 export default function SinglePost(props: Props) {
@@ -32,14 +33,14 @@ export default function SinglePost(props: Props) {
 
       <main>
         <h1>{props.post.title}</h1>
-        <Image src="/placeholder2.jpg" width="280" height="250" alt="" />
+        <Image src={props.photo[0].urls} width="280" height="250" alt="" />
         <p>{props.post.price}€</p>
         <p>{props.post.description}</p>
         <p>
           {props.post.street}, {props.post.district}
         </p>
         <Link
-          href={`mailto:${props.user1.email}?subject=FoodShare request&body=Hi! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.user1.name}.`}
+          href={`mailto:${props.user.email}?subject=FoodShare request&body=Hi! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.user.name}.`}
         >
           <button>Contact seller</button>
         </Link>
@@ -68,13 +69,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const user1 = token && (await getUserBySessionToken(token));
 
-  const foundUser = await getUserById(2);
+  const foundUser = await getUserById(1);
+
+  const photo = postId && (await getImagesByPostId(postId));
+
+  console.log(photo);
 
   return {
     props: {
       post: foundPost,
-      user1: user1,
-      user2: foundUser,
+      user: foundUser,
+      photo: photo,
     },
   };
 }

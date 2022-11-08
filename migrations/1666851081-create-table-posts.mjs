@@ -7,8 +7,7 @@ export async function up(sql) {
       description varchar(500) NOT NULL ,
       street varchar(100) NOT NULL,
       district integer NOT NULL,
-      user_id integer REFERENCES users (id) ON DELETE CASCADE,
-      image_urls varchar(100)
+      user_id integer REFERENCES users (id) ON DELETE CASCADE
     )
   `;
 }

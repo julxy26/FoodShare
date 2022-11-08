@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
+import { createImage } from '../database/images';
 
 export type Props = {
   setImageUrl: (imageUrl: string) => void;

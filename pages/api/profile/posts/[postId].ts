@@ -63,7 +63,6 @@ export default async function handler(
       description,
       street,
       district,
-      imageUrls,
     );
 
     if (!newPost) {

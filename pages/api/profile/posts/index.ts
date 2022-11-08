@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { createImage, getImagesByPostId } from '../../../../database/images';
 import { createPost, getPostsByUserId } from '../../../../database/posts';
 import { getUserBySessionToken } from '../../../../database/users';
 
@@ -27,6 +28,11 @@ export default async function handler(
     const user = token && (await getUserBySessionToken(token));
 
     if (user) {
+      const userId = user.id;
+      await getPostsByUserId(userId);
+    }
+
+    if (user) {
       const id = user.id;
       const title = request.body.title;
       const price = request.body.price;
@@ -34,7 +40,6 @@ export default async function handler(
       const street = request.body.street;
       const district = request.body.district;
       const userId = id;
-      const imageUrls = request.body.imageUrls;
 
       // 1. make sure the data exist
       if (
@@ -62,10 +67,14 @@ export default async function handler(
         street,
         district,
         userId,
-        imageUrls,
       );
 
-      return response.status(200).json({ post: post });
+      const postId = request.body.id;
+      const urls = request.body.imageUrls;
+
+      const image = await createImage(postId, urls);
+
+      return response.status(200).json({ post: post, image: image });
     }
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });
