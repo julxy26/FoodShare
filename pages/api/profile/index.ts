@@ -42,7 +42,7 @@ export default async function handler(
     const password = passwordHash;
     const name = request.body?.name;
     const email = request.body?.email;
-    const phoneNumber = request.body?.phoneNumber;
+    const phoneNumber = request.body?.phoneNumber || null;
 
     if (!(username && password && name && email)) {
       return response.status(400).json({ message: 'property is missing' });
