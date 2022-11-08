@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { request } from 'https';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -74,6 +75,7 @@ export default function Profile(props: Props) {
 
     const updatedUserFromApi = (await response.json()) as User;
     setMessage('Changes are saved');
+
     return updatedUserFromApi;
   }
 
@@ -145,6 +147,7 @@ export default function Profile(props: Props) {
           <label htmlFor="email">E-mail</label>
           <br />
           <input
+            type="email"
             value={email}
             onChange={(event) => {
               setEmail(event.currentTarget.value);
@@ -155,6 +158,7 @@ export default function Profile(props: Props) {
           <br />
           <input
             value={phoneNumber}
+            type="tel"
             onChange={(event) => {
               setPhoneNumber(event.currentTarget.value);
             }}

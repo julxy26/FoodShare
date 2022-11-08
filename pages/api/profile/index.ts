@@ -64,8 +64,6 @@ export default async function handler(
     const deletedUser = await deleteUserByUsername(username);
     return response.status(200).json(deletedUser);
   } else {
-    return response
-      .status(405)
-      .json({ errors: [{ message: 'method not allowed' }] });
+    response.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }
 }
