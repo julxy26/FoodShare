@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv ley"
+    "migrate": "dotenv -- ley"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",

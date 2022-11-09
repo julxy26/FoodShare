@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
-import { createImage } from '../database/images';
 
 export type Props = {
   setImageUrl: (imageUrl: string) => void;
+  setImageLink: [string];
 };
 function UploadImage({ setImageUrl }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
-  const [imageLink, setImageLink] = useState<string>();
+  const [imageLink, setImageLink] = useState([]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newFile = e.target.files?.[0];

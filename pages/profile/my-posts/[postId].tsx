@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
@@ -33,6 +34,7 @@ export default function SingleUserPost(props: Props) {
   const [buttonText, setButtonText] = useState('Edit');
 
   const [onEdit, setOnEdit] = useState<boolean>(true);
+  const router = useRouter();
 
   async function savePostHandler(postId: number) {
     const response = await fetch(`/api/profile/posts/${postId}`, {
@@ -67,7 +69,7 @@ export default function SingleUserPost(props: Props) {
     });
 
     const deletedPost = (await response.json()) as Post;
-
+    await router.push(`/profile/my-posts`);
     return deletedPost;
   }
 
@@ -101,11 +103,11 @@ export default function SingleUserPost(props: Props) {
             disabled={onEdit}
             onChange={(event) => setTitle(event.currentTarget.value)}
           />
-          <Link href="/profile/my-posts">
-            <button onClick={() => deletePostHandler(props.post.id)}>
-              Delete
-            </button>
-          </Link>
+
+          <button onClick={() => deletePostHandler(props.post.id)}>
+            Delete
+          </button>
+
           <br />
           <Image src="/placeholder2.jpg" alt="" width="200" height="200" />
           <br />

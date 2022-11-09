@@ -1,12 +1,13 @@
 import { sql } from './connect';
+import { Post } from './posts';
 
 export type Photo = {
   id: number;
-  postId: number;
+  postId: Post['id'];
   urls: string;
 }[];
 
-export async function getImagesByPostId(postId: number) {
+export async function getImagesByPostId(postId: Post['id']) {
   const images = await sql<Photo[]>`
   SELECT
     post_id,
@@ -23,7 +24,7 @@ export async function getImagesByPostId(postId: number) {
   return images;
 }
 
-export async function createImage(post_id: number, urls: string) {
+export async function createImage(post_id: Post['id'], urls: string) {
   const image = await sql<Photo[]>`
   INSERT INTO images
     (post_id, urls)

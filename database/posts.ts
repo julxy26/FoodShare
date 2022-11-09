@@ -1,4 +1,5 @@
 import { sql } from './connect';
+import { User } from './users';
 
 export type Post = {
   id: number;
@@ -8,7 +9,7 @@ export type Post = {
   street: string;
   district: number;
   userId: number;
-}[];
+};
 
 export async function getAllPosts() {
   const posts = await sql<Post[]>`
@@ -100,8 +101,8 @@ export async function createPost(
   description: string,
   street: string,
   district: number,
-  user_id: number,
-) {
+  user_id: User['id'],
+): Promise<any> {
   const post = await sql<
     {
       title: string;
@@ -116,12 +117,8 @@ export async function createPost(
   VALUES
     (${title}, ${price}, ${description}, ${street}, ${district}, ${user_id})
   RETURNING
-    title,
-    price,
-    description,
-    street,
-    district
+    *
   `;
-
+  console.log(post);
   return post;
 }

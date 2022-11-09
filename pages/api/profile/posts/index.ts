@@ -34,12 +34,13 @@ export default async function handler(
 
     if (user) {
       const id = user.id;
-      const title = request.body.title;
-      const price = request.body.price;
-      const description = request.body.description;
-      const street = request.body.street;
-      const district = request.body.district;
+      const title = request.body?.title;
+      const price = request.body?.price;
+      const description = request.body?.description;
+      const street = request.body?.street;
+      const district = request.body?.district;
       const userId = id;
+      const urls = request.body?.urls;
 
       // 1. make sure the data exist
       if (
@@ -59,8 +60,7 @@ export default async function handler(
         });
       }
 
-      // 4. sql query to create the record
-      const post = await createPost(
+      const [post] = await createPost(
         title,
         price,
         description,
@@ -69,12 +69,12 @@ export default async function handler(
         userId,
       );
 
-      const postId = request.body.id;
-      const urls = request.body.imageUrls;
+      const postId = post.id;
 
       const image = await createImage(postId, urls);
+      // 4. sql query to create the record
 
-      return response.status(200).json({ post: post, image: image });
+      return response.status(200).json({ post, image });
     }
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });

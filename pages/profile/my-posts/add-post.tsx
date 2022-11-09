@@ -1,8 +1,11 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useState } from 'react';
 import UploadImage, { Props } from '../../../components/UploadImage';
+import { Post } from '../../../database/posts';
 
 export default function AddPost(props: Props) {
   const [title, setTitle] = useState<string>('');
@@ -10,7 +13,10 @@ export default function AddPost(props: Props) {
   const [description, setDescription] = useState<string>('');
   const [street, setStreet] = useState<string>('');
   const [district, setDistrict] = useState<number>();
-  const [imageUrls, setImageUrls] = useState([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
+  const [imageLink, setImageLink] = useState('');
+  const router = useRouter();
 
   async function addPostHandler() {
     const response = await fetch('/api/profile/posts', {
@@ -24,14 +30,38 @@ export default function AddPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        imageUrls: imageUrls,
+        urls: imageLink,
       }),
     });
 
     const postsFromApi = await response.json();
-
+    await router.push(`/profile/my-posts`);
     return postsFromApi;
   }
+
+  const handleFileChange = async (e: any) => {
+    const newFile = e.target.files[0];
+    if (!newFile) return;
+
+    setPreview(URL.createObjectURL(newFile));
+
+    const formData = new FormData();
+    formData.append('file', newFile);
+    formData.append('upload_preset', 'foodShare');
+
+    const data = await fetch(
+      'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setImageLink(data.secure_url);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
@@ -46,7 +76,21 @@ export default function AddPost(props: Props) {
 
         <form onSubmit={(event) => event.preventDefault()}>
           <div>
-            <UploadImage setImageUrl={props.setImageUrl} />
+            <label htmlFor="file">Upload an image</label>
+            <input
+              id="file"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            {!!preview && (
+              <Image
+                width={100}
+                height={100}
+                src={String(preview)}
+                alt="preview"
+              />
+            )}
           </div>
 
           <label htmlFor="title">Title</label>
@@ -124,9 +168,7 @@ export default function AddPost(props: Props) {
           </select>
           <br />
 
-          <button onClick={() => addPostHandler()}>
-            <Link href="/profile/my-posts">Add</Link>
-          </button>
+          <button onClick={async () => await addPostHandler()}>Add</button>
         </form>
       </main>
     </div>
