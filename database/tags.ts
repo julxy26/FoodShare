@@ -5,19 +5,13 @@ export type Tag = {
   name: string;
 };
 
-export async function createTag(id: number, name: string) {
-  const [tag] = await sql<
-    {
-      name: string;
-    }[]
-  >`
-  INSERT INTO tags
-    (name)
-  VALUES
-    (${name})
-  RETURNING
-    name
+export async function getAllTags() {
+  const tags = await sql<Tag[]>`
+  SELECT
+    *
+  FROM
+    tags
   `;
 
-  return tag;
+  return tags;
 }
