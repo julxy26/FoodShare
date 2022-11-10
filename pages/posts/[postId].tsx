@@ -32,7 +32,7 @@ export default function SinglePost(props: Props) {
 
       <main>
         <h1>{props.post.title}</h1>
-        <Image src={props.post.urls} width="280" height="250" alt="" />
+        <Image src={props.post.urls} width="300px" height="300px" alt="" />
         <p>{props.post.price}€</p>
         <p>{props.post.description}</p>
         <p>

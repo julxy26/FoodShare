@@ -33,6 +33,7 @@ export default function SingleUserPost(props: Props) {
   const [imageUrls, setImageUrls] = useState([]);
 
   const [buttonText, setButtonText] = useState('Edit');
+  const [savedMessage, setSavedMessage] = useState('');
 
   const [onEdit, setOnEdit] = useState<boolean>(true);
   const router = useRouter();
@@ -110,7 +111,7 @@ export default function SingleUserPost(props: Props) {
           </button>
 
           <br />
-          <Image src={props.post.urls} alt="" width="200" height="200" />
+          <Image src={props.post.urls} alt="" width="300px" height="300px" />
           <br />
           <input
             value={price}
@@ -149,13 +150,16 @@ export default function SingleUserPost(props: Props) {
               if (onEdit) {
                 setOnEdit(false);
                 setButtonText('Save');
+                setSavedMessage('');
               } else {
+                setSavedMessage('Changes are saved');
                 savePostHandler(props.post.id);
               }
             }}
           >
             {buttonText}
           </button>
+          {savedMessage}
         </form>
       </main>
     </div>

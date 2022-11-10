@@ -33,7 +33,7 @@ export default function Posts(props: Props) {
         return (
           <div key={`post-${post.id}`}>
             <Link href={`/posts/${post.id}`}>
-              <Image src={post.urls} width="200" height="170" alt="" />
+              <Image src={post.urls} width="300px" height="300px" alt="" />
             </Link>
             <Link href={`/posts/${post.id}`}>
               <h2>{post.title}</h2>

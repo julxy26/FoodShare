@@ -11,7 +11,6 @@ export default function AddPost() {
   const [description, setDescription] = useState<string>('');
   const [street, setStreet] = useState<string>('');
   const [district, setDistrict] = useState<number>();
-  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [imageLink, setImageLink] = useState('');
   const router = useRouter();

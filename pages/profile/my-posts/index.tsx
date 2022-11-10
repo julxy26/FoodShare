@@ -39,7 +39,7 @@ export default function UserPosts(props: Props) {
             <div key={`userPost-${post.id}`}>
               <Link href={`/profile/my-posts/${post.id}`}>
                 <a>
-                  <Image src={post.urls} width="80px" height="80px" alt="" />
+                  <Image src={post.urls} width="300px" height="300px" alt="" />
                 </a>
               </Link>
 
