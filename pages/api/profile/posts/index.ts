@@ -16,10 +16,11 @@ export default async function handler(
       const posts = await getPostsByUserId(userId);
 
       if (!posts) {
-        response.status(400).json({ errors: [{ message: 'no posts found' }] });
-        return;
+        return response
+          .status(400)
+          .json({ errors: [{ message: 'no posts found' }] });
       }
-      return response.status(200).json({ posts: posts });
+      return response.status(200).json({ posts });
     }
   }
 

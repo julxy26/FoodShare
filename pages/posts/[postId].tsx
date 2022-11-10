@@ -16,10 +16,9 @@ type Props = {
     street: string;
     district: number;
     userId: number;
+    urls: Photo['urls'];
   };
   user: User;
-
-  photo: [{ urls: string }];
 };
 
 export default function SinglePost(props: Props) {
@@ -33,7 +32,7 @@ export default function SinglePost(props: Props) {
 
       <main>
         <h1>{props.post.title}</h1>
-        <Image src={props.photo[0].urls} width="280" height="250" alt="" />
+        <Image src={props.post.urls} width="280" height="250" alt="" />
         <p>{props.post.price}€</p>
         <p>{props.post.description}</p>
         <p>
@@ -67,19 +66,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const token = context.req.cookies.sessionToken;
 
-  const user1 = token && (await getUserBySessionToken(token));
+  const user = token && (await getUserBySessionToken(token));
 
-  const foundUser = await getUserById(1);
-
-  const photo = postId && (await getImagesByPostId(postId));
-
-  console.log(photo);
+  const foundUser = user && (await getUserById(user.id));
 
   return {
     props: {
       post: foundPost,
       user: foundUser,
-      photo: photo,
     },
   };
 }

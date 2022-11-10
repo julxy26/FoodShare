@@ -8,20 +8,19 @@ export type Post = {
   description: string;
   street: string;
   district: number;
-  userId: number;
-};
+  userId: User['id'];
+}[];
 
 export async function getAllPosts() {
   const posts = await sql<Post[]>`
   SELECT
-    id,
-    title,
-    price,
-    description,
-    street,
-    district
+    posts.*,
+    images.urls
   FROM
-    posts
+    posts,
+    images
+  WHERE
+    images.post_id = posts.id
 `;
   return posts;
 }
@@ -57,7 +56,8 @@ export async function updateSinglePostById(
     WHERE
       id = posts.id
 
-    RETURNING *
+    RETURNING
+      *
   `;
   return post;
 }
@@ -65,29 +65,35 @@ export async function updateSinglePostById(
 export async function getSinglePostByPostId(postId: number) {
   const [post] = await sql<Post[]>`
   SELECT
-    *
+    posts.*,
+    images.urls
   FROM
-    posts
+    posts,
+    images
   WHERE
-    id = ${postId}
+    posts.id = ${postId}
+  AND
+    images.post_id = posts.id
   `;
 
   return post;
 }
 
-export async function getPostsByUserId(userId: number) {
+export async function getPostsByUserId(userId: number): Promise<any> {
   const posts = await sql<Post[]>`
   SELECT
-    id,
-    title,
-    price,
-    description,
-    street,
-    district
+    posts.*,
+    images.urls
   FROM
-    posts
+    users,
+    posts,
+    images
   WHERE
-    ${userId} = posts.user_id
+    ${userId} = users.id
+  AND
+    images.post_id = posts.id
+  AND
+    posts.user_id = users.id
   `;
 
   if (!posts) return undefined;
@@ -119,6 +125,5 @@ export async function createPost(
   RETURNING
     *
   `;
-  console.log(post);
   return post;
 }

@@ -3,11 +3,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useState } from 'react';
-import UploadImage, { Props } from '../../../components/UploadImage';
-import { Post } from '../../../database/posts';
+import { useState } from 'react';
 
-export default function AddPost(props: Props) {
+export default function AddPost() {
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>();
   const [description, setDescription] = useState<string>('');

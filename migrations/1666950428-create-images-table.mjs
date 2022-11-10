@@ -2,8 +2,8 @@ export async function up(sql) {
   await sql`
     CREATE TABLE images (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      post_id integer NOT NULL,
-      urls varchar(200) NOT NULL
+      post_id integer REFERENCES posts (id) ON DELETE CASCADE,
+      urls varchar(500) NOT NULL
     )
   `;
 }

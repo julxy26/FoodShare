@@ -2,11 +2,21 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Photo } from '../../database/images';
 import { getAllPosts, Post } from '../../database/posts';
-import { getUserBySessionToken } from '../../database/users';
+import { getUserBySessionToken, User } from '../../database/users';
 
 type Props = {
-  posts: Post;
+  posts: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    street: string;
+    district: number;
+    userId: User['id'];
+    urls: Photo['urls'];
+  }[];
 };
 
 export default function Posts(props: Props) {
@@ -23,7 +33,7 @@ export default function Posts(props: Props) {
         return (
           <div key={`post-${post.id}`}>
             <Link href={`/posts/${post.id}`}>
-              <Image src="/placeholder2.jpg" width="200" height="170" alt="" />
+              <Image src={post.urls} width="200" height="170" alt="" />
             </Link>
             <Link href={`/posts/${post.id}`}>
               <h2>{post.title}</h2>

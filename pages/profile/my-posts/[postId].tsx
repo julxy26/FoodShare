@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Photo } from '../../../database/images';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
@@ -17,7 +18,7 @@ type Props = {
     street: string;
     district: number;
     userId: number;
-    imageUrls: string | null;
+    urls: Photo['urls'];
   };
 };
 
@@ -109,7 +110,7 @@ export default function SingleUserPost(props: Props) {
           </button>
 
           <br />
-          <Image src="/placeholder2.jpg" alt="" width="200" height="200" />
+          <Image src={props.post.urls} alt="" width="200" height="200" />
           <br />
           <input
             value={price}

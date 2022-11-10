@@ -1,31 +1,42 @@
 import { sql } from './connect';
-import { Post } from './posts';
 
 export type Photo = {
   id: number;
-  postId: Post['id'];
+  postId: number;
   urls: string;
-}[];
+};
 
-export async function getImagesByPostId(postId: Post['id']) {
+export async function getAllImages() {
   const images = await sql<Photo[]>`
   SELECT
-    post_id,
-    urls
+    *
+  FROM
+    images
+`;
+  return images;
+}
+
+export async function getImagesByPostId(postId: number) {
+  const [photos] = await sql<Photo[]>`
+  SELECT
+    posts.id as post_id,
+    images.urls as urls
   FROM
     posts,
     images
   WHERE
     ${postId} = posts.id
+  AND
+    ${postId} = post_id
   `;
 
-  if (!images) return undefined;
+  if (!photos) return undefined;
 
-  return images;
+  return photos;
 }
 
-export async function createImage(post_id: Post['id'], urls: string) {
-  const image = await sql<Photo[]>`
+export async function createImage(post_id: number, urls: string) {
+  const photo = await sql<Photo[]>`
   INSERT INTO images
     (post_id, urls)
   VALUES
@@ -34,5 +45,5 @@ export async function createImage(post_id: Post['id'], urls: string) {
     *
   `;
 
-  return image;
+  return photo;
 }
