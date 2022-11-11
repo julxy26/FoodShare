@@ -2,8 +2,9 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getImagesByPostId, Photo } from '../../database/images';
+import { Photo } from '../../database/images';
 import { getSinglePostByPostId, Post } from '../../database/posts';
+import { Tag } from '../../database/tags';
 import { getUserById, getUserBySessionToken, User } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
@@ -17,6 +18,7 @@ type Props = {
     district: number;
     userId: number;
     urls: Photo['urls'];
+    name: Tag['name'];
   };
   user: User;
 };
@@ -34,6 +36,7 @@ export default function SinglePost(props: Props) {
         <h1>{props.post.title}</h1>
         <Image src={props.post.urls} width="300px" height="300px" alt="" />
         <p>{props.post.price}€</p>
+        <p>{props.post.name}</p>
         <p>{props.post.description}</p>
         <p>
           {props.post.street}, {props.post.district}

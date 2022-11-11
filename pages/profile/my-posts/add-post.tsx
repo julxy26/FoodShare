@@ -1,11 +1,16 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getAllTags, Tag } from '../../../database/tags';
 
-export default function AddPost() {
+type Props = {
+  tags: Tag[];
+};
+
+export default function AddPost(props: Props) {
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>();
   const [description, setDescription] = useState<string>('');
@@ -13,6 +18,7 @@ export default function AddPost() {
   const [district, setDistrict] = useState<number>();
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [imageLink, setImageLink] = useState('');
+  const [tag, setTag] = useState('');
   const router = useRouter();
 
   async function addPostHandler() {
@@ -28,6 +34,7 @@ export default function AddPost() {
         street: street,
         district: district,
         urls: imageLink,
+        tag: tag,
       }),
     });
 
@@ -109,6 +116,24 @@ export default function AddPost() {
             onChange={(event) => setPrice(parseInt(event.currentTarget.value))}
           />
           <br />
+          <label htmlFor="tags">Tags</label>
+          <br />
+
+          {props.tags.map((tag) => {
+            return (
+              <div key={`tag-${tag.id}`}>
+                <input
+                  name="restrictions"
+                  type="radio"
+                  value={tag.name}
+                  onChange={(event) => setTag(event.currentTarget.value)}
+                />
+                <label htmlFor="restrictions"> {tag.name}</label>
+              </div>
+            );
+          })}
+
+          <br />
           <label htmlFor="description">Description</label>
           <br />
           <textarea
@@ -130,15 +155,12 @@ export default function AddPost() {
           <label htmlFor="district">District</label>
           <br />
           <select
-            defaultValue=""
+            defaultValue="1010"
             name="district"
             onChange={(event) =>
               setDistrict(parseInt(event.currentTarget.value))
             }
           >
-            <option value="" disabled hidden>
-              Choose here
-            </option>
             <option value="1010">1010</option>
             <option value="1020">1020</option>
             <option value="1030">1030</option>
@@ -170,4 +192,14 @@ export default function AddPost() {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const tags = await getAllTags();
+
+  return {
+    props: {
+      tags,
+    },
+  };
 }

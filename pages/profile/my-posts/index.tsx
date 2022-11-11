@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Photo } from '../../../database/images';
 import { getPostsByUserId, Post } from '../../../database/posts';
+import { getAllTags, Tag } from '../../../database/tags';
 import { getUserBySessionToken, User } from '../../../database/users';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
     district: number;
     userId: User['id'];
     urls: Photo['urls'];
+    name: Tag['name'];
   }[];
 };
 
@@ -48,6 +50,7 @@ export default function UserPosts(props: Props) {
               </Link>
 
               <p>Price: {post.price}</p>
+              <p>Tag: {post.name}</p>
               <p>Description: {post.description}</p>
               <p>
                 Location: {post.street}, {post.district}
@@ -75,10 +78,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     const userId = user.id;
     const posts = await getPostsByUserId(userId);
+    console.log(posts);
 
     return {
       props: {
-        posts: posts,
+        posts,
       },
     };
   }

@@ -7,6 +7,7 @@ import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Photo } from '../../../database/images';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
+import { Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
     district: number;
     userId: number;
     urls: Photo['urls'];
+    name: Tag['name'];
   };
 };
 
@@ -31,6 +33,7 @@ export default function SingleUserPost(props: Props) {
   const [street, setStreet] = useState<string>(props.post.street);
   const [district, setDistrict] = useState<number>(props.post.district);
   const [imageUrls, setImageUrls] = useState([]);
+  const [tag, setTag] = useState(props.post.name);
 
   const [buttonText, setButtonText] = useState('Edit');
   const [savedMessage, setSavedMessage] = useState('');
@@ -51,6 +54,7 @@ export default function SingleUserPost(props: Props) {
         street: street,
         district: district,
         imageUrls: imageUrls,
+        tag: tag,
       }),
     });
     const updatedPostFromApi = (await response.json()) as Post;
@@ -109,6 +113,14 @@ export default function SingleUserPost(props: Props) {
           <button onClick={() => deletePostHandler(props.post.id)}>
             Delete
           </button>
+          <br />
+
+          <input
+            value={tag}
+            autoComplete="off"
+            disabled={onEdit}
+            onChange={(event) => setTag(event.currentTarget.value)}
+          />
 
           <br />
           <Image src={props.post.urls} alt="" width="300px" height="300px" />

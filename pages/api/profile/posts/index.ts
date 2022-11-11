@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createImage, getImagesByPostId } from '../../../../database/images';
+import { createImage } from '../../../../database/images';
 import { createPost, getPostsByUserId } from '../../../../database/posts';
+import {
+  createPostsTags,
+  getAllTags,
+  getTagIdByTagName,
+} from '../../../../database/tags';
 import { getUserBySessionToken } from '../../../../database/users';
 
 export default async function handler(
@@ -42,6 +47,7 @@ export default async function handler(
       const district = request.body?.district;
       const userId = id;
       const urls = request.body?.urls;
+      const tag = request.body?.tag;
 
       // 1. make sure the data exist
       if (
@@ -71,11 +77,14 @@ export default async function handler(
       );
 
       const postId = post.id;
+      const [tagId] = tag && (await getTagIdByTagName(tag));
+
+      const [postsTags] = await createPostsTags(postId, tagId.id);
 
       const image = await createImage(postId, urls);
       // 4. sql query to create the record
 
-      return response.status(200).json({ post, image });
+      return response.status(200).json({ post, image, postsTags });
     }
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });

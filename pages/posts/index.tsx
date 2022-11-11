@@ -3,7 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Photo } from '../../database/images';
-import { getAllPosts, Post } from '../../database/posts';
+import { getAllPosts } from '../../database/posts';
+import { getAllTags, Tag } from '../../database/tags';
 import { getUserBySessionToken, User } from '../../database/users';
 
 type Props = {
@@ -16,8 +17,18 @@ type Props = {
     district: number;
     userId: User['id'];
     urls: Photo['urls'];
+    name: Tag['name'];
+  }[];
+
+  tags: {
+    id: number;
+    name: string;
   }[];
 };
+
+function filterHandler() {
+  return <div>test</div>;
+}
 
 export default function Posts(props: Props) {
   return (
@@ -27,8 +38,22 @@ export default function Posts(props: Props) {
         <meta name="description" content="Welcome to FoodShare" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <h1>All posts</h1>
+      <select>
+        {props.tags &&
+          props.tags.map((tag) => {
+            return <option key={`tag-${tag.id}`}>{tag.name}</option>;
+          })}
+      </select>
+
+      <button
+        onClick={() => {
+          filterHandler();
+        }}
+      >
+        Filter
+      </button>
+
       {props.posts.map((post) => {
         return (
           <div key={`post-${post.id}`}>
@@ -39,6 +64,7 @@ export default function Posts(props: Props) {
               <h2>{post.title}</h2>
             </Link>
             <p>{post.price}€</p>
+            <p>{post.name}</p>
             <p>{post.description}</p>
             <p>
               {post.street}, {post.district}
@@ -69,7 +95,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const posts = await getAllPosts();
 
+  const tags = await getAllTags();
+
   return {
-    props: { posts },
+    props: { posts, tags },
   };
 }
