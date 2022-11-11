@@ -2,6 +2,8 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -26,11 +28,16 @@ type Props = {
   }[];
 };
 
-function filterHandler() {
-  return <div>test</div>;
-}
-
 export default function Posts(props: Props) {
+  const [filterOptionSelect, setFilterOptionSelect] = useState('');
+  const router = useRouter();
+
+  // const foundPosts = props.posts.find(
+  //   (post) => post.name === filterOptionSelect,
+  // );
+
+  function filterHandler() {}
+
   return (
     <div>
       <Head>
@@ -39,42 +46,65 @@ export default function Posts(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>All posts</h1>
-      <select>
-        {props.tags &&
-          props.tags.map((tag) => {
-            return <option key={`tag-${tag.id}`}>{tag.name}</option>;
-          })}
-      </select>
-
-      <button
-        onClick={() => {
-          filterHandler();
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
         }}
       >
-        Filter
-      </button>
+        <select
+          onChange={(event) => {
+            setFilterOptionSelect(event.currentTarget.value);
+          }}
+        >
+          {props.tags.map((tag) => {
+            return (
+              <option key={`tag-${tag.id}`} value={tag.name}>
+                {tag.name}
+              </option>
+            );
+          })}
+        </select>
 
-      {props.posts.map((post) => {
-        return (
-          <div key={`post-${post.id}`}>
-            <Link href={`/posts/${post.id}`}>
-              <Image src={post.urls} width="300px" height="300px" alt="" />
-            </Link>
-            <Link href={`/posts/${post.id}`}>
-              <h2>{post.title}</h2>
-            </Link>
-            <p>{post.price}€</p>
-            <p>{post.name}</p>
-            <p>{post.description}</p>
-            <p>
-              {post.street}, {post.district}
-            </p>
-            <Link href={`/posts/${post.id}`}>
-              <button>View post</button>
-            </Link>
-          </div>
-        );
-      })}
+        <button
+          onClick={() => {
+            filterHandler();
+          }}
+        >
+          Filter
+        </button>
+      </form>
+
+      {!props.posts[0] ? (
+        <div>
+          <p>There are no posts yet</p>
+        </div>
+      ) : (
+        props.posts.map((post) => {
+          return (
+            <div key={`post-${post.id}`}>
+              <Link href={`/posts/${post.id}`}>
+                <a>
+                  <Image src={post.urls} width="300px" height="300px" alt="" />
+                </a>
+              </Link>
+
+              <Link href={`/posts/${post.id}`}>
+                <h2>{post.title}</h2>
+              </Link>
+
+              <p>Price: {post.price}</p>
+              <p>Tag: {post.name}</p>
+              <p>Description: {post.description}</p>
+              <p>
+                Location: {post.street}, {post.district}
+              </p>
+              <Link href={`/posts/${post.id}`}>
+                <button>View post</button>
+              </Link>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }

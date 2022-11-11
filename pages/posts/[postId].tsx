@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Photo } from '../../database/images';
 import { getSinglePostByPostId, Post } from '../../database/posts';
 import { Tag } from '../../database/tags';
@@ -24,6 +25,8 @@ type Props = {
 };
 
 export default function SinglePost(props: Props) {
+  const router = useRouter();
+
   return (
     <div>
       <Head>
@@ -41,11 +44,16 @@ export default function SinglePost(props: Props) {
         <p>
           {props.post.street}, {props.post.district}
         </p>
-        <Link
-          href={`mailto:${props.user.email}?subject=FoodShare request&body=Hi! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.user.name}.`}
+
+        <button
+          onClick={async () =>
+            await router.push(
+              `mailto:${props.user.email}?subject=FoodShare request&body=Hi! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.user.name}.`,
+            )
+          }
         >
-          <button>Contact seller</button>
-        </Link>
+          Contact seller
+        </button>
       </main>
     </div>
   );
@@ -64,7 +72,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const foundPost = await getSinglePostByPostId(postId);
 
-  if (typeof foundPost === null) {
+  if (typeof foundPost === undefined) {
     context.res.statusCode = 404;
   }
   const token = context.req.cookies.sessionToken;

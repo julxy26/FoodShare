@@ -23,7 +23,6 @@ export default async function handler(
 
   const postId = Number(request.query.postId);
 
-  // check if the id is a number
   if (!postId) {
     return response.status(404).json({ message: 'Not a valid Id' });
   }
@@ -31,7 +30,6 @@ export default async function handler(
   if (request.method === 'GET') {
     const post = await getSinglePostByPostId(postId);
 
-    // check if post exists on the database
     if (!post) {
       return response.status(404).json({ message: 'Not a valid Id' });
     }
@@ -39,24 +37,18 @@ export default async function handler(
     return response.status(200).json(post);
   }
 
-  // prevent the endpoint to be accessed by cross site requests
-
   if (request.method === 'PUT') {
     const title = request.body.title;
     const price = request.body.price;
     const description = request.body.description;
     const street = request.body.street;
     const district = request.body.district;
-    const imageUrls = request.body.imageUrls;
+    const urls = request.body.imageUrls;
 
-    // Check all the information to create the post exists
     if (!(title && price && description && street && district)) {
       return response.status(400).json({ message: 'property is missing' });
     }
 
-    // TODO: add type checking to the api
-
-    // Create the post using the database util function
     const newPost = await updateSinglePostById(
       title,
       price,
@@ -69,7 +61,6 @@ export default async function handler(
       return response.status(404).json({ message: 'Not a valid Id' });
     }
 
-    // response with the new created animal
     return response.status(200).json(newPost);
   }
 

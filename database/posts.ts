@@ -70,7 +70,7 @@ export async function updateSinglePostById(
   return post;
 }
 
-export async function getSinglePostByPostId(postId: number) {
+export async function getSinglePostByPostId(postId: Post['id']) {
   const [post] = await sql<Post[]>`
   SELECT
     posts.*,
@@ -95,7 +95,7 @@ export async function getSinglePostByPostId(postId: number) {
   return post;
 }
 
-export async function getPostsByUserId(userId: number): Promise<any> {
+export async function getPostsByUserId(userId: Post['userId']): Promise<any> {
   const posts = await sql<Post[]>`
   SELECT
     posts.*,

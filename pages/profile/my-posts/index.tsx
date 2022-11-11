@@ -2,9 +2,10 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Router, useRouter } from 'next/router';
 import { Photo } from '../../../database/images';
 import { getPostsByUserId, Post } from '../../../database/posts';
-import { getAllTags, Tag } from '../../../database/tags';
+import { Tag } from '../../../database/tags';
 import { getUserBySessionToken, User } from '../../../database/users';
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export default function UserPosts(props: Props) {
+  const router = useRouter();
   return (
     <div>
       <Head>
@@ -63,9 +65,12 @@ export default function UserPosts(props: Props) {
         })
       )}
       <br />
-      <Link href="/profile/my-posts/add-post">
-        <button>Add new post</button>
-      </Link>
+
+      <button
+        onClick={async () => await router.push('/profile/my-posts/add-post')}
+      >
+        Add new post
+      </button>
     </div>
   );
 }
@@ -78,7 +83,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     const userId = user.id;
     const posts = await getPostsByUserId(userId);
-    console.log(posts);
 
     return {
       props: {
