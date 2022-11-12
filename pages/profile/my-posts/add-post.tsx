@@ -155,12 +155,14 @@ export default function AddPost(props: Props) {
           <label htmlFor="district">District</label>
           <br />
           <select
-            defaultValue="1010"
             name="district"
             onChange={(event) =>
               setDistrict(parseInt(event.currentTarget.value))
             }
           >
+            <option value="" hidden>
+              Choose here
+            </option>
             <option value="1010">1010</option>
             <option value="1020">1020</option>
             <option value="1030">1030</option>

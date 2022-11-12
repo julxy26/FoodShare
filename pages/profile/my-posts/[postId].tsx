@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Photo } from '../../../database/images';
 import { getSinglePostByPostId, Post } from '../../../database/posts';
-import { Tag } from '../../../database/tags';
+import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 type Props = {
@@ -22,6 +22,7 @@ type Props = {
     urls: Photo['urls'];
     name: Tag['name'];
   };
+  tags: Tag[];
 };
 
 export default function SingleUserPost(props: Props) {
@@ -115,12 +116,37 @@ export default function SingleUserPost(props: Props) {
           </button>
           <br />
 
-          <input
-            value={tag}
-            autoComplete="off"
-            disabled={onEdit}
-            onChange={(event) => setTag(event.currentTarget.value)}
-          />
+          {onEdit ? (
+            <div>
+              <label htmlFor="restrictions">
+                <input
+                  value={tag}
+                  checked
+                  type="radio"
+                  name={tag}
+                  disabled={onEdit}
+                  onChange={(event) => setTag(event.currentTarget.value)}
+                />
+                {tag}
+              </label>
+            </div>
+          ) : (
+            props.tags.map((tag) => {
+              return (
+                <div key={`tag-${tag.id}`}>
+                  <label htmlFor="restrictions">
+                    <input
+                      name="restrictions"
+                      type="radio"
+                      value={tag.name}
+                      onChange={(event) => setTag(event.currentTarget.value)}
+                    />
+                    {tag.name}
+                  </label>
+                </div>
+              );
+            })
+          )}
 
           <br />
           <Image src={props.post.urls} alt="" width="300px" height="300px" />
@@ -147,15 +173,56 @@ export default function SingleUserPost(props: Props) {
             onChange={(event) => setStreet(event.currentTarget.value)}
           />
           <br />
-          <input
-            value={district}
-            autoComplete="off"
-            disabled={onEdit}
-            type="number"
-            onChange={(event) =>
-              setDistrict(parseInt(event.currentTarget.value))
-            }
-          />
+
+          {onEdit ? (
+            <select
+              defaultValue={district}
+              disabled={onEdit}
+              name="district"
+              onChange={(event) =>
+                setDistrict(parseInt(event.currentTarget.value))
+              }
+            >
+              <option value={district} selected>
+                {district}
+              </option>
+            </select>
+          ) : (
+            <select
+              name="district"
+              onChange={(event) =>
+                setDistrict(parseInt(event.currentTarget.value))
+              }
+            >
+              <option value={district} selected hidden>
+                {district}
+              </option>
+              <option value="1010">1010</option>
+              <option value="1020">1020</option>
+              <option value="1030">1030</option>
+              <option value="1040">1040</option>
+              <option value="1050">1050</option>
+              <option value="1060">1060</option>
+              <option value="1070">1070</option>
+              <option value="1080">1080</option>
+              <option value="1090">1090</option>
+              <option value="1100">1100</option>
+              <option value="1110">1110</option>
+              <option value="1120">1120</option>
+              <option value="1130">1130</option>
+              <option value="1140">1140</option>
+              <option value="1150">1150</option>
+              <option value="1160">1160</option>
+              <option value="1170">1170</option>
+              <option value="1180">1180</option>
+              <option value="1190">1190</option>
+              <option value="1200">1200</option>
+              <option value="1210">1210</option>
+              <option value="1220">1220</option>
+              <option value="1230">1230</option>
+            </select>
+          )}
+
           <br />
           <button
             onClick={() => {
@@ -194,11 +261,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (typeof foundPost === undefined) {
     context.res.statusCode = 404;
   }
-  console.log(foundPost);
+
+  const tags = await getAllTags();
 
   return {
     props: {
       post: foundPost,
+      tags,
     },
   };
 }
