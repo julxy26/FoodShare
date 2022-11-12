@@ -32,7 +32,7 @@ export type Props = {
 export default function Profile(props: Props) {
   const [message, setMessage] = useState('');
   const [username, setUsername] = useState(props.user.username);
-  const [password, setPassword] = useState('******');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState(props.user.name);
   const [email, setEmail] = useState(props.user.email);
   const [phoneNumber, setPhoneNumber] = useState(props.user.phoneNumber || '');

@@ -96,7 +96,7 @@ export default function Posts(props: Props) {
               <p>Tag: {post.name}</p>
               <p>Description: {post.description}</p>
               <p>
-                Location: {post.street}, {post.district}
+                Pick-up at: {post.street}, {post.district}
               </p>
 
               <button

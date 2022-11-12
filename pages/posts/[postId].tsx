@@ -43,18 +43,19 @@ export default function SinglePost(props: Props) {
 
       <main>
         <h1>{props.post.title}</h1>
+        <p>by {props.postUser.username}</p>
         <Image src={props.post.urls} width="300px" height="300px" alt="" />
         <p>{props.post.price}€</p>
-        <p>{props.post.name}</p>
-        <p>{props.post.description}</p>
+        <p>Tag: {props.post.name}</p>
+        <p>Description: {props.post.description}</p>
         <p>
-          {props.post.street}, {props.post.district}
+          Pick-up at: {props.post.street}, {props.post.district}
         </p>
 
         <button
           onClick={async () =>
             await router.push(
-              `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.name}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.name}.`,
+              `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.username}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.username}.`,
             )
           }
         >
