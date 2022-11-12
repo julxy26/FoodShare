@@ -57,10 +57,10 @@ export default function SingleUserPost(props: Props) {
         tag: tag,
       }),
     });
-    const updatedPostFromApi = (await response.json()) as Post;
+    const updatedPost = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
-    return updatedPostFromApi;
+    return updatedPost;
   }
 
   async function deletePostHandler(postId: number) {
@@ -194,6 +194,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (typeof foundPost === undefined) {
     context.res.statusCode = 404;
   }
+  console.log(foundPost);
 
   return {
     props: {

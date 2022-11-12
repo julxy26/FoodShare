@@ -46,6 +46,7 @@ export async function deletePostByPostId(id: number) {
 }
 
 export async function updateSinglePostById(
+  id: number,
   title: string,
   price: number,
   description: string,
@@ -62,7 +63,7 @@ export async function updateSinglePostById(
     street = ${street},
     district = ${district}
     WHERE
-      id = posts.id
+      ${id} = posts.id
 
     RETURNING
       *
@@ -76,7 +77,7 @@ export async function getSinglePostByPostId(postId: Post['id']) {
     posts.*,
     images.urls,
     tags.*,
-    posts_tags
+    posts_tags.*
   FROM
     posts,
     images,

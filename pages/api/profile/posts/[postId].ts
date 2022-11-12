@@ -43,6 +43,7 @@ export default async function handler(
     const description = request.body.description;
     const street = request.body.street;
     const district = request.body.district;
+    const tag = request.body.tag;
     const urls = request.body.imageUrls;
 
     if (!(title && price && description && street && district)) {
@@ -50,6 +51,7 @@ export default async function handler(
     }
 
     const newPost = await updateSinglePostById(
+      postId,
       title,
       price,
       description,
