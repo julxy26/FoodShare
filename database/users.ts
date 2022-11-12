@@ -9,8 +9,25 @@ export type User = {
   phoneNumber: number | null;
 };
 
+export async function getUserByPost(id: number) {
+  if (!id) return undefined;
+
+  const [user] = await sql<User[]>`
+  SELECT
+    username,
+    name,
+    email
+  FROM
+    users,
+    posts
+  WHERE
+    users.id = posts.user_id
+  `;
+
+  return user;
+}
+
 export async function deleteUserByUsername(username: string) {
-  console.log(username);
   const [user] = await sql<User[]>`
     DELETE FROM
       users

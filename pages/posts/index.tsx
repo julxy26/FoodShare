@@ -98,9 +98,12 @@ export default function Posts(props: Props) {
               <p>
                 Location: {post.street}, {post.district}
               </p>
-              <Link href={`/posts/${post.id}`}>
-                <button>View post</button>
-              </Link>
+
+              <button
+                onClick={async () => await router.push(`/posts/${post.id}`)}
+              >
+                View post
+              </button>
             </div>
           );
         })

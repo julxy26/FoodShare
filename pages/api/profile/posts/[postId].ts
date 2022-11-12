@@ -73,8 +73,6 @@ export default async function handler(
       return response.status(404).json({ message: 'Not a valid Id' });
     }
 
-    console.log(deletedPost);
-
     return response.status(200).json(deletedPost);
   }
 

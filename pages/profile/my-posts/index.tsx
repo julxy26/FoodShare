@@ -57,9 +57,14 @@ export default function UserPosts(props: Props) {
               <p>
                 Location: {post.street}, {post.district}
               </p>
-              <Link href={`/profile/my-posts/${post.id}`}>
-                <button>Edit post</button>
-              </Link>
+
+              <button
+                onClick={async () =>
+                  await router.push(`/profile/my-posts/${post.id}`)
+                }
+              >
+                Edit post
+              </button>
             </div>
           );
         })

@@ -6,7 +6,12 @@ import { useRouter } from 'next/router';
 import { Photo } from '../../database/images';
 import { getSinglePostByPostId, Post } from '../../database/posts';
 import { Tag } from '../../database/tags';
-import { getUserById, getUserBySessionToken, User } from '../../database/users';
+import {
+  getUserById,
+  getUserByPost,
+  getUserBySessionToken,
+  User,
+} from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 type Props = {
@@ -21,7 +26,8 @@ type Props = {
     urls: Photo['urls'];
     name: Tag['name'];
   };
-  user: User;
+  loggedUser: User;
+  postUser: User;
 };
 
 export default function SinglePost(props: Props) {
@@ -48,7 +54,7 @@ export default function SinglePost(props: Props) {
         <button
           onClick={async () =>
             await router.push(
-              `mailto:${props.user.email}?subject=FoodShare request&body=Hi! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.user.name}.`,
+              `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.name}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.name}.`,
             )
           }
         >
@@ -79,12 +85,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const user = token && (await getUserBySessionToken(token));
 
-  const foundUser = user && (await getUserById(user.id));
+  const foundLoggedUser = user && (await getUserById(user.id));
+
+  const foundPostUser = await getUserByPost(postId);
 
   return {
     props: {
       post: foundPost,
-      user: foundUser,
+      loggedUser: foundLoggedUser,
+      postUser: foundPostUser,
     },
   };
 }

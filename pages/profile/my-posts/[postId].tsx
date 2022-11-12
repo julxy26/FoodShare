@@ -183,18 +183,17 @@ export default function SingleUserPost(props: Props) {
                 setDistrict(parseInt(event.currentTarget.value))
               }
             >
-              <option value={district} selected>
-                {district}
-              </option>
+              <option value={district}>{district}</option>
             </select>
           ) : (
             <select
+              defaultValue={district}
               name="district"
               onChange={(event) =>
                 setDistrict(parseInt(event.currentTarget.value))
               }
             >
-              <option value={district} selected hidden>
+              <option value={district} hidden>
                 {district}
               </option>
               <option value="1010">1010</option>
