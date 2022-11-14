@@ -14,25 +14,41 @@ import {
 } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
-type Props = {
-  post: {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    street: string;
-    district: number;
-    userId: number;
-    urls: Photo['urls'];
-    name: Tag['name'];
-  };
-  loggedUser: User;
-  postUser: User;
-};
+type Props =
+  | {
+      post: {
+        id: number;
+        title: string;
+        price: number;
+        description: string;
+        street: string;
+        district: number;
+        userId: number;
+        urls: Photo['urls'];
+        name: Tag['name'];
+      };
+      loggedUser: User;
+      postUser: User;
+    }
+  | {
+      error: string;
+    };
 
 export default function SinglePost(props: Props) {
   const router = useRouter();
 
+  if ('error' in props) {
+    return (
+      <div>
+        <Head>
+          <title>Post not found</title>
+          <meta name="description" content="Post not found" />
+        </Head>
+        <h1>{props.error}</h1>
+        Sorry, try the <Link href="/posts">Posts page</Link>
+      </div>
+    );
+  }
   return (
     <div>
       <Head>
@@ -69,7 +85,9 @@ export default function SinglePost(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
-  if (typeof postId === 'undefined') {
+  const foundPost = postId && (await getSinglePostByPostId(postId));
+
+  if (typeof foundPost === 'undefined') {
     context.res.statusCode = 404;
     return {
       props: {
@@ -77,18 +95,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
-  const foundPost = await getSinglePostByPostId(postId);
 
-  if (typeof foundPost === undefined) {
-    context.res.statusCode = 404;
-  }
   const token = context.req.cookies.sessionToken;
 
   const user = token && (await getUserBySessionToken(token));
 
   const foundLoggedUser = user && (await getUserById(user.id));
 
-  const foundPostUser = await getUserByPost(postId);
+  const foundPostUser = foundPost && (await getUserByPost(postId));
 
   return {
     props: {

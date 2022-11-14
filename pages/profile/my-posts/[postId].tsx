@@ -10,22 +10,39 @@ import { getSinglePostByPostId, Post } from '../../../database/posts';
 import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
-type Props = {
-  post: {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    street: string;
-    district: number;
-    userId: number;
-    urls: Photo['urls'];
-    name: Tag['name'];
-  };
-  tags: Tag[];
-};
+type Props =
+  | {
+      post: {
+        id: number;
+        title: string;
+        price: number;
+        description: string;
+        street: string;
+        district: number;
+        userId: number;
+        urls: Photo['urls'];
+        name: Tag['name'];
+      };
+      tags: Tag[];
+    }
+  | {
+      error: string;
+    };
 
 export default function SingleUserPost(props: Props) {
+  if ('error' in props) {
+    return (
+      <div>
+        <Head>
+          <title>Post not found</title>
+          <meta name="description" content="Post not found" />
+        </Head>
+        <h1>{props.error}</h1>
+        Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
+      </div>
+    );
+  }
+
   const [title, setTitle] = useState<string>(props.post.title);
   const [price, setPrice] = useState<number>(props.post.price);
   const [description, setDescription] = useState<string>(
@@ -78,21 +95,6 @@ export default function SingleUserPost(props: Props) {
     const deletedPost = (await response.json()) as Post;
     await router.push(`/profile/my-posts`);
     return deletedPost;
-  }
-
-  if (!props.post) {
-    return (
-      <div>
-        <Head>
-          <title>Post not found</title>
-          <meta name="description" content="Post not found" />
-        </Head>
-        <main>
-          <h1>Post not found</h1>
-          Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
-        </main>
-      </div>
-    );
   }
 
   return (
@@ -247,18 +249,15 @@ export default function SingleUserPost(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
-  if (typeof postId === 'undefined') {
+  const foundPost = postId && (await getSinglePostByPostId(postId));
+
+  if (typeof foundPost === 'undefined') {
     context.res.statusCode = 404;
     return {
       props: {
         error: 'Post not found',
       },
     };
-  }
-  const foundPost = await getSinglePostByPostId(postId);
-
-  if (typeof foundPost === undefined) {
-    context.res.statusCode = 404;
   }
 
   const tags = await getAllTags();
