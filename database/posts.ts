@@ -1,4 +1,6 @@
 import { sql } from './connect';
+import { Photo } from './images';
+import { Tag } from './tags';
 import { User } from './users';
 
 export type Post = {
@@ -11,13 +13,25 @@ export type Post = {
   userId: User['id'];
 };
 
+export type PostWithImageAndTag = {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  street: string;
+  district: number;
+  userId: User['id'];
+  imageUrl: Photo['urls'];
+  tag: Tag['id'];
+};
+
 export async function getAllPosts() {
   const posts = await sql<Post[]>`
    SELECT
     posts.*,
     images.urls,
     tags.*,
-    posts_tags
+    posts_tags.*
   FROM
     posts,
     images,
@@ -52,18 +66,21 @@ export async function updateSinglePostById(
   description: string,
   street: string,
   district: number,
+  tagId: Tag['id'],
 ) {
-  const [post] = await sql<Post[]>`
+  const [post] = await sql<PostWithImageAndTag[]>`
     UPDATE
       posts
     SET
-    title = ${title},
-    price = ${price},
-    description = ${description},
-    street = ${street},
-    district = ${district}
+      title = ${title},
+      price = ${price},
+      description = ${description},
+      street = ${street},
+      district = ${district}
     WHERE
-      ${id} = posts.id
+      posts.id = ${id}
+    AND
+      posts.id = posts_tags.post_id
 
     RETURNING
       *
@@ -74,10 +91,12 @@ export async function updateSinglePostById(
 export async function getSinglePostByPostId(postId: Post['id']) {
   const [post] = await sql<Post[]>`
   SELECT
-    posts.*,
+    posts.id,
+    posts.title,
+    posts.description,
+    posts.price,
     images.urls,
-    tags.*,
-    posts_tags.*
+    tags.name
   FROM
     posts,
     images,
@@ -102,7 +121,7 @@ export async function getPostsByUserId(userId: Post['userId']): Promise<any> {
     posts.*,
     images.urls,
     tags.name,
-    posts_tags
+    posts_tags.*
   FROM
     users,
     posts,

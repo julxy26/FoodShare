@@ -44,7 +44,7 @@ export default async function handler(
     const street = request.body.street;
     const district = request.body.district;
     const tag = request.body.tag;
-    const urls = request.body.imageUrls;
+    const urls = request.body.urls;
 
     if (!(title && price && description && street && district)) {
       return response.status(400).json({ message: 'property is missing' });
@@ -57,6 +57,7 @@ export default async function handler(
       description,
       street,
       district,
+      tag,
     );
 
     if (!newPost) {

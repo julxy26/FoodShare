@@ -50,7 +50,7 @@ export default function SingleUserPost(props: Props) {
   );
   const [street, setStreet] = useState<string>(props.post.street);
   const [district, setDistrict] = useState<number>(props.post.district);
-  const [imageUrls, setImageUrls] = useState([]);
+  const [imageUrls, setImageUrls] = useState(props.post.urls);
   const [tag, setTag] = useState(props.post.name);
 
   const [buttonText, setButtonText] = useState('Edit');
@@ -71,7 +71,7 @@ export default function SingleUserPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        imageUrls: imageUrls,
+        urls: imageUrls,
         tag: tag,
       }),
     });
@@ -141,7 +141,9 @@ export default function SingleUserPost(props: Props) {
                       name="restrictions"
                       type="radio"
                       value={tag.name}
-                      onChange={(event) => setTag(event.currentTarget.value)}
+                      onChange={(event) => {
+                        setTag(event.currentTarget.value);
+                      }}
                     />
                     {tag.name}
                   </label>
