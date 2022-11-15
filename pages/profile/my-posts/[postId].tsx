@@ -21,7 +21,7 @@ type Props =
         district: number;
         userId: number;
         urls: Photo['urls'];
-        name: Tag['name'];
+        tagId: Tag['id'];
       };
       tags: Tag[];
     }
@@ -51,7 +51,7 @@ export default function SingleUserPost(props: Props) {
   const [street, setStreet] = useState<string>(props.post.street);
   const [district, setDistrict] = useState<number>(props.post.district);
   const [imageUrls, setImageUrls] = useState(props.post.urls);
-  const [tag, setTag] = useState(props.post.name);
+  const [tagId, setTagId] = useState(props.post.tagId);
 
   const [buttonText, setButtonText] = useState('Edit');
   const [savedMessage, setSavedMessage] = useState('');
@@ -71,8 +71,7 @@ export default function SingleUserPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        urls: imageUrls,
-        tag: tag,
+        tagId: tagId,
       }),
     });
     const updatedPost = (await response.json()) as Post;
@@ -122,14 +121,16 @@ export default function SingleUserPost(props: Props) {
             <div>
               <label htmlFor="restrictions">
                 <input
-                  value={tag}
+                  value={tagId}
                   checked
+                  name="restrictions"
                   type="radio"
-                  name={tag}
                   disabled={onEdit}
-                  onChange={(event) => setTag(event.currentTarget.value)}
+                  onChange={(event) =>
+                    setTagId(Number(event.currentTarget.value))
+                  }
                 />
-                {tag}
+                {tagId}
               </label>
             </div>
           ) : (
@@ -140,9 +141,9 @@ export default function SingleUserPost(props: Props) {
                     <input
                       name="restrictions"
                       type="radio"
-                      value={tag.name}
+                      value={tag.id}
                       onChange={(event) => {
-                        setTag(event.currentTarget.value);
+                        setTagId(Number(event.currentTarget.value));
                       }}
                     />
                     {tag.name}

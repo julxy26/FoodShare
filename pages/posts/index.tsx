@@ -3,7 +3,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  useState,
+} from 'react';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -20,6 +26,7 @@ type Props = {
     userId: User['id'];
     urls: Photo['urls'];
     name: Tag['name'];
+    tagId: Tag['id'];
   }[];
 
   tags: {
@@ -29,14 +36,9 @@ type Props = {
 };
 
 export default function Posts(props: Props) {
-  const [filterOptionSelect, setFilterOptionSelect] = useState('');
+  const [filterTagId, setFilterTagId] = useState<number>();
+  const [filterSelected, setFilterSelected] = useState<number>();
   const router = useRouter();
-
-  // const foundPosts = props.posts.find(
-  //   (post) => post.name === filterOptionSelect,
-  // );
-
-  function filterHandler() {}
 
   return (
     <div>
@@ -53,12 +55,12 @@ export default function Posts(props: Props) {
       >
         <select
           onChange={(event) => {
-            setFilterOptionSelect(event.currentTarget.value);
+            setFilterTagId(Number(event.currentTarget.value));
           }}
         >
           {props.tags.map((tag) => {
             return (
-              <option key={`tag-${tag.id}`} value={tag.name}>
+              <option key={`tag-${tag.id}`} value={tag.id}>
                 {tag.name}
               </option>
             );
@@ -67,11 +69,12 @@ export default function Posts(props: Props) {
 
         <button
           onClick={() => {
-            filterHandler();
+            setFilterSelected(filterTagId);
           }}
         >
           Filter
         </button>
+        <button onClick={() => setFilterSelected(0)}>Reset</button>
       </form>
 
       {!props.posts[0] ? (
@@ -79,34 +82,49 @@ export default function Posts(props: Props) {
           <p>There are no posts yet</p>
         </div>
       ) : (
-        props.posts.map((post) => {
-          return (
-            <div key={`post-${post.id}`}>
-              <Link href={`/posts/${post.id}`}>
-                <a>
-                  <Image src={post.urls} width="300px" height="300px" alt="" />
-                </a>
-              </Link>
+        props.posts
+          .filter((post) => {
+            let isInTheList = true;
 
-              <Link href={`/posts/${post.id}`}>
-                <h2>{post.title}</h2>
-              </Link>
+            if (filterSelected && filterSelected !== post.tagId) {
+              isInTheList = false;
+            }
 
-              <p>Price: {post.price}</p>
-              <p>Tag: {post.name}</p>
-              <p>Description: {post.description}</p>
-              <p>
-                Pick-up at: {post.street}, {post.district}
-              </p>
+            return isInTheList;
+          })
+          .map((post) => {
+            return (
+              <div key={`post-${post.id}`}>
+                <Link href={`/posts/${post.id}`}>
+                  <a>
+                    <Image
+                      src={post.urls}
+                      width="300px"
+                      height="300px"
+                      alt=""
+                    />
+                  </a>
+                </Link>
 
-              <button
-                onClick={async () => await router.push(`/posts/${post.id}`)}
-              >
-                View post
-              </button>
-            </div>
-          );
-        })
+                <Link href={`/posts/${post.id}`}>
+                  <h2>{post.title}</h2>
+                </Link>
+
+                <p>Price: {post.price}</p>
+                <p>Tag: {post.name}</p>
+                <p>Description: {post.description}</p>
+                <p>
+                  Pick-up at: {post.street}, {post.district}
+                </p>
+
+                <button
+                  onClick={async () => await router.push(`/posts/${post.id}`)}
+                >
+                  View post
+                </button>
+              </div>
+            );
+          })
       )}
     </div>
   );

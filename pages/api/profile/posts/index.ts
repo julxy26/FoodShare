@@ -1,11 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createImage } from '../../../../database/images';
 import { createPost, getPostsByUserId } from '../../../../database/posts';
-import {
-  createPostsTags,
-  getAllTags,
-  getTagIdByTagName,
-} from '../../../../database/tags';
+import { createPostsTags, getTagIdByTagName } from '../../../../database/tags';
 import { getUserBySessionToken } from '../../../../database/users';
 
 export default async function handler(
@@ -46,8 +42,8 @@ export default async function handler(
       const street = request.body?.street;
       const district = request.body?.district;
       const userId = id;
-      const urls = request.body?.urls;
-      const tag = request.body?.tag;
+      const imageUrls = request.body?.urls;
+      const tagId = request.body?.tagId;
 
       // 1. make sure the data exist
       if (
@@ -77,11 +73,11 @@ export default async function handler(
       );
 
       const postId = post.id;
-      const [tagId] = tag && (await getTagIdByTagName(tag));
+      // const [tagId] = tag && (await getTagIdByTagName(tag));
 
-      const [postsTags] = await createPostsTags(postId, tagId.id);
+      const [postsTags] = await createPostsTags(postId, tagId);
 
-      const image = await createImage(postId, urls);
+      const image = await createImage(postId, imageUrls);
       // 4. sql query to create the record
 
       return response.status(200).json({ post, image, postsTags });

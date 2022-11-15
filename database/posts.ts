@@ -91,12 +91,10 @@ export async function updateSinglePostById(
 export async function getSinglePostByPostId(postId: Post['id']) {
   const [post] = await sql<Post[]>`
   SELECT
-    posts.id,
-    posts.title,
-    posts.description,
-    posts.price,
+    posts.*,
     images.urls,
-    tags.name
+    tags.name,
+    posts_tags.*
   FROM
     posts,
     images,

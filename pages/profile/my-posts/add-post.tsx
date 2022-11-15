@@ -18,7 +18,7 @@ export default function AddPost(props: Props) {
   const [district, setDistrict] = useState<number>();
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [imageLink, setImageLink] = useState('');
-  const [tag, setTag] = useState('');
+  const [tagId, setTagId] = useState<number>();
   const router = useRouter();
 
   async function addPostHandler() {
@@ -34,12 +34,13 @@ export default function AddPost(props: Props) {
         street: street,
         district: district,
         urls: imageLink,
-        tag: tag,
+        tagId: tagId,
       }),
     });
 
     const postsFromApi = await response.json();
     await router.push(`/profile/my-posts`);
+    console.log(tagId);
     return postsFromApi;
   }
 
@@ -125,8 +126,10 @@ export default function AddPost(props: Props) {
                 <input
                   name="restrictions"
                   type="radio"
-                  value={tag.name}
-                  onChange={(event) => setTag(event.currentTarget.value)}
+                  value={tag.id}
+                  onChange={(event) =>
+                    setTagId(Number(event.currentTarget.value))
+                  }
                 />
                 <label htmlFor="restrictions"> {tag.name}</label>
               </div>
