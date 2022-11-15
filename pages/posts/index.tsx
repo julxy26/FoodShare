@@ -54,10 +54,14 @@ export default function Posts(props: Props) {
         }}
       >
         <select
+          defaultValue={''}
           onChange={(event) => {
             setFilterTagId(Number(event.currentTarget.value));
           }}
         >
+          <option value="" disabled>
+            Choose here
+          </option>
           {props.tags.map((tag) => {
             return (
               <option key={`tag-${tag.id}`} value={tag.id}>

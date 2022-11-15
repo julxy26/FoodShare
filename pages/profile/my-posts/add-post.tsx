@@ -112,8 +112,9 @@ export default function AddPost(props: Props) {
           <input
             name="price"
             autoComplete="off"
+            pattern="[0-9]"
             type="number"
-            value={price}
+            value={price || ''}
             onChange={(event) => setPrice(parseInt(event.currentTarget.value))}
           />
           <br />
