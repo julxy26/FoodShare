@@ -36,46 +36,61 @@ export default function UserPosts(props: Props) {
       {!props.posts[0] ? (
         <div>
           <p>There are no posts yet</p>
+          <button
+            onClick={async () =>
+              await router.push('/profile/my-posts/add-post')
+            }
+          >
+            Add new post
+          </button>
         </div>
       ) : (
-        props.posts.map((post) => {
-          return (
-            <div key={`userPost-${post.id}`}>
-              <Link href={`/profile/my-posts/${post.id}`}>
-                <a>
-                  <Image src={post.urls} width="300px" height="300px" alt="" />
-                </a>
-              </Link>
+        <div>
+          <button
+            onClick={async () =>
+              await router.push('/profile/my-posts/add-post')
+            }
+          >
+            Add new post
+          </button>
 
-              <Link href={`/profile/my-posts/${post.id}`}>
-                <h2>{post.title}</h2>
-              </Link>
+          {props.posts.map((post) => {
+            return (
+              <div key={`userPost-${post.id}`}>
+                <Link href={`/profile/my-posts/${post.id}`}>
+                  <a>
+                    <Image
+                      src={post.urls}
+                      width="300px"
+                      height="300px"
+                      alt=""
+                    />
+                  </a>
+                </Link>
 
-              <p>Price: {post.price}</p>
-              <p>Tag: {post.name}</p>
-              <p>Description: {post.description}</p>
-              <p>
-                Location: {post.street}, {post.district}
-              </p>
+                <Link href={`/profile/my-posts/${post.id}`}>
+                  <h2>{post.title}</h2>
+                </Link>
 
-              <button
-                onClick={async () =>
-                  await router.push(`/profile/my-posts/${post.id}`)
-                }
-              >
-                Edit post
-              </button>
-            </div>
-          );
-        })
+                <p>Price: {post.price}</p>
+                <p>Tag: {post.name}</p>
+                <p>Description: {post.description}</p>
+                <p>
+                  Location: {post.street}, {post.district}
+                </p>
+
+                <button
+                  onClick={async () =>
+                    await router.push(`/profile/my-posts/${post.id}`)
+                  }
+                >
+                  Edit post
+                </button>
+              </div>
+            );
+          })}
+        </div>
       )}
-      <br />
-
-      <button
-        onClick={async () => await router.push('/profile/my-posts/add-post')}
-      >
-        Add new post
-      </button>
     </div>
   );
 }

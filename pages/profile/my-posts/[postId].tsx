@@ -221,6 +221,7 @@ export default function SingleUserPost(props: Props) {
           <input
             value={description}
             autoComplete="off"
+            placeholder="Description"
             disabled={onEdit}
             onChange={(event) => setDescription(event.currentTarget.value)}
           />
@@ -228,6 +229,7 @@ export default function SingleUserPost(props: Props) {
           <input
             value={street}
             autoComplete="off"
+            placeholder="Street"
             disabled={onEdit}
             onChange={(event) => setStreet(event.currentTarget.value)}
           />

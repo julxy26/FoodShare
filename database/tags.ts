@@ -19,9 +19,12 @@ UPDATE
 SET
   tag_id = ${tagId}
 FROM
-  posts
+  posts,
+  tag
 WHERE
   posts.id = post_id
+AND
+  tag.id = tag_id
 RETURNING
 *
 `;

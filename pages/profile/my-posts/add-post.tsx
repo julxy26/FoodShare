@@ -89,8 +89,8 @@ export default function AddPost(props: Props) {
             />
             {!!preview && (
               <Image
-                width={100}
-                height={100}
+                width="300px"
+                height="300px"
                 src={String(preview)}
                 alt="preview"
               />
