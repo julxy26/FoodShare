@@ -1,4 +1,5 @@
 import { sql } from './connect';
+import { Post } from './posts';
 
 export type Photo = {
   id: number;
@@ -16,8 +17,8 @@ export async function getAllImages() {
   return images;
 }
 
-export async function updateImages(urls: string) {
-  const [tag] = await sql<Photo[]>`
+export async function updateImages(postId: Post['id'], urls: string) {
+  const [image] = await sql<Photo[]>`
 UPDATE
   images
 SET
@@ -25,11 +26,11 @@ SET
 FROM
   posts
 WHERE
-  posts.id = images.post_id
+  ${postId} = images.post_id
 RETURNING
-*
+  *
 `;
-  return tag;
+  return image;
 }
 
 export async function createImage(post_id: number, urls: string) {

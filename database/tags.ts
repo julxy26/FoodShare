@@ -12,22 +12,25 @@ type PostsTag = {
   tagId: number;
 };
 
-export async function updateTag(tagId: Tag['id']) {
-  const [tag] = await sql<PostsTag[]>`
+export async function updateTag(postId: Post['id'], tagId: Tag['id']) {
+  const tag = await sql<PostsTag[]>`
 UPDATE
   posts_tags
 SET
-  tag_id = ${tagId}
+  tag_id = tags.id
 FROM
   posts,
   tags
 WHERE
-  posts.id = posts_tags.post_id
+  ${postId} = posts_tags.post_id
 AND
-  tags.id = posts_tags.tag_id
+  tags.id = ${tagId}
+
 RETURNING
-*
+  *
+
 `;
+
   return tag;
 }
 

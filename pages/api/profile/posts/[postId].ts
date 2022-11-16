@@ -52,23 +52,23 @@ export default async function handler(
       return response.status(400).json({ message: 'property is missing' });
     }
 
-    const newPost =
-      (await updateSinglePostById(
-        postId,
-        title,
-        price,
-        description,
-        street,
-        district,
-      )) &&
-      (await updateTag(tagId)) &&
-      (await updateImages(urls));
+    const newPost = await updateSinglePostById(
+      postId,
+      title,
+      price,
+      description,
+      street,
+      district,
+    );
+    const newTag = await updateTag(postId, tagId);
+
+    const newImage = await updateImages(postId, urls);
 
     if (!newPost) {
       return response.status(404).json({ message: 'Not a valid Id' });
     }
 
-    return response.status(200).json(newPost);
+    return response.status(200).json({ newPost, newTag, newImage });
   }
 
   if (request.method === 'DELETE') {
