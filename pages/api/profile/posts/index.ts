@@ -73,7 +73,6 @@ export default async function handler(
       );
 
       const postId = post.id;
-      // const [tagId] = tag && (await getTagIdByTagName(tag));
 
       const [postsTags] = await createPostsTags(postId, tagId);
 

@@ -24,6 +24,7 @@ export default function Register(props: Props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const router = useRouter();
   const [errors, setErrors] = useState<{ message: string }[]>([]);
+  const [message, setMessage] = useState('');
 
   async function registerHandler() {
     const registerResponse = await fetch('/api/register', {
@@ -134,11 +135,18 @@ export default function Register(props: Props) {
       </div>
       <button
         onClick={async () => {
-          await registerHandler();
+          if (password === '') {
+            setMessage('Password required');
+          } else if (password.length < 6) {
+            setMessage('Password is too short (min. 6 characters)');
+          } else {
+            await registerHandler();
+          }
         }}
       >
         Sign Up
       </button>
+      <div>{message}</div>
       <br />
 
       <Link href="/signIn">I already have an account!</Link>

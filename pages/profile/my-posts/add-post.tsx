@@ -40,7 +40,6 @@ export default function AddPost(props: Props) {
 
     const postsFromApi = await response.json();
     await router.push(`/profile/my-posts`);
-    console.log(tagId);
     return postsFromApi;
   }
 

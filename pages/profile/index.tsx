@@ -128,6 +128,8 @@ export default function Profile(props: Props) {
           <label htmlFor="password">Password</label>
           <br />
           <input
+            required
+            minLength={5}
             type="password"
             value={password}
             onChange={(event) => {
@@ -163,7 +165,15 @@ export default function Profile(props: Props) {
           />
           <br />
           <button
-            onClick={async () => await updateUserFromApiByUsername(username)}
+            onClick={async () => {
+              if (password === '') {
+                setMessage('Password required');
+              } else if (password.length < 6) {
+                setMessage('Password is too short (min. 6 characters)');
+              } else {
+                await updateUserFromApiByUsername(username);
+              }
+            }}
           >
             Save
           </button>

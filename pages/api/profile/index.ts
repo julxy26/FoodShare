@@ -36,7 +36,8 @@ export default async function handler(
   }
 
   if (request.method === 'PUT') {
-    const passwordHash = await bcrypt.hash(request.body?.password, 12);
+    const passwordHash =
+      request.body.password && (await bcrypt.hash(request.body.password, 12));
 
     const username = request.body?.username;
     const password = passwordHash;
