@@ -1,10 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { updateImages } from '../../../../database/images';
 import {
   deletePostByPostId,
   getSinglePostByPostId,
   updateSinglePostById,
 } from '../../../../database/posts';
 import { getValidSessionByToken } from '../../../../database/sessions';
+import { updateTag } from '../../../../database/tags';
 
 export default async function handler(
   request: NextApiRequest,
@@ -43,22 +45,24 @@ export default async function handler(
     const description = request.body.description;
     const street = request.body.street;
     const district = request.body.district;
-    const tag = request.body.tag;
+    const tagId = request.body.tagId;
     const urls = request.body.urls;
 
     if (!(title && price && description && street && district)) {
       return response.status(400).json({ message: 'property is missing' });
     }
 
-    const newPost = await updateSinglePostById(
-      postId,
-      title,
-      price,
-      description,
-      street,
-      district,
-      tag,
-    );
+    const newPost =
+      (await updateSinglePostById(
+        postId,
+        title,
+        price,
+        description,
+        street,
+        district,
+      )) &&
+      (await updateTag(tagId)) &&
+      (await updateImages(urls));
 
     if (!newPost) {
       return response.status(404).json({ message: 'Not a valid Id' });

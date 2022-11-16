@@ -22,6 +22,7 @@ type Props =
         userId: number;
         urls: Photo['urls'];
         tagId: Tag['id'];
+        name: Tag['name'];
       };
       tags: Tag[];
     }
@@ -52,6 +53,7 @@ export default function SingleUserPost(props: Props) {
   const [district, setDistrict] = useState<number>(props.post.district);
   const [imageUrls, setImageUrls] = useState(props.post.urls);
   const [tagId, setTagId] = useState(props.post.tagId);
+  const [tagName, setTagName] = useState(props.post.name);
 
   const [buttonText, setButtonText] = useState('Edit');
   const [savedMessage, setSavedMessage] = useState('');
@@ -71,6 +73,7 @@ export default function SingleUserPost(props: Props) {
         description: description,
         street: street,
         district: district,
+        urls: imageUrls,
         tagId: tagId,
       }),
     });
@@ -130,7 +133,7 @@ export default function SingleUserPost(props: Props) {
                     setTagId(Number(event.currentTarget.value))
                   }
                 />
-                {tagId}
+                {tagName}
               </label>
             </div>
           ) : (
@@ -144,6 +147,7 @@ export default function SingleUserPost(props: Props) {
                       value={tag.id}
                       onChange={(event) => {
                         setTagId(Number(event.currentTarget.value));
+                        setTagName(tag.name);
                       }}
                     />
                     {tag.name}

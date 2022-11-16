@@ -16,24 +16,21 @@ export async function getAllImages() {
   return images;
 }
 
-// export async function getImagesByPostId(postId: number) {
-//   const [photos] = await sql<Photo[]>`
-//   SELECT
-//     posts.id as post_id,
-//     images.urls as urls
-//   FROM
-//     posts,
-//     images
-//   WHERE
-//     ${postId} = posts.id
-//   AND
-//     ${postId} = post_id
-//   `;
-
-//   if (!photos) return undefined;
-
-//   return photos;
-// }
+export async function updateImages(urls: string) {
+  const [tag] = await sql<Photo[]>`
+UPDATE
+  images
+SET
+  urls = ${urls}
+FROM
+  posts
+WHERE
+  posts.id = images.post_id
+RETURNING
+*
+`;
+  return tag;
+}
 
 export async function createImage(post_id: number, urls: string) {
   const photo = await sql<Photo[]>`

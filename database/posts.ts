@@ -22,7 +22,7 @@ export type PostWithImageAndTag = {
   district: number;
   userId: User['id'];
   imageUrl: Photo['urls'];
-  tag: Tag['id'];
+  tagId: Tag['id'];
 };
 
 export async function getAllPosts() {
@@ -66,9 +66,8 @@ export async function updateSinglePostById(
   description: string,
   street: string,
   district: number,
-  tagId: Tag['id'],
 ) {
-  const [post] = await sql<PostWithImageAndTag[]>`
+  const [post] = await sql<Post[]>`
     UPDATE
       posts
     SET
@@ -78,10 +77,7 @@ export async function updateSinglePostById(
       street = ${street},
       district = ${district}
     WHERE
-      posts.id = ${id}
-    AND
-      posts.id = posts_tags.post_id
-
+      id = ${id}
     RETURNING
       *
   `;

@@ -6,14 +6,30 @@ export type Tag = {
   name: string;
 };
 
-type postsTag = {
+type PostsTag = {
   id: number;
   postId: number;
   tagId: number;
 };
 
+export async function updateTag(tagId: Tag['id']) {
+  const [tag] = await sql<PostsTag[]>`
+UPDATE
+  posts_tags
+SET
+  tag_id = ${tagId}
+FROM
+  posts
+WHERE
+  posts.id = post_id
+RETURNING
+*
+`;
+  return tag;
+}
+
 export async function createPostsTags(postId: number, tagId: number) {
-  const postsTag = await sql<postsTag[]>`
+  const postsTag = await sql<PostsTag[]>`
   INSERT INTO posts_tags
     (post_id, tag_id)
   SELECT
