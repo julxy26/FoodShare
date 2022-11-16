@@ -17,7 +17,7 @@ export default function AddPost(props: Props) {
   const [street, setStreet] = useState<string>('');
   const [district, setDistrict] = useState<number>();
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
-  const [imageLink, setImageLink] = useState('');
+  const [imageLink, setImageLink] = useState([]);
   const [tagId, setTagId] = useState<number>();
   const router = useRouter();
 
@@ -80,13 +80,6 @@ export default function AddPost(props: Props) {
 
         <form onSubmit={(event) => event.preventDefault()}>
           <div>
-            <label htmlFor="file">Select an image</label>
-            <input
-              id="file"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
             {!!preview && (
               <Image
                 width="300px"
@@ -95,6 +88,15 @@ export default function AddPost(props: Props) {
                 alt="preview"
               />
             )}
+
+            <br />
+            <label htmlFor="file">Select an image</label>
+            <input
+              id="file"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
           </div>
 
           <label htmlFor="title">Title</label>

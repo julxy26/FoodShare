@@ -25,6 +25,32 @@ export type PostWithImageAndTag = {
   tagId: Tag['id'];
 };
 
+export async function getPostsWithLimit(limit: number) {
+  const posts = await sql<Post[]>`
+   SELECT
+    posts.*,
+    images.urls,
+    tags.*,
+    posts_tags.*
+  FROM
+    posts,
+    images,
+    tags,
+    posts_tags
+  WHERE
+    images.post_id = posts.id
+  AND
+    posts.id = posts_tags.post_id
+  AND
+    tags.id = posts_tags.tag_id
+  ORDER BY
+    posts.id DESC
+  LIMIT
+    ${limit}
+  `;
+  return posts;
+}
+
 export async function getAllPosts() {
   const posts = await sql<Post[]>`
    SELECT
@@ -43,6 +69,8 @@ export async function getAllPosts() {
     posts.id = posts_tags.post_id
   AND
     tags.id = posts_tags.tag_id
+  ORDER BY
+    posts.id DESC
   `;
   return posts;
 }

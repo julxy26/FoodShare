@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Router, useRouter } from 'next/router';
 import { Photo } from '../../../database/images';
-import { getPostsByUserId, Post } from '../../../database/posts';
+import { getPostsByUserId } from '../../../database/posts';
 import { Tag } from '../../../database/tags';
 import { getUserBySessionToken, User } from '../../../database/users';
 

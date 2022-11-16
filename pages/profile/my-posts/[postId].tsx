@@ -109,6 +109,7 @@ export default function SingleUserPost(props: Props) {
     const updatedPost = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
+
     return updatedPost;
   }
 

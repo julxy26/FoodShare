@@ -20,11 +20,11 @@ SET
   tag_id = ${tagId}
 FROM
   posts,
-  tag
+  tags
 WHERE
-  posts.id = post_id
+  posts.id = posts_tags.post_id
 AND
-  tag.id = tag_id
+  tags.id = posts_tags.tag_id
 RETURNING
 *
 `;
