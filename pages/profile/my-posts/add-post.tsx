@@ -80,7 +80,7 @@ export default function AddPost(props: Props) {
 
         <form onSubmit={(event) => event.preventDefault()}>
           <div>
-            <label htmlFor="file">Upload an image</label>
+            <label htmlFor="file">Select an image</label>
             <input
               id="file"
               type="file"

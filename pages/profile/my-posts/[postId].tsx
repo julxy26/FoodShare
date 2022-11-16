@@ -51,7 +51,7 @@ export default function SingleUserPost(props: Props) {
   );
   const [street, setStreet] = useState<string>(props.post.street);
   const [district, setDistrict] = useState<number>(props.post.district);
-  const [imageUrls, setImageUrls] = useState(props.post.urls);
+  const [imageLink, setImageLink] = useState(props.post.urls);
   const [tagId, setTagId] = useState(props.post.tagId);
   const [tagName, setTagName] = useState(props.post.name);
 
@@ -59,7 +59,36 @@ export default function SingleUserPost(props: Props) {
   const [savedMessage, setSavedMessage] = useState('');
 
   const [onEdit, setOnEdit] = useState<boolean>(true);
+
+  const [preview, setPreview] = useState<string | ArrayBuffer | null>(
+    imageLink,
+  );
+
   const router = useRouter();
+
+  const handleFileChange = async (e: any) => {
+    const newFile = e.target.files[0];
+    if (!newFile) return;
+
+    setPreview(URL.createObjectURL(newFile));
+
+    const formData = new FormData();
+    formData.append('file', newFile);
+    formData.append('upload_preset', 'foodShare');
+
+    const data = await fetch(
+      'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setImageLink(data.secure_url);
+      })
+      .catch((error) => console.log(error));
+  };
 
   async function savePostHandler(postId: number) {
     const response = await fetch(`/api/profile/posts/${postId}`, {
@@ -73,7 +102,7 @@ export default function SingleUserPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        urls: imageUrls,
+        urls: imageLink,
         tagId: tagId,
       }),
     });
@@ -135,30 +164,50 @@ export default function SingleUserPost(props: Props) {
                 />
                 {tagName}
               </label>
+              <br />
+              <Image src={imageLink} alt="" width="300px" height="300px" />
             </div>
           ) : (
-            props.tags.map((tag) => {
-              return (
-                <div key={`tag-${tag.id}`}>
-                  <label htmlFor="restrictions">
-                    <input
-                      name="restrictions"
-                      type="radio"
-                      value={tag.id}
-                      onChange={(event) => {
-                        setTagId(Number(event.currentTarget.value));
-                        setTagName(tag.name);
-                      }}
-                    />
-                    {tag.name}
-                  </label>
-                </div>
-              );
-            })
+            <div>
+              {props.tags.map((tag) => {
+                return (
+                  <div key={`tag-${tag.id}`}>
+                    <label htmlFor="restrictions">
+                      <input
+                        name="restrictions"
+                        type="radio"
+                        value={tag.id}
+                        onChange={(event) => {
+                          setTagId(Number(event.currentTarget.value));
+                          setTagName(tag.name);
+                        }}
+                      />
+                      {tag.name}
+                    </label>
+                  </div>
+                );
+              })}
+              {!!preview && (
+                <Image
+                  width="300px"
+                  height="300px"
+                  src={String(preview)}
+                  alt="preview"
+                />
+              )}
+              <br />
+              <label htmlFor="file">
+                Select an image
+                <input
+                  id="file"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </label>
+            </div>
           )}
 
-          <br />
-          <Image src={props.post.urls} alt="" width="300px" height="300px" />
           <br />
           <input
             value={price}
@@ -167,6 +216,7 @@ export default function SingleUserPost(props: Props) {
             type="number"
             onChange={(event) => setPrice(parseInt(event.currentTarget.value))}
           />
+
           <br />
           <input
             value={description}
