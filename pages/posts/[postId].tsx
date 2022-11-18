@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Photo } from '../../database/images';
-import { getSinglePostByPostId, Post } from '../../database/posts';
+import { getPostByPostId, Post } from '../../database/posts';
 import { Tag } from '../../database/tags';
 import {
   getUserById,
@@ -24,7 +24,7 @@ type Props =
         street: string;
         district: number;
         userId: number;
-        urls: Photo['urls'];
+        url: Photo['url'][];
         name: Tag['name'];
       };
       loggedUser: User;
@@ -60,7 +60,13 @@ export default function SinglePost(props: Props) {
       <main>
         <h1>{props.post.title}</h1>
         <p>by {props.postUser.username}</p>
-        <Image src={props.post.urls} width="300px" height="300px" alt="" />
+
+        {props.post.url.map((url) => (
+          <div key={`url-${url}`}>
+            <Image src={url} width="300px" height="300px" alt="" />
+          </div>
+        ))}
+
         <p>{props.post.price}€</p>
         <p>Tag: {props.post.name}</p>
         <p>Description: {props.post.description}</p>
@@ -85,7 +91,7 @@ export default function SinglePost(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
-  const foundPost = postId && (await getSinglePostByPostId(postId));
+  const foundPost = postId && (await getPostByPostId(postId));
 
   if (typeof foundPost === 'undefined') {
     context.res.statusCode = 404;

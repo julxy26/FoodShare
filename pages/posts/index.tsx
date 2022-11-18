@@ -3,13 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  JSXElementConstructor,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useState,
-} from 'react';
+import { useState } from 'react';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -24,7 +18,7 @@ type Props = {
     street: string;
     district: number;
     userId: User['id'];
-    urls: Photo['urls'];
+    url: Photo['url'][];
     name: Tag['name'];
     tagId: Tag['id'];
   }[];
@@ -99,16 +93,15 @@ export default function Posts(props: Props) {
           .map((post) => {
             return (
               <div key={`post-${post.id}`}>
-                <Link href={`/posts/${post.id}`}>
-                  <a>
-                    <Image
-                      src={post.urls}
-                      width="300px"
-                      height="300px"
-                      alt=""
-                    />
-                  </a>
-                </Link>
+                {post.url.map((url) => (
+                  <div key={`url-${url}`}>
+                    <Link href={`/posts/${post.id}`} key={`url-${url}`}>
+                      <a>
+                        <Image src={url} width="300px" height="300px" alt="" />
+                      </a>
+                    </Link>
+                  </div>
+                ))}
 
                 <Link href={`/posts/${post.id}`}>
                   <h2>{post.title}</h2>

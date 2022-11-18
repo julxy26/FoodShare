@@ -21,7 +21,7 @@ export type PostWithImageAndTag = {
   street: string;
   district: number;
   userId: User['id'];
-  imageUrl: Photo['urls'];
+  imageUrl: Photo['url'];
   tagId: Tag['id'];
 };
 
@@ -29,17 +29,13 @@ export async function getPostsWithLimit(limit: number) {
   const posts = await sql<Post[]>`
    SELECT
     posts.*,
-    images.urls,
     tags.*,
     posts_tags.*
   FROM
     posts,
-    images,
     tags,
     posts_tags
   WHERE
-    images.post_id = posts.id
-  AND
     posts.id = posts_tags.post_id
   AND
     tags.id = posts_tags.tag_id
@@ -48,31 +44,61 @@ export async function getPostsWithLimit(limit: number) {
   LIMIT
     ${limit}
   `;
-  return posts;
+  const rawImages = posts.map((post) => {
+    return sql<any[]>`
+  SELECT
+    url
+  FROM
+    images
+  WHERE
+    post_id = ${post.id}
+  `;
+  });
+
+  const urls = await Promise.all(rawImages);
+
+  const fullPosts = posts.map((post, index) => {
+    return { ...post, url: urls[index]?.map((obj) => obj.url) };
+  });
+
+  if (!fullPosts) return undefined;
+
+  return fullPosts;
 }
 
 export async function getAllPosts() {
   const posts = await sql<Post[]>`
    SELECT
     posts.*,
-    images.urls,
     tags.*,
     posts_tags.*
   FROM
     posts,
-    images,
     tags,
     posts_tags
   WHERE
-    images.post_id = posts.id
-  AND
     posts.id = posts_tags.post_id
   AND
     tags.id = posts_tags.tag_id
   ORDER BY
     posts.id DESC
   `;
-  return posts;
+
+  const rawImages = posts.map((post) => {
+    return sql<any[]>`
+select url from images where  post_id = ${post.id}
+`;
+  });
+
+  const urls = await Promise.all(rawImages);
+
+  const fullPosts = posts.map((post, index) => {
+    return { ...post, url: urls[index]?.map((obj) => obj.url) };
+  });
+
+  if (!fullPosts) return undefined;
+
+  return fullPosts;
 }
 
 export async function deletePostByPostId(id: number) {
@@ -87,7 +113,7 @@ export async function deletePostByPostId(id: number) {
   return post;
 }
 
-export async function updateSinglePostById(
+export async function updatePostById(
   id: number,
   title: string,
   price: number,
@@ -112,48 +138,54 @@ export async function updateSinglePostById(
   return post;
 }
 
-export async function getSinglePostByPostId(postId: Post['id']) {
+export async function getPostByPostId(postId: Post['id']) {
   const [post] = await sql<Post[]>`
   SELECT
     posts.*,
-    images.urls,
     tags.name,
     posts_tags.*
   FROM
     posts,
-    images,
     tags,
     posts_tags
   WHERE
     posts.id = ${postId}
   AND
-    images.post_id = posts.id
-  AND
     posts.id = posts_tags.post_id
   AND
     tags.id = posts_tags.tag_id
   `;
+  const rawImages = await sql<any[]>`
+  SELECT
+    url
+  FROM
+    images
+  WHERE
+    post_id = ${postId}
+  `;
 
-  return post;
+  const urls = await Promise.all(rawImages);
+
+  const fullPost = { ...post, url: urls.map((obj: any) => obj.url) };
+
+  if (!fullPost) return undefined;
+
+  return fullPost;
 }
 
 export async function getPostsByUserId(userId: Post['userId']): Promise<any> {
   const posts = await sql<Post[]>`
   SELECT
     posts.*,
-    images.urls,
     tags.name,
     posts_tags.*
   FROM
     users,
     posts,
-    images,
     tags,
     posts_tags
   WHERE
     ${userId} = users.id
-  AND
-    images.post_id = posts.id
   AND
     posts.user_id = users.id
   AND
@@ -162,9 +194,24 @@ export async function getPostsByUserId(userId: Post['userId']): Promise<any> {
     tags.id = posts_tags.tag_id
   `;
 
-  if (!posts) return undefined;
+  // loop over each post and get an array of promises with the urls for each post
+  const rawImages = posts.map((post) => {
+    return sql<any[]>`
+  select url from images where  post_id = ${post.id}
+  `;
+  });
 
-  return posts;
+  // await until all the promises resolve
+  const urls = await Promise.all(rawImages);
+
+  // loop over the posts and add the array of images that correspond to them matching by index
+  const fullPosts = posts.map((post, index) => {
+    return { ...post, url: urls[index]?.map((obj) => obj.url) };
+  });
+
+  if (!fullPosts) return undefined;
+
+  return fullPosts;
 }
 
 export async function createPost(

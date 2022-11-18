@@ -1,9 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { updateImages } from '../../../../database/images';
+import {
+  createImage,
+  deleteImagesByPostId,
+  updateImages,
+} from '../../../../database/images';
 import {
   deletePostByPostId,
-  getSinglePostByPostId,
-  updateSinglePostById,
+  getPostByPostId,
+  updatePostById,
 } from '../../../../database/posts';
 import { getValidSessionByToken } from '../../../../database/sessions';
 import { updateTag } from '../../../../database/tags';
@@ -30,7 +34,7 @@ export default async function handler(
   }
 
   if (request.method === 'GET') {
-    const post = await getSinglePostByPostId(postId);
+    const post = await getPostByPostId(postId);
 
     if (!post) {
       return response.status(404).json({ message: 'Not a valid Id' });
@@ -40,19 +44,19 @@ export default async function handler(
   }
 
   if (request.method === 'PUT') {
-    const title = request.body.title;
-    const price = request.body.price;
-    const description = request.body.description;
-    const street = request.body.street;
-    const district = request.body.district;
-    const tagId = request.body.tagId;
-    const urls = request.body.urls;
+    const title = request.body?.title;
+    const price = request.body?.price;
+    const description = request.body?.description;
+    const street = request.body?.street;
+    const district = request.body?.district;
+    const tagId = request.body?.tagId;
+    const urls = request.body?.urls;
 
     if (!(title && price && description && street && district)) {
       return response.status(400).json({ message: 'property is missing' });
     }
 
-    const newPost = await updateSinglePostById(
+    const newPost = await updatePostById(
       postId,
       title,
       price,
@@ -60,15 +64,24 @@ export default async function handler(
       street,
       district,
     );
+
     const newTag = await updateTag(postId, tagId);
 
-    const newImage = await updateImages(postId, urls);
+    // const newImages = await updateImages(postId, urls);
+
+    const images = [];
+
+    const deleteImage = await deleteImagesByPostId(postId);
+
+    for (const url of urls) {
+      images.push(await createImage(postId, url));
+    }
 
     if (!newPost) {
       return response.status(404).json({ message: 'Not a valid Id' });
     }
 
-    return response.status(200).json({ newPost, newTag, newImage });
+    return response.status(200).json({ deleteImage, newPost, newTag, images });
   }
 
   if (request.method === 'DELETE') {

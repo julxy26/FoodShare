@@ -17,7 +17,7 @@ type Props = {
     street: string;
     district: number;
     userId: User['id'];
-    urls: Photo['urls'];
+    url: Photo['url'][];
     name: Tag['name'];
   }[];
 };
@@ -57,16 +57,16 @@ export default function UserPosts(props: Props) {
           {props.posts.map((post) => {
             return (
               <div key={`userPost-${post.id}`}>
-                <Link href={`/profile/my-posts/${post.id}`}>
-                  <a>
-                    <Image
-                      src={post.urls}
-                      width="300px"
-                      height="300px"
-                      alt=""
-                    />
-                  </a>
-                </Link>
+                {post.url.map((url) => (
+                  <Link
+                    href={`/profile/my-posts/${post.id}`}
+                    key={`url-${url}`}
+                  >
+                    <a>
+                      <Image src={url} width="80px" height="80px" alt="" />
+                    </a>
+                  </Link>
+                ))}
 
                 <Link href={`/profile/my-posts/${post.id}`}>
                   <h2>{post.title}</h2>

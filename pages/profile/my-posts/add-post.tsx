@@ -16,8 +16,7 @@ export default function AddPost(props: Props) {
   const [description, setDescription] = useState<string>('');
   const [street, setStreet] = useState<string>('');
   const [district, setDistrict] = useState<number>();
-  const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
-  const [imageLink, setImageLink] = useState([]);
+  const [preview, setPreview] = useState<string[]>([]);
   const [tagId, setTagId] = useState<number>();
   const router = useRouter();
 
@@ -33,38 +32,42 @@ export default function AddPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        urls: imageLink,
+        urls: preview,
         tagId: tagId,
       }),
     });
 
     const postsFromApi = await response.json();
-    await router.push(`/profile/my-posts`);
+    // await router.push(`/profile/my-posts`);
     return postsFromApi;
   }
 
   const handleFileChange = async (e: any) => {
-    const newFile = e.target.files[0];
-    if (!newFile) return;
+    const files: (string | Blob)[] = Object.values(e.target.files);
+    const imageLinks: string[] = [];
 
-    setPreview(URL.createObjectURL(newFile));
+    if (!files) return;
 
-    const formData = new FormData();
-    formData.append('file', newFile);
-    formData.append('upload_preset', 'foodShare');
+    for (const file of files) {
+      const formData = new FormData();
 
-    const data = await fetch(
-      'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setImageLink(data.secure_url);
-      })
-      .catch((error) => console.log(error));
+      formData.append('file', file);
+      formData.append('upload_preset', 'foodShare');
+
+      const request = await fetch(
+        'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      const data = await request.json();
+
+      imageLinks.push(data.secure_url);
+    }
+
+    setPreview(imageLinks);
   };
 
   return (
@@ -80,14 +83,17 @@ export default function AddPost(props: Props) {
 
         <form onSubmit={(event) => event.preventDefault()}>
           <div>
-            {!!preview && (
-              <Image
-                width="300px"
-                height="300px"
-                src={String(preview)}
-                alt="preview"
-              />
-            )}
+            {preview.length &&
+              preview.map((url) => (
+                <div key={`url-${url}`}>
+                  <Image
+                    width="300px"
+                    height="300px"
+                    src={String(url)}
+                    alt="preview"
+                  />
+                </div>
+              ))}
 
             <br />
             <label htmlFor="file">Select an image</label>
@@ -96,6 +102,7 @@ export default function AddPost(props: Props) {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
+              multiple
             />
           </div>
 

@@ -4,12 +4,20 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Photo } from '../database/images';
-import { getAllPosts, getPostsWithLimit } from '../database/posts';
+import { getPostsWithLimit } from '../database/posts';
 import { getValidSessionByToken } from '../database/sessions';
 import { Tag } from '../database/tags';
 import { User } from '../database/users';
 
-const h1Styles = css``;
+const mainStyles = css`
+  @media (max-width: 700px) {
+    background-color: grey;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+`;
 
 export type Props = {
   userIsSignedIn: string;
@@ -21,7 +29,7 @@ export type Props = {
     street: string;
     district: number;
     userId: User['id'];
-    urls: Photo['urls'];
+    url: Photo['url'][];
     name: Tag['name'];
   }[];
 };
@@ -35,48 +43,50 @@ export default function Home(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {props.userIsSignedIn ? (
-        <div>
-          <h1 css={h1Styles}>
-            Welcome to <div>FoodShare!</div>
-          </h1>
+      <main css={mainStyles}>
+        {props.userIsSignedIn ? (
+          <div>
+            <h1>
+              Welcome to <div>FoodShare!</div>
+            </h1>
 
-          <Image src="/placeholder2.jpg" width="400" height="400" alt="" />
+            <Image src="/placeholder2.jpg" width="400" height="400" alt="" />
 
-          <br />
+            <br />
 
-          <Link href="/posts">See all posts</Link>
+            <Link href="/posts">See all posts</Link>
 
-          <p>Recently added</p>
+            <p>Recently added</p>
 
-          {props.posts.map((post) => {
-            return (
-              <div key={`post-${post.id}`}>
-                <Link href={`/posts/${post.id}`}>
-                  <a>
-                    <Image src={post.urls} width="80px" height="80px" alt="" />
-                  </a>
-                </Link>
-
-                <Link href={`/posts/${post.id}`}>
+            {props.posts.map((post) => {
+              return (
+                <div key={`post-${post.id}`}>
+                  {post.url.map((url) => (
+                    <Link href={`/posts/${post.id}`} key={`url-${url}`}>
+                      <a>
+                        <Image src={url} width="80px" height="80x" alt="" />
+                      </a>
+                    </Link>
+                  ))}
                   <p>{post.title}</p>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div>
-          <Image src="/placeholder.jpg" width="400" height="400" alt="" />
-          <br />
-          <button>
-            <Link href="/register">Register</Link>
-          </button>
-          <button>
-            <Link href="/signIn">Sign in</Link>
-          </button>
-        </div>
-      )}
+                  <p>€{post.price}</p>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div>
+            <Image src="/placeholder.jpg" width="400" height="400" alt="" />
+            <br />
+            <button>
+              <Link href="/register">Register</Link>
+            </button>
+            <button>
+              <Link href="/signIn">Sign in</Link>
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Photo } from '../../../database/images';
-import { getSinglePostByPostId, Post } from '../../../database/posts';
+import { getPostByPostId, Post } from '../../../database/posts';
 import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
@@ -20,7 +20,7 @@ type Props =
         street: string;
         district: number;
         userId: number;
-        urls: Photo['urls'];
+        url: Photo['url'][];
         tagId: Tag['id'];
         name: Tag['name'];
       };
@@ -51,7 +51,7 @@ export default function SingleUserPost(props: Props) {
   );
   const [street, setStreet] = useState<string>(props.post.street);
   const [district, setDistrict] = useState<number>(props.post.district);
-  const [imageLink, setImageLink] = useState(props.post.urls);
+
   const [tagId, setTagId] = useState(props.post.tagId);
   const [tagName, setTagName] = useState(props.post.name);
 
@@ -60,34 +60,36 @@ export default function SingleUserPost(props: Props) {
 
   const [onEdit, setOnEdit] = useState<boolean>(true);
 
-  const [preview, setPreview] = useState<string | ArrayBuffer | null>(
-    imageLink,
-  );
+  const [preview, setPreview] = useState<string[]>([]);
 
   const router = useRouter();
 
   const handleFileChange = async (e: any) => {
-    const newFile = e.target.files[0];
-    if (!newFile) return;
+    const files: (string | Blob)[] = Object.values(e.target.files);
+    const imageLinks: string[] = [];
 
-    setPreview(URL.createObjectURL(newFile));
+    if (!files) return;
 
-    const formData = new FormData();
-    formData.append('file', newFile);
-    formData.append('upload_preset', 'foodShare');
+    for (const file of files) {
+      const formData = new FormData();
 
-    const data = await fetch(
-      'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setImageLink(data.secure_url);
-      })
-      .catch((error) => console.log(error));
+      formData.append('file', file);
+      formData.append('upload_preset', 'foodShare');
+
+      const request = await fetch(
+        'https://api.cloudinary.com/v1_1/dezeipn4z/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      const data = await request.json();
+
+      imageLinks.push(data.secure_url);
+    }
+
+    setPreview(imageLinks);
   };
 
   async function savePostHandler(postId: number) {
@@ -102,14 +104,13 @@ export default function SingleUserPost(props: Props) {
         description: description,
         street: street,
         district: district,
-        urls: imageLink,
+        urls: preview,
         tagId: tagId,
       }),
     });
     const updatedPost = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
-
     return updatedPost;
   }
 
@@ -166,7 +167,12 @@ export default function SingleUserPost(props: Props) {
                 {tagName}
               </label>
               <br />
-              <Image src={imageLink} alt="" width="300px" height="300px" />
+
+              {props.post.url.map((url) => (
+                <div key={`url-${url}`}>
+                  <Image src={url} width="300px" height="300px" alt="" />
+                </div>
+              ))}
             </div>
           ) : (
             <div>
@@ -188,14 +194,30 @@ export default function SingleUserPost(props: Props) {
                   </div>
                 );
               })}
-              {!!preview && (
-                <Image
-                  width="300px"
-                  height="300px"
-                  src={String(preview)}
-                  alt="preview"
-                />
+
+              {preview.length ? (
+                <div>
+                  {preview.map((url) => (
+                    <div key={`preview-${url}`}>
+                      <Image
+                        width="80px"
+                        height="80px"
+                        src={String(url)}
+                        alt="preview"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  {props.post.url.map((url) => (
+                    <div key={`url-${url}`}>
+                      <Image src={url} width="80px" height="80px" alt="" />
+                    </div>
+                  ))}
+                </div>
               )}
+
               <br />
               <label htmlFor="file">
                 Select an image
@@ -204,6 +226,7 @@ export default function SingleUserPost(props: Props) {
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
+                  multiple
                 />
               </label>
             </div>
@@ -309,7 +332,7 @@ export default function SingleUserPost(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
-  const foundPost = postId && (await getSinglePostByPostId(postId));
+  const foundPost = postId && (await getPostByPostId(postId));
 
   if (typeof foundPost === 'undefined') {
     context.res.statusCode = 404;

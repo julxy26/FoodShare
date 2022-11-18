@@ -42,7 +42,7 @@ export default async function handler(
       const street = request.body?.street;
       const district = request.body?.district;
       const userId = id;
-      const imageUrls = request.body?.urls;
+      const urls = request.body?.urls;
       const tagId = request.body?.tagId;
 
       // 1. make sure the data exist
@@ -76,11 +76,19 @@ export default async function handler(
 
       const [postsTags] = await createPostsTags(postId, tagId);
 
-      const image = await createImage(postId, imageUrls);
+      const images = [];
+
+      for (const url of urls) {
+        images.push(await createImage(postId, url));
+      }
+
       // 4. sql query to create the record
 
-      return response.status(200).json({ post, image, postsTags });
+      return response.status(200).json({ post, images, postsTags });
     }
+    return response
+      .status(405)
+      .json({ errors: [{ message: 'user not found' }] });
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }

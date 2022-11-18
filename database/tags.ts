@@ -27,8 +27,8 @@ AND
   tags.id = ${tagId}
 
 RETURNING
-  *
-
+  posts_tags.tag_id,
+  posts_tags.post_id
 `;
 
   return tag;
