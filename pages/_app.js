@@ -22,6 +22,17 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="true"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Yeseva+One&display=swap"
+        rel="stylesheet"
+      />
+
       <Global
         styles={css`
           *,
@@ -31,17 +42,20 @@ function MyApp({ Component, pageProps }) {
           }
 
           body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-              Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-              sans-serif;
+            font-family: 'Assistant', sans-serif;
+            font-weight: 400;
             margin: 20px 0;
-            display: flex;
-            justify-content: center;
+            color: #3d3535;
+          }
+
+          h1 {
+            font-family: 'Yeseva One', cursive;
+            color: #3d3535;
           }
 
           a,
           a:visited {
-            color: #5e756d;
+            color: #3d3535;
             text-decoration: none;
           }
         `}

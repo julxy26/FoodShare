@@ -33,7 +33,7 @@ export default async function handler(
     ) {
       return response
         .status(400)
-        .json({ errors: [{ message: 'required fields must be filled out' }] });
+        .json({ errors: [{ message: 'Required fields must be filled out.' }] });
     }
     // 2.we check if the user already exist
     const userUsername = await getUserByUsername(request.body.username);
@@ -41,12 +41,12 @@ export default async function handler(
     if (userUsername) {
       return response
         .status(401)
-        .json({ errors: [{ message: 'username is already taken' }] });
+        .json({ errors: [{ message: 'Username is already taken' }] });
     }
     if (userEmail) {
       return response
         .status(401)
-        .json({ errors: [{ message: 'email already exists' }] });
+        .json({ errors: [{ message: 'Email already exists' }] });
     }
 
     // 3. we hash the password

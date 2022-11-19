@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import { User } from '../database/users';
-import Footer from './Footer';
-import Header from './Header';
+import HeaderWithoutSession from './HeaderWithoutSession';
+import HeaderWithSession from './HeaderWithSession';
+import NavigationBar from './NavigationBar';
 
 type Props = {
   children: React.ReactNode;
@@ -15,11 +16,11 @@ export default function Layout(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      {props.user ? <HeaderWithSession /> : <HeaderWithoutSession />}
 
       <main>{props.children}</main>
 
-      <Footer user={props.user} />
+      <NavigationBar user={props.user} />
     </>
   );
 }

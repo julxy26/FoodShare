@@ -25,7 +25,7 @@ export default async function handler(
     ) {
       return response
         .status(400)
-        .json({ errors: [{ message: 'username or password not provided' }] });
+        .json({ errors: [{ message: 'Username or password missing' }] });
     }
     // 2. get the user by the username
     const user = await getUserWithPasswordHashByUsername(request.body.username);
@@ -33,7 +33,7 @@ export default async function handler(
     if (!user) {
       return response
         .status(401)
-        .json({ errors: [{ message: 'user not found' }] });
+        .json({ errors: [{ message: 'User not found.' }] });
     }
 
     // 3. check if the hash and the password match
@@ -45,7 +45,7 @@ export default async function handler(
     if (!isValidPassword) {
       return response
         .status(401)
-        .json({ errors: [{ message: 'username or password is not valid' }] });
+        .json({ errors: [{ message: 'Username or password is not valid.' }] });
     }
 
     // 4.Create a session token and serialize a cookie with the token

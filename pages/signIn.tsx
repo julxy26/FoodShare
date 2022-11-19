@@ -1,10 +1,92 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Header from '../components/HeaderWithoutSession';
 import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/signIn';
+
+const mainStyles = css`
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 90px;
+
+  h1 {
+    margin-top: 14px;
+    width: 157px;
+    text-align: center;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 221px;
+    height: 30px;
+    background: #eeeeee;
+    border: 1px solid #b2bfb6;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #3d3535;
+
+    &:focus {
+      outline: none;
+      color: #3d3535;
+    }
+  }
+  p {
+    color: #c07e6e;
+    margin-top: 7px;
+    margin-bottom: 0;
+  }
+
+  button {
+    margin-top: 24px;
+    width: 160px;
+    height: 38px;
+    background: #c07e6e;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    border: none;
+    background-image: url('/enter-white.png');
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position-y: center;
+    background-position-x: 6px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: #ffffff;
+    padding-left: 20px;
+    transition: 0.3s ease-in-out;
+
+    &:active {
+      background-color: #e4b19b;
+    }
+  }
+`;
+
+const inputContainer = css`
+  margin-top: 24px;
+`;
+
+const linkToRegister = css`
+  margin-top: 15px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+`;
 
 type Props = {
   refreshUserProfile: () => Promise<void>;
@@ -61,43 +143,53 @@ export default function SignIn(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Welcome back!</h1>
+      <main css={mainStyles}>
+        <h1>Welcome back!</h1>
 
-      {errors.map((error) => {
-        return <p key={error.message}>ERROR: {error.message}</p>;
-      })}
-
-      <div>
-        <label htmlFor="username">Username</label>
-        <br />
-        <input
-          value={username}
-          onChange={(event) => {
-            setUsername(event.currentTarget.value.toLowerCase());
-          }}
+        <Image
+          src="/signin-illustration.jpg"
+          width="230px"
+          height="250px"
+          alt="Illustration of a blue bowl with lots of ingredients floating above it."
         />
-        <br />
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => {
-            setPassword(event.currentTarget.value);
+
+        <div css={inputContainer}>
+          <label htmlFor="username">Username</label>
+          <br />
+          <input
+            value={username}
+            onChange={(event) => {
+              setUsername(event.currentTarget.value.toLowerCase());
+            }}
+          />
+          <br />
+          <label htmlFor="password">Password</label>
+          <br />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.currentTarget.value);
+            }}
+          />
+        </div>
+
+        {errors.map((error) => {
+          return <p key={error.message}>{error.message}</p>;
+        })}
+
+        <button
+          onClick={async () => {
+            await loginHandler();
           }}
-        />
-      </div>
-
-      <button
-        onClick={async () => {
-          await loginHandler();
-        }}
-      >
-        Sign in
-      </button>
-      <br />
-
-      <Link href="/register">I don't have an account yet!</Link>
+        >
+          Sign in
+        </button>
+        <br />
+        <div css={linkToRegister}>
+          <Link href="/register">I don't have an account yet!</Link>
+        </div>
+      </main>
     </div>
   );
 }
