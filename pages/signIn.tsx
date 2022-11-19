@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Header from '../components/HeaderWithoutSession';
 import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/signIn';
 

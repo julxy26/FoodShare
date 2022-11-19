@@ -62,7 +62,8 @@ const newestPostsText = css`
   height: 25px;
   line-height: 0;
   gap: 5px;
-  margin-top: 17px;
+  margin-top: 13px;
+  font-weight: 600;
 `;
 
 const postContainer = css`
@@ -76,7 +77,7 @@ const postContainer = css`
   }
 
   div {
-    margin-top: 10px;
+    margin-top: 12px;
     width: 150px;
     overflow-x: visible;
     margin-bottom: 8px;

@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Header from '../components/HeaderWithoutSession';
 import { getValidSessionByToken } from '../database/sessions';
 import { RegisterResponseBody } from './api/register';
 
@@ -44,7 +43,6 @@ const formContainer = css`
     border: 1px solid #b2bfb6;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
     border-radius: 40px;
-    font-size: 16px;
     line-height: 21px;
     text-align: center;
     margin-bottom: 10px;
@@ -62,9 +60,9 @@ const formContainer = css`
   }
 
   button {
-    margin-top: 24px;
     width: 160px;
     height: 38px;
+    margin-top: 24px;
     background: #c07e6e;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 30px;
@@ -75,7 +73,6 @@ const formContainer = css`
     background-position-y: center;
     background-position-x: 10px;
     font-weight: 700;
-    font-size: 16px;
     line-height: 20px;
     text-align: center;
     color: #ffffff;
@@ -95,7 +92,6 @@ const avatarStyles = css`
 const linkToLogin = css`
   margin-top: 15px;
   font-weight: 400;
-  font-size: 16px;
   line-height: 21px;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -179,6 +175,7 @@ export default function Register(props: Props) {
               value={username}
               onChange={(event) => {
                 setUsername(event.currentTarget.value.toLowerCase());
+                setMessage('');
               }}
             />
             <br />
@@ -189,6 +186,7 @@ export default function Register(props: Props) {
               value={password}
               onChange={(event) => {
                 setPassword(event.currentTarget.value);
+                setMessage('');
               }}
             />
             <br />
@@ -198,6 +196,7 @@ export default function Register(props: Props) {
               value={name}
               onChange={(event) => {
                 setName(event.currentTarget.value);
+                setMessage('');
               }}
             />
             <br />
@@ -207,6 +206,7 @@ export default function Register(props: Props) {
               value={email}
               onChange={(event) => {
                 setEmail(event.currentTarget.value);
+                setMessage('');
               }}
             />
             <br />
@@ -217,6 +217,7 @@ export default function Register(props: Props) {
               type="number"
               onChange={(event) => {
                 setPhoneNumber(event.currentTarget.value);
+                setMessage('');
               }}
             />
           </div>

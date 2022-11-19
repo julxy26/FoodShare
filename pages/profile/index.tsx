@@ -4,24 +4,92 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { stringify } from 'querystring';
 import { useEffect, useState } from 'react';
 import Anchor from '../../components/Anchor';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const avatarStyles = css`
-  border-radius: 50px;
+  border-radius: 71px;
 `;
 
 const mainBodyStyles = css`
-  display: inline-flex;
+  height: 90vh;
+  width: 100vw;
+  background-image: url('/profile-background.png');
+  background-position: 50% 100%;
+  display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
+
+  p {
+    color: #c07e6e;
+    margin-top: 7px;
+    margin-bottom: -10px;
+    margin-left: 20%;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 220px;
+    height: 30px;
+    background: #eeeeee;
+    border: 1px solid #b2bfb6;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #3d3535;
+
+    &:focus {
+      outline: none;
+      color: #3d3535;
+    }
+  }
 
   span {
     margin: 20px 0;
   }
+`;
+
+const saveButton = css`
+  width: 160px;
+  height: 38px;
+  margin-left: 15%;
+  margin-top: 24px;
+  background: #c07e6e;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  border: none;
+  background-image: url('/checked.png');
+  background-repeat: no-repeat;
+  background-size: 23px;
+  background-position-y: center;
+  background-position-x: 7px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #ffffff;
+  padding-left: 25px;
+  transition: 0.3s ease-in-out;
+
+  &:active {
+    background-color: #e4b19b;
+  }
+`;
+
+const buttonToDeleteAccount = css`
+  margin-top: 15px;
+  font-size: 16px;
+  line-height: 21px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  border: none;
+  background: none;
+  color: #939393;
 `;
 
 export type Props = {
@@ -103,14 +171,12 @@ export default function Profile(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div css={mainBodyStyles}>
-        <h1>{props.user.username}'s Profile</h1>
-
         <span>
           <Image
             css={avatarStyles}
             src="/profile-pic.jpg"
-            width="100"
-            height="100"
+            width="128px"
+            height="128px"
             alt="user profile picture"
           />
         </span>
@@ -122,6 +188,7 @@ export default function Profile(props: Props) {
             value={username}
             onChange={(event) => {
               setUsername(event.currentTarget.value.toLowerCase());
+              setMessage('');
             }}
           />
           <br />
@@ -134,6 +201,7 @@ export default function Profile(props: Props) {
             value={password}
             onChange={(event) => {
               setPassword(event.currentTarget.value);
+              setMessage('');
             }}
           />
           <br />
@@ -143,6 +211,7 @@ export default function Profile(props: Props) {
             value={name}
             onChange={(event) => {
               setName(event.currentTarget.value);
+              setMessage('');
             }}
           />
           <br />
@@ -152,6 +221,7 @@ export default function Profile(props: Props) {
             value={email}
             onChange={(event) => {
               setEmail(event.currentTarget.value);
+              setMessage('');
             }}
           />
           <br />
@@ -161,10 +231,13 @@ export default function Profile(props: Props) {
             value={phoneNumber}
             onChange={(event) => {
               setPhoneNumber(event.currentTarget.value);
+              setMessage('');
             }}
           />
-          <br />
+          <p>{message}</p>
+
           <button
+            css={saveButton}
             onClick={async () => {
               if (password === '') {
                 setMessage('Password required');
@@ -175,25 +248,33 @@ export default function Profile(props: Props) {
               }
             }}
           >
-            Save
+            Save changes
           </button>
-          <div>{message}</div>
         </div>
 
         <br />
 
-        <Link href="/profile/my-posts">My Posts</Link>
-        <br />
+        {props.user.id ? (
+          <Anchor>
+            <Image
+              src="/logout.png"
+              width="23px"
+              height="23px"
+              alt="logout icon"
+            />
+          </Anchor>
+        ) : (
+          ' '
+        )}
 
-        {props.user.id ? <Anchor>Logout</Anchor> : ' '}
-        <br />
         <Anchor>
           <button
+            css={buttonToDeleteAccount}
             onClick={async () => {
               await deleteUserFromApiByUsername();
             }}
           >
-            Delete profile
+            Delete account
           </button>
         </Anchor>
       </div>

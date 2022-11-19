@@ -43,6 +43,7 @@ function MyApp({ Component, pageProps }) {
 
           body {
             font-family: 'Assistant', sans-serif;
+            font-size: 18px;
             font-weight: 400;
             margin: 20px 0;
             color: #3d3535;

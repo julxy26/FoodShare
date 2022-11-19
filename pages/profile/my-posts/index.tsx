@@ -1,12 +1,69 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { Photo } from '../../../database/images';
 import { getPostsByUserId } from '../../../database/posts';
 import { Tag } from '../../../database/tags';
 import { getUserBySessionToken, User } from '../../../database/users';
+
+const mainStyles = css`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 70px;
+  position: relative;
+
+  img {
+    object-fit: cover;
+  }
+
+  button {
+    position: absolute;
+    margin-top: -125px;
+    margin-left: 30%;
+    width: 130px;
+    height: 35px;
+    background-color: #588777;
+    padding-left: 20px;
+    color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    background-image: url('/edit.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position-y: 5px;
+    background-position-x: 9px;
+    transition: 0.3s ease-in-out;
+
+    &:active {
+      background-color: #b2bfb6;
+    }
+  }
+`;
+
+const textContainer = css`
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 300px;
+  padding: 0px 5px;
+  margin-bottom: 10px;
+  margin-top: -15px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+`;
 
 type Props = {
   posts: {
@@ -31,66 +88,53 @@ export default function UserPosts(props: Props) {
         <meta name="description" content="My Posts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>My Posts</h1>
 
-      {!props.posts[0] ? (
-        <div>
+      <main css={mainStyles}>
+        {!props.posts[0] ? (
           <p>There are no posts yet</p>
-          <button
-            onClick={async () =>
-              await router.push('/profile/my-posts/add-post')
-            }
-          >
-            Add new post
-          </button>
-        </div>
-      ) : (
-        <div>
-          <button
-            onClick={async () =>
-              await router.push('/profile/my-posts/add-post')
-            }
-          >
-            Add new post
-          </button>
+        ) : (
+          <div>
+            {props.posts.map((post) => {
+              return (
+                <div key={`userPost-${post.id}`}>
+                  <div>
+                    <Link
+                      href={`/profile/my-posts/${post.id}`}
+                      key={`url-${post.url[0]}`}
+                    >
+                      <a>
+                        {post && post.url[0] ? (
+                          <Image
+                            src={post.url[0]}
+                            width="350px"
+                            height="186px"
+                            alt={post.title}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </a>
+                    </Link>
+                  </div>
 
-          {props.posts.map((post) => {
-            return (
-              <div key={`userPost-${post.id}`}>
-                {post.url.map((url) => (
-                  <Link
-                    href={`/profile/my-posts/${post.id}`}
-                    key={`url-${url}`}
+                  <button
+                    onClick={async () =>
+                      await router.push(`/profile/my-posts/${post.id}`)
+                    }
                   >
-                    <a>
-                      <Image src={url} width="80px" height="80px" alt="" />
-                    </a>
-                  </Link>
-                ))}
+                    Edit post
+                  </button>
 
-                <Link href={`/profile/my-posts/${post.id}`}>
-                  <h2>{post.title}</h2>
-                </Link>
-
-                <p>Price: {post.price}</p>
-                <p>Tag: {post.name}</p>
-                <p>Description: {post.description}</p>
-                <p>
-                  Location: {post.street}, {post.district}
-                </p>
-
-                <button
-                  onClick={async () =>
-                    await router.push(`/profile/my-posts/${post.id}`)
-                  }
-                >
-                  Edit post
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      )}
+                  <div css={textContainer}>
+                    <h2>{post.title}</h2>
+                    <p>€ {post.price}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </main>
     </div>
   );
 }
