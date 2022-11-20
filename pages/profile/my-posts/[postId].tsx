@@ -10,6 +10,15 @@ import { getPostByPostId, Post } from '../../../database/posts';
 import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
+const mainStyles = css`
+  height: 100vh;
+  width: 100vw;
+  padding: 80px 0;
+`;
+
+const editButton = css`
+  margin-bottom: 150px;
+`;
 type Props =
   | {
       post: {
@@ -137,7 +146,7 @@ export default function SingleUserPost(props: Props) {
         <meta name="description" content={`${props.post.title}`} />
       </Head>
 
-      <main>
+      <main css={mainStyles}>
         <form onSubmit={(event) => event.preventDefault()}>
           <input
             value={title}
@@ -309,6 +318,7 @@ export default function SingleUserPost(props: Props) {
 
           <br />
           <button
+            css={editButton}
             onClick={() => {
               if (onEdit) {
                 setOnEdit(false);

@@ -5,7 +5,7 @@ import Link from 'next/link';
 const headerContainerStyles = css`
   background-color: #fff;
   border-bottom: 1px solid black;
-  border-bottom: 1px solid #939393;
+  border-bottom: 1px solid #ddd;
   position: fixed;
   top: 0;
   display: flex;

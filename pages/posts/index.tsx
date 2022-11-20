@@ -85,7 +85,7 @@ const textContainer = css`
   font-weight: 300px;
   padding: 0px 10px;
   margin-bottom: -10px;
-  margin-top: -10px;
+  margin-top: -15px;
 
   h2 {
     font-size: 20px;
@@ -116,7 +116,7 @@ const tagAndDistrict = css`
   display: flex;
   gap: 14px;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 type Props = {

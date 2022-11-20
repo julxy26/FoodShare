@@ -62,7 +62,7 @@ const newestPostsText = css`
   height: 25px;
   line-height: 0;
   gap: 5px;
-  margin-top: 13px;
+  margin-top: 5px;
   font-weight: 600;
 `;
 
@@ -89,6 +89,7 @@ const postContainer = css`
 
   p {
     margin: 0 15px;
+    width: 150px;
   }
 `;
 
@@ -99,6 +100,7 @@ const imageContainer = css`
     border-radius: 10px;
     margin: 0 100px;
     border-radius: 10px;
+    object-fit: cover;
   }
 `;
 
@@ -260,7 +262,7 @@ export default function Home(props: Props) {
                             />
                           ) : (
                             <Image
-                              src="/profile-pic.jpg"
+                              src="/register-background.jpg"
                               width="150px"
                               height="138x"
                               alt="Post placeholder image"
