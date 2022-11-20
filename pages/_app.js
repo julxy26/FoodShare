@@ -59,6 +59,10 @@ function MyApp({ Component, pageProps }) {
             color: #3d3535;
             text-decoration: none;
           }
+
+          img {
+            object-fit: cover;
+          }
         `}
       />
 

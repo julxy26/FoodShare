@@ -11,13 +11,259 @@ import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const mainStyles = css`
-  height: 100vh;
-  width: 100vw;
-  padding: 80px 0;
+  margin-top: 90px;
+  padding-bottom: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #3d3535;
+    outline: none;
+    background: none;
+    height: 33px;
+    border: 1px solid #b2bfb6;
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+`;
+
+const imageContainer = css`
+  margin-top: -23px;
+  overflow: hidden;
+  max-height: 10%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  max-width: 100%;
+  display: inline-block;
+  scroll-snap-type: x mandatory;
+
+  span {
+    scroll-snap-align: start;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  img {
+    object-fit: cover;
+    overflow-x: visible;
+  }
+`;
+
+const uploadImagesContainer = css`
+  border: 1px solid #b2bfb6;
+  border-radius: 15px;
+  width: 180px;
+  height: 162px;
+  margin: 0 auto;
+
+  margin-bottom: 30px;
+
+  div {
+    margin-top: 6px;
+    margin-left: 9px;
+    gap: 4px;
+  }
+
+  input {
+    width: 50px;
+    height: 50px;
+    background: #ffdb9d;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-image: url('/kamera.png');
+    background-size: 37px 36px;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 6px;
+    border: none;
+    position: absolute;
+    top: 180px;
+    right: 127px;
+    padding: 50px 0 0 0;
+    transition: 0.3s ease-in-out;
+
+    ::-webkit-file-upload-button {
+      display: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+
+  img {
+    border-radius: 10px;
+  }
+`;
+
+const titleContainer = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -60px auto;
+  margin-top: 10px;
+  background-color: none;
+
+  input {
+    font-size: 19px;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    width: 348px;
+  }
+`;
+const tagNameContainer = css`
+  width: 160px;
+  height: 33px;
+  background: #ccc;
+  border-radius: 65px;
+  margin-left: 20px;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+  line-height: 31px;
+  font-weight: 600;
+  font-size: 18px;
+
+  input {
+    display: none;
+  }
+`;
+
+const tagsOnEditContainer = css`
+  margin-top: 65px;
+  justify-content: space-between;
+  display: flex;
+
+  label {
+    display: flex;
+    line-height: 39px;
+  }
+  input {
+    margin-right: 5px;
+    width: 13px;
+  }
+`;
+const descriptionContainer = css`
+  margin: 3px auto;
+  margin-top: -45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-right: 64%;
+  }
+
+  textarea {
+    margin-top: -13px;
+    height: 138px;
+    width: 90vw;
+    font-family: 'Assistant';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    background: none;
+    padding: 10px 20px;
+    border: 1px solid #b2bfb6;
+    border-radius: 15px;
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+`;
+
+const locationContainer = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 27px;
+  gap: 2px;
+  width: 345px;
+  margin: 0 auto;
+
+  input {
+    font-size: 16px;
+  }
+`;
+
+const districtAndPriceContainer = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 345px;
+  margin: 0 auto;
+  margin-top: 15px;
+
+  label {
+    margin-right: 0;
+    color: #a4a4a4;
+    font-weight: 600;
+  }
+  label + label {
+    margin-left: 50px;
+  }
+  input {
+    width: 165px;
+    font-size: 16px;
+  }
+`;
+
+const priceInput = css`
+  margin-left: -18px;
+`;
+
+const buttonContainer = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
 `;
 
 const editButton = css`
-  margin-bottom: 150px;
+  width: 130px;
+  height: 35px;
+  background-color: #c07e6e;
+  padding-left: 20px;
+  color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  background-image: url('/edit.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position-y: 6px;
+  background-position-x: 9px;
+  transition: 0.3s ease-in-out;
+
+  &:active {
+    background-color: #e4b19b;
+  }
+`;
+
+const deleteButton = css`
+  border: none;
+  background: none;
+  margin-top: -10px;
 `;
 type Props =
   | {
@@ -148,191 +394,218 @@ export default function SingleUserPost(props: Props) {
 
       <main css={mainStyles}>
         <form onSubmit={(event) => event.preventDefault()}>
-          <input
-            value={title}
-            autoComplete="off"
-            disabled={onEdit}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-          />
-
-          <button onClick={() => deletePostHandler(props.post.id)}>
-            Delete
-          </button>
-          <br />
-
           {onEdit ? (
             <div>
-              <label htmlFor="restrictions">
-                <input
-                  value={tagId}
-                  checked
-                  name="restrictions"
-                  type="radio"
-                  disabled={onEdit}
-                  onChange={(event) =>
-                    setTagId(Number(event.currentTarget.value))
-                  }
+              <div css={imageContainer}>
+                {props.post.url.map((url) => (
+                  <span key={`url-${url}`}>
+                    <Image
+                      src={url}
+                      width="393px"
+                      height="321px"
+                      alt={props.post.title}
+                    />
+                  </span>
+                ))}
+              </div>
+
+              {!props.post.url[0] && (
+                <Image
+                  src="/ramen-illustration.png"
+                  width="393px"
+                  height="321px"
+                  alt="placeholder ramen illustration"
                 />
-                {tagName}
-              </label>
-              <br />
-
-              {props.post.url.map((url) => (
-                <div key={`url-${url}`}>
-                  <Image src={url} width="300px" height="300px" alt="" />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div>
-              {props.tags.map((tag) => {
-                return (
-                  <div key={`tag-${tag.id}`}>
-                    <label htmlFor="restrictions">
-                      <input
-                        name="restrictions"
-                        type="radio"
-                        value={tag.id}
-                        onChange={(event) => {
-                          setTagId(Number(event.currentTarget.value));
-                          setTagName(tag.name);
-                        }}
-                      />
-                      {tag.name}
-                    </label>
-                  </div>
-                );
-              })}
-
-              {preview.length ? (
-                <div>
-                  {preview.map((url) => (
-                    <div key={`preview-${url}`}>
-                      <Image
-                        width="80px"
-                        height="80px"
-                        src={String(url)}
-                        alt="preview"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div>
-                  {props.post.url.map((url) => (
-                    <div key={`url-${url}`}>
-                      <Image src={url} width="80px" height="80px" alt="" />
-                    </div>
-                  ))}
-                </div>
               )}
 
-              <br />
-              <label htmlFor="file">
-                Select an image
+              <div css={titleContainer}>
                 <input
-                  id="file"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  multiple
+                  value={title}
+                  autoComplete="off"
+                  disabled={onEdit}
+                  onChange={(event) => setTitle(event.currentTarget.value)}
                 />
-              </label>
+              </div>
+
+              <div css={tagNameContainer}>
+                <label htmlFor="restrictions">
+                  <input
+                    value={tagId}
+                    checked
+                    name="restrictions"
+                    type="radio"
+                    disabled={onEdit}
+                    onChange={(event) =>
+                      setTagId(Number(event.currentTarget.value))
+                    }
+                  />
+                  {tagName}
+                </label>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div css={uploadImagesContainer}>
+                {preview.length ? (
+                  <div>
+                    {preview.map((url) => (
+                      <span key={`preview-${url}`}>
+                        <Image
+                          width="80px"
+                          height="73px"
+                          src={String(url)}
+                          alt="preview"
+                        />
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    {props.post.url.map((url) => (
+                      <span key={`url-${url}`}>
+                        <Image
+                          src={url}
+                          width="80px"
+                          height="73px"
+                          alt={props.post.title}
+                        />
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <br />
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    multiple
+                  />
+                </div>
+              </div>
+              <div css={titleContainer}>
+                <input
+                  value={title}
+                  autoComplete="off"
+                  disabled={onEdit}
+                  onChange={(event) => setTitle(event.currentTarget.value)}
+                />
+              </div>
+              <div css={tagsOnEditContainer}>
+                {props.tags.map((tag) => {
+                  return (
+                    <div key={`tag-${tag.id}`}>
+                      <label htmlFor="restrictions">
+                        <input
+                          name="restrictions"
+                          type="radio"
+                          value={tag.id}
+                          onChange={(event) => {
+                            setTagId(Number(event.currentTarget.value));
+                            setTagName(tag.name);
+                          }}
+                        />
+                        {tag.name}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
           <br />
-          <input
-            value={price}
-            autoComplete="off"
-            disabled={onEdit}
-            type="number"
-            onChange={(event) => setPrice(parseInt(event.currentTarget.value))}
-          />
-
-          <br />
-          <input
-            value={description}
-            autoComplete="off"
-            placeholder="Description"
-            disabled={onEdit}
-            onChange={(event) => setDescription(event.currentTarget.value)}
-          />
-          <br />
-          <input
-            value={street}
-            autoComplete="off"
-            placeholder="Street"
-            disabled={onEdit}
-            onChange={(event) => setStreet(event.currentTarget.value)}
-          />
-          <br />
-
-          {onEdit ? (
-            <select
-              defaultValue={district}
+          <div css={descriptionContainer}>
+            <h2>Description</h2>
+            <textarea
+              value={description}
+              autoComplete="off"
+              placeholder="Description"
               disabled={onEdit}
-              name="district"
-              onChange={(event) =>
-                setDistrict(parseInt(event.currentTarget.value))
-              }
-            >
-              <option value={district}>{district}</option>
-            </select>
-          ) : (
-            <select
-              defaultValue={district}
-              name="district"
-              onChange={(event) =>
-                setDistrict(parseInt(event.currentTarget.value))
-              }
-            >
-              <option value={district} hidden>
-                {district}
-              </option>
-              <option value="1010">1010</option>
-              <option value="1020">1020</option>
-              <option value="1030">1030</option>
-              <option value="1040">1040</option>
-              <option value="1050">1050</option>
-              <option value="1060">1060</option>
-              <option value="1070">1070</option>
-              <option value="1080">1080</option>
-              <option value="1090">1090</option>
-              <option value="1100">1100</option>
-              <option value="1110">1110</option>
-              <option value="1120">1120</option>
-              <option value="1130">1130</option>
-              <option value="1140">1140</option>
-              <option value="1150">1150</option>
-              <option value="1160">1160</option>
-              <option value="1170">1170</option>
-              <option value="1180">1180</option>
-              <option value="1190">1190</option>
-              <option value="1200">1200</option>
-              <option value="1210">1210</option>
-              <option value="1220">1220</option>
-              <option value="1230">1230</option>
-            </select>
-          )}
+              onChange={(event) => setDescription(event.currentTarget.value)}
+            ></textarea>
 
-          <br />
-          <button
-            css={editButton}
-            onClick={() => {
-              if (onEdit) {
-                setOnEdit(false);
-                setButtonText('Save');
-                setSavedMessage('');
-              } else {
-                setSavedMessage('Changes are saved');
-                savePostHandler(props.post.id);
-              }
-            }}
-          >
-            {buttonText}
-          </button>
-          {savedMessage}
+            <br />
+          </div>
+
+          <div css={locationContainer}>
+            <input
+              value={street}
+              autoComplete="off"
+              placeholder="Street"
+              disabled={onEdit}
+              onChange={(event) => setStreet(event.currentTarget.value)}
+            />
+          </div>
+
+          <div css={districtAndPriceContainer}>
+            {onEdit ? (
+              <input
+                value={district}
+                disabled={onEdit}
+                name="district"
+                onChange={(event) =>
+                  setDistrict(parseInt(event.currentTarget.value))
+                }
+              />
+            ) : (
+              <input
+                value={district}
+                autoComplete="off"
+                name="district"
+                type="number"
+                onChange={(event) =>
+                  setDistrict(parseInt(event.currentTarget.value))
+                }
+              />
+            )}
+
+            <label htmlFor="price">
+              €
+              <input
+                css={priceInput}
+                value={price}
+                autoComplete="off"
+                disabled={onEdit}
+                type="number"
+                onChange={(event) =>
+                  setPrice(parseInt(event.currentTarget.value))
+                }
+              />
+            </label>
+          </div>
+
+          <div css={buttonContainer}>
+            <button
+              css={editButton}
+              onClick={() => {
+                if (onEdit) {
+                  setOnEdit(false);
+                  setButtonText('Save');
+                  setSavedMessage('');
+                } else {
+                  setSavedMessage('Changes are saved');
+                  savePostHandler(props.post.id);
+                }
+              }}
+            >
+              {buttonText}
+            </button>
+            <p>{savedMessage}</p>
+
+            <button
+              css={deleteButton}
+              onClick={() => deletePostHandler(props.post.id)}
+            >
+              <Image
+                src="/bin.png"
+                width="22px"
+                height="25px"
+                alt="delete icon"
+              />
+            </button>
+          </div>
         </form>
       </main>
     </div>

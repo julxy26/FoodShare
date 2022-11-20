@@ -192,6 +192,8 @@ export async function getPostsByUserId(userId: Post['userId']): Promise<any> {
     posts.id = posts_tags.post_id
   AND
     tags.id = posts_tags.tag_id
+  ORDER BY
+    posts.id DESC
   `;
 
   // loop over each post and get an array of promises with the urls for each post

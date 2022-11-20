@@ -45,8 +45,8 @@ export default async function handler(
     const email = request.body?.email;
     const phoneNumber = request.body?.phoneNumber || null;
 
-    if (!(username || password || name || email || phoneNumber)) {
-      return response.status(400).json({ message: 'property is missing' });
+    if (!(username || password || name || email)) {
+      return response.status(400).json({ message: 'Property is missing' });
     }
 
     const newUser = await updateUserByUsername(
@@ -65,6 +65,6 @@ export default async function handler(
     const deletedUser = await deleteUserByUsername(username);
     return response.status(200).json(deletedUser);
   } else {
-    response.status(405).json({ errors: [{ message: 'method not allowed' }] });
+    response.status(405).json({ errors: [{ message: 'Method not allowed' }] });
   }
 }

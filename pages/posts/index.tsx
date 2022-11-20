@@ -81,14 +81,14 @@ const textContainer = css`
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 300px;
   padding: 0px 10px;
   margin-bottom: -10px;
   margin-top: -15px;
 
   h2 {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 600;
   }
 `;
@@ -109,6 +109,9 @@ const districtContainer = css`
 
   div {
     display: flex;
+  }
+  img {
+    object-fit: cover;
   }
 `;
 
@@ -257,6 +260,19 @@ export default function Posts(props: Props) {
                     </Link>
                   ) : (
                     ''
+                  )}
+
+                  {!post.url[0] && (
+                    <Link href={`/posts/${post.id}`} key={`url-${post.url[0]}`}>
+                      <a>
+                        <Image
+                          src="/ramen-illustration.png"
+                          width="350px"
+                          height="186px"
+                          alt="Post placeholder image"
+                        />
+                      </a>
+                    </Link>
                   )}
 
                   <div css={tagAndDistrict}>

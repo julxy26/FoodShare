@@ -1,10 +1,11 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Photo } from '../../database/images';
-import { getPostByPostId, Post } from '../../database/posts';
+import { getPostByPostId } from '../../database/posts';
 import { Tag } from '../../database/tags';
 import {
   getUserById,
@@ -13,6 +14,116 @@ import {
   User,
 } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
+
+const mainStyles = css`
+  margin-top: 90px;
+  padding-bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const imageContainer = css`
+  overflow-x: scroll;
+  white-space: nowrap;
+  max-width: 100%;
+  display: inline-block;
+  scroll-snap-type: x mandatory;
+  scroll-snap-align: start;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  img {
+    object-fit: cover;
+    overflow-x: visible;
+  }
+`;
+
+const titleAndPriceContainer = css`
+  width: 92%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 19px;
+  font-weight: 300px;
+  padding: 0px 10px;
+  margin-bottom: -10px;
+  margin-top: -10px;
+
+  h1 {
+    font-family: 'Assistant';
+    font-weight: 600;
+    font-size: 21px;
+  }
+`;
+const tagName = css`
+  margin-right: 54%;
+`;
+const descriptionContainer = css`
+  width: 344px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+
+  h2 {
+    margin-bottom: -10px;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 21px;
+  }
+`;
+
+const locationContainer = css`
+  display: flex;
+  justify-content: center;
+  height: 27px;
+  gap: 2px;
+  margin-bottom: 30px;
+  margin-left: -3px;
+
+  p {
+    line-height: 4px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  div {
+    display: flex;
+  }
+
+  img {
+    object-fit: cover;
+  }
+`;
+
+const contactButton = css`
+  width: 160px;
+  height: 38px;
+  background-color: #ffdb9d;
+  padding-left: 20px;
+  color: #3d3535;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  background-image: url('/email.png');
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position-y: center;
+  background-position-x: 6px;
+  transition: 0.3s ease-in-out;
+
+  &:active {
+    background-color: #fff;
+  }
+`;
 
 type Props =
   | {
@@ -57,31 +168,70 @@ export default function SinglePost(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>{props.post.title}</h1>
-        <p>by {props.postUser.username}</p>
+      <main css={mainStyles}>
+        <div css={imageContainer}>
+          {props.post.url.map((url) => (
+            <div key={`url-${url}`} css={imageContainer}>
+              <Image
+                src={url}
+                width="393px"
+                height="321px"
+                alt={props.post.title}
+              />
+            </div>
+          ))}
+        </div>
 
-        {props.post.url.map((url) => (
-          <div key={`url-${url}`}>
-            <Image src={url} width="300px" height="300px" alt="" />
+        {!props.post.url[0] && (
+          <div css={imageContainer}>
+            <Image
+              src="/ramen-illustration.png"
+              width="393px"
+              height="321px"
+              alt="Post placeholder image"
+            />
           </div>
-        ))}
+        )}
+        <div css={titleAndPriceContainer}>
+          <h1>{props.post.title}</h1>
+          <p>{props.post.price}€</p>
+        </div>
 
-        <p>{props.post.price}€</p>
-        <p>Tag: {props.post.name}</p>
-        <p>Description: {props.post.description}</p>
-        <p>
-          Pick-up at: {props.post.street}, {props.post.district}
-        </p>
+        <div css={tagName}>
+          <Image
+            src={`/${props.post.name}-post.png`}
+            width="128px"
+            height="28px"
+            alt={`${props.post.name} tag`}
+          />
+        </div>
+
+        <div css={descriptionContainer}>
+          <h2>Description</h2>
+          <p>{props.post.description}</p>
+        </div>
+
+        <div css={locationContainer}>
+          <Image
+            src="/position-pin.png"
+            width="20px"
+            height="27px"
+            alt="location icon"
+          />
+          <p>
+            {props.post.street}, {props.post.district}
+          </p>
+        </div>
 
         <button
+          css={contactButton}
           onClick={async () =>
             await router.push(
               `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.username}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.username}.`,
             )
           }
         >
-          Contact seller
+          Contact {props.postUser.username}
         </button>
       </main>
     </div>

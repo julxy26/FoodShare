@@ -19,7 +19,7 @@ export default async function handler(
       if (!posts) {
         return response
           .status(400)
-          .json({ errors: [{ message: 'no posts found' }] });
+          .json({ errors: [{ message: 'No posts found' }] });
       }
       return response.status(200).json({ posts });
     }
@@ -59,7 +59,7 @@ export default async function handler(
         !district
       ) {
         return response.status(400).json({
-          errors: [{ message: 'required fields must be filled out' }],
+          errors: [{ message: 'Required fields must be filled out' }],
         });
       }
 
@@ -88,7 +88,7 @@ export default async function handler(
     }
     return response
       .status(405)
-      .json({ errors: [{ message: 'user not found' }] });
+      .json({ errors: [{ message: 'User not found' }] });
   } else {
     response.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }

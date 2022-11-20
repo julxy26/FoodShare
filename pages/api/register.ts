@@ -33,7 +33,7 @@ export default async function handler(
     ) {
       return response
         .status(400)
-        .json({ errors: [{ message: 'Required fields must be filled out.' }] });
+        .json({ errors: [{ message: 'Required fields must be filled out' }] });
     }
     // 2.we check if the user already exist
     const userUsername = await getUserByUsername(request.body.username);

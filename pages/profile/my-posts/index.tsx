@@ -15,6 +15,7 @@ const mainStyles = css`
   align-items: flex-start;
   padding-top: 70px;
   position: relative;
+  padding-bottom: 80px;
 
   img {
     object-fit: cover;
@@ -38,7 +39,7 @@ const mainStyles = css`
     background-image: url('/edit.png');
     background-repeat: no-repeat;
     background-size: 20px;
-    background-position-y: 5px;
+    background-position-y: 6px;
     background-position-x: 9px;
     transition: 0.3s ease-in-out;
 
@@ -53,14 +54,14 @@ const textContainer = css`
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 300px;
   padding: 0px 5px;
   margin-bottom: 10px;
   margin-top: -15px;
 
   h2 {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 600;
   }
 `;
@@ -111,7 +112,12 @@ export default function UserPosts(props: Props) {
                             alt={post.title}
                           />
                         ) : (
-                          ''
+                          <Image
+                            src="/ramen-illustration.png"
+                            width="350px"
+                            height="186px"
+                            alt={post.title}
+                          />
                         )}
                       </a>
                     </Link>

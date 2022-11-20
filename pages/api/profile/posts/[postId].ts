@@ -53,7 +53,7 @@ export default async function handler(
     const urls = request.body?.urls;
 
     if (!(title && price && description && street && district)) {
-      return response.status(400).json({ message: 'property is missing' });
+      return response.status(400).json({ message: 'Property is missing' });
     }
 
     const newPost = await updatePostById(
@@ -67,11 +67,10 @@ export default async function handler(
 
     const newTag = await updateTag(postId, tagId);
 
-    // const newImages = await updateImages(postId, urls);
-
     const images = [];
 
-    const deleteImage = await deleteImagesByPostId(postId);
+    const deleteImage =
+      !request.body.urls && (await deleteImagesByPostId(postId));
 
     for (const url of urls) {
       images.push(await createImage(postId, url));
@@ -94,5 +93,5 @@ export default async function handler(
     return response.status(200).json(deletedPost);
   }
 
-  return response.status(400).json({ message: 'Method Not Allowed' });
+  return response.status(400).json({ message: 'Method not allowed' });
 }

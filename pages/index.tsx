@@ -95,11 +95,14 @@ const postContainer = css`
 
 const imageContainer = css`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  width: 150px;
+  height: 138px;
+  border-radius: 10px;
+  border: 0.4px solid #dbdbdb;
 
   img {
     border-radius: 10px;
     margin: 0 100px;
-    border-radius: 10px;
     object-fit: cover;
   }
 `;
@@ -262,7 +265,7 @@ export default function Home(props: Props) {
                             />
                           ) : (
                             <Image
-                              src="/register-background.jpg"
+                              src="/ramen-illustration.png"
                               width="150px"
                               height="138x"
                               alt="Post placeholder image"

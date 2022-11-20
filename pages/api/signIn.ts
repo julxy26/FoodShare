@@ -45,7 +45,7 @@ export default async function handler(
     if (!isValidPassword) {
       return response
         .status(401)
-        .json({ errors: [{ message: 'Username or password is not valid.' }] });
+        .json({ errors: [{ message: 'Username or password is not valid' }] });
     }
 
     // 4.Create a session token and serialize a cookie with the token
