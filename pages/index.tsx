@@ -171,6 +171,7 @@ const registerButton = css`
   }
 `;
 const signInButton = css`
+  margin-top: -10px;
   width: 160px;
   height: 38px;
   background: #b2bfb6;
