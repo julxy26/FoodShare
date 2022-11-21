@@ -8,6 +8,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Transition } from '../../../components/Animations/Transition';
 import { getAllTags, Tag } from '../../../database/tags';
 
 const mainStyles = css`
@@ -45,7 +46,7 @@ const uploadImagesContainer = css`
   border-radius: 15px;
   width: 180px;
   height: 162px;
-  margin: 0 auto;
+  margin: 2px auto;
   margin-bottom: 30px;
 
   span {
@@ -228,8 +229,8 @@ const buttonContainer = css`
 `;
 
 const addButton = css`
-  width: 130px;
-  height: 35px;
+  width: 160px;
+  height: 38px;
   background-color: #c07e6e;
   padding-left: 20px;
   color: #fff;
@@ -339,164 +340,166 @@ export default function AddPost(
 
   return (
     <div>
-      <Head>
-        <title>Add new Post</title>
-        <meta name="description" content="Add new Post" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Transition>
+        <Head>
+          <title>Add new Post</title>
+          <meta name="description" content="Add new Post" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main css={mainStyles}>
-        <form onSubmit={(event) => event.preventDefault()}>
-          <div css={uploadImagesContainer}>
-            {preview.length ? (
-              <div>
-                {preview.map((url) => (
-                  <span key={`url-${url}`}>
-                    <Image
-                      width="80px"
-                      height="73px"
-                      src={String(url)}
-                      alt="preview"
-                    />
-                  </span>
-                ))}
-              </div>
-            ) : (
-              ''
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              multiple
-            />
-          </div>
-
-          <p>{imageMessage}</p>
-          <div css={titleContainer}>
-            <label htmlFor="title">
-              Title
-              <input
-                name="title"
-                autoComplete="false"
-                value={title}
-                onChange={(event) => {
-                  setTitle(event.currentTarget.value);
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={tagsContainer}>
-            <p>Restrictions</p>
-            <div>
-              {props.tags.map((tag) => {
-                return (
-                  <div key={`tag-${tag.id}`}>
-                    <label htmlFor="tags">
-                      <input
-                        name="restrictions"
-                        type="radio"
-                        value={tag.id}
-                        onChange={(event) => {
-                          setTagId(Number(event.currentTarget.value));
-                          setErrors([]);
-                        }}
+        <main css={mainStyles}>
+          <form onSubmit={(event) => event.preventDefault()}>
+            <div css={uploadImagesContainer}>
+              {preview.length ? (
+                <div>
+                  {preview.map((url) => (
+                    <span key={`url-${url}`}>
+                      <Image
+                        width="80px"
+                        height="73px"
+                        src={String(url)}
+                        alt="preview"
                       />
-                      {tag.name}
-                    </label>
-                  </div>
-                );
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                ''
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                multiple
+              />
+            </div>
+
+            <p>{imageMessage}</p>
+            <div css={titleContainer}>
+              <label htmlFor="title">
+                Title
+                <input
+                  name="title"
+                  autoComplete="false"
+                  value={title}
+                  onChange={(event) => {
+                    setTitle(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={tagsContainer}>
+              <p>Restrictions</p>
+              <div>
+                {props.tags.map((tag) => {
+                  return (
+                    <div key={`tag-${tag.id}`}>
+                      <label htmlFor="tags">
+                        <input
+                          name="restrictions"
+                          type="radio"
+                          value={tag.id}
+                          onChange={(event) => {
+                            setTagId(Number(event.currentTarget.value));
+                            setErrors([]);
+                          }}
+                        />
+                        {tag.name}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div css={descriptionContainer}>
+              <label htmlFor="description">
+                Description
+                <textarea
+                  name="description"
+                  autoComplete="off"
+                  value={description}
+                  onChange={(event) => {
+                    setDescription(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={locationContainer}>
+              <label htmlFor="street">
+                Street
+                <input
+                  name="street"
+                  autoComplete="off"
+                  value={street}
+                  onChange={(event) => {
+                    setStreet(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={districtAndPriceContainer}>
+              <label htmlFor="district">
+                District
+                <input
+                  value={district}
+                  autoComplete="off"
+                  name="district"
+                  type="number"
+                  onChange={(event) => {
+                    setDistrict(parseInt(event.currentTarget.value));
+                    setErrors([]);
+                  }}
+                />
+              </label>
+
+              <label htmlFor="price">
+                Price
+                <input
+                  name="price"
+                  autoComplete="off"
+                  pattern="[0-9]"
+                  type="number"
+                  value={price || ''}
+                  onChange={(event) => {
+                    setPrice(parseInt(event.currentTarget.value));
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={messageContainer}>
+              {errors.map((error) => {
+                return <p key={error.message}>{error.message}</p>;
               })}
             </div>
-          </div>
 
-          <div css={descriptionContainer}>
-            <label htmlFor="description">
-              Description
-              <textarea
-                name="description"
-                autoComplete="off"
-                value={description}
-                onChange={(event) => {
-                  setDescription(event.currentTarget.value);
-                  setErrors([]);
+            <div css={messageContainer}>
+              <p>{addedMessage}</p>
+            </div>
+
+            <div css={buttonContainer}>
+              <button
+                css={addButton}
+                onClick={async () => {
+                  await addPostHandler();
+                  !errors.length && setAddedMessage('Post added!');
                 }}
-              />
-            </label>
-          </div>
-
-          <div css={locationContainer}>
-            <label htmlFor="street">
-              Street
-              <input
-                name="street"
-                autoComplete="off"
-                value={street}
-                onChange={(event) => {
-                  setStreet(event.currentTarget.value);
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={districtAndPriceContainer}>
-            <label htmlFor="district">
-              District
-              <input
-                value={district}
-                autoComplete="off"
-                name="district"
-                type="number"
-                onChange={(event) => {
-                  setDistrict(parseInt(event.currentTarget.value));
-                  setErrors([]);
-                }}
-              />
-            </label>
-
-            <label htmlFor="price">
-              Price
-              <input
-                name="price"
-                autoComplete="off"
-                pattern="[0-9]"
-                type="number"
-                value={price || ''}
-                onChange={(event) => {
-                  setPrice(parseInt(event.currentTarget.value));
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={messageContainer}>
-            {errors.map((error) => {
-              return <p key={error.message}>{error.message}</p>;
-            })}
-          </div>
-
-          <div css={messageContainer}>
-            <p>{addedMessage}</p>
-          </div>
-
-          <div css={buttonContainer}>
-            <button
-              css={addButton}
-              onClick={async () => {
-                await addPostHandler();
-                !errors.length && setAddedMessage('Post added!');
-              }}
-            >
-              Add
-            </button>
-          </div>
-        </form>
-      </main>
+              >
+                Add post
+              </button>
+            </div>
+          </form>
+        </main>
+      </Transition>
     </div>
   );
 }

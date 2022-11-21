@@ -1,9 +1,18 @@
 import { css, Global } from '@emotion/react';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState();
+  const router = useRouter;
+
+  const spring = {
+    type: 'spring',
+    damping: 20,
+    stiffness: 100,
+    when: 'afterChildren',
+  };
 
   const refreshUserProfile = useCallback(async () => {
     const profileResponse = await fetch('/api/profile');
@@ -49,6 +58,7 @@ function MyApp({ Component, pageProps }) {
             font-weight: 400;
             margin: 20px 0;
             color: #3d3535;
+            overflow-x: hidden;
           }
 
           h1 {

@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 const headerContainerStyles = css`
   z-index: 1;
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
   position: fixed;
   top: 0;
   display: flex;

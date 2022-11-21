@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Transition } from '../../../components/Animations/Transition';
 import { Photo } from '../../../database/images';
 import { getPostByPostId, Post } from '../../../database/posts';
 import { getAllTags, Tag } from '../../../database/tags';
@@ -16,6 +17,14 @@ const mainStyles = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  @keyframes moveToLeft {
+    from {
+    }
+    to {
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+    }
+  }
 
   input {
     width: 100%;
@@ -288,14 +297,16 @@ type Props =
 export default function SingleUserPost(props: Props) {
   if ('error' in props) {
     return (
-      <div>
-        <Head>
-          <title>Post not found</title>
-          <meta name="description" content="Post not found" />
-        </Head>
-        <h1>{props.error}</h1>
-        Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
-      </div>
+      <Transition>
+        <div>
+          <Head>
+            <title>Post not found</title>
+            <meta name="description" content="Post not found" />
+          </Head>
+          <h1>{props.error}</h1>
+          Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
+        </div>
+      </Transition>
     );
   }
 
@@ -387,228 +398,230 @@ export default function SingleUserPost(props: Props) {
 
   return (
     <div>
-      <Head>
-        <title>{props.post.title}</title>
-        <meta name="description" content={`${props.post.title}`} />
-      </Head>
+      <Transition>
+        <Head>
+          <title>{props.post.title}</title>
+          <meta name="description" content={`${props.post.title}`} />
+        </Head>
 
-      <main css={mainStyles}>
-        <form onSubmit={(event) => event.preventDefault()}>
-          {onEdit ? (
-            <div>
-              <div css={imageContainer}>
-                {props.post.url.map((url) => (
-                  <span key={`url-${url}`}>
-                    <Image
-                      src={url}
-                      width="393px"
-                      height="321px"
-                      alt={props.post.title}
-                    />
-                  </span>
-                ))}
-              </div>
+        <main css={mainStyles}>
+          <form onSubmit={(event) => event.preventDefault()}>
+            {onEdit ? (
+              <div>
+                <div css={imageContainer}>
+                  {props.post.url.map((url) => (
+                    <span key={`url-${url}`}>
+                      <Image
+                        src={url}
+                        width="393px"
+                        height="321px"
+                        alt={props.post.title}
+                      />
+                    </span>
+                  ))}
+                </div>
 
-              {!props.post.url[0] && (
-                <Image
-                  src="/ramen-illustration.png"
-                  width="393px"
-                  height="321px"
-                  alt="placeholder ramen illustration"
-                />
-              )}
-
-              <div css={titleContainer}>
-                <input
-                  value={title}
-                  autoComplete="off"
-                  disabled={onEdit}
-                  onChange={(event) => setTitle(event.currentTarget.value)}
-                />
-              </div>
-
-              <div css={tagNameContainer}>
-                <label htmlFor="restrictions">
-                  <input
-                    value={tagId}
-                    checked
-                    name="restrictions"
-                    type="radio"
-                    disabled={onEdit}
-                    onChange={(event) =>
-                      setTagId(Number(event.currentTarget.value))
-                    }
+                {!props.post.url[0] && (
+                  <Image
+                    src="/ramen-illustration.png"
+                    width="393px"
+                    height="321px"
+                    alt="placeholder ramen illustration"
                   />
-                  {tagName}
-                </label>
+                )}
+
+                <div css={titleContainer}>
+                  <input
+                    value={title}
+                    autoComplete="off"
+                    disabled={onEdit}
+                    onChange={(event) => setTitle(event.currentTarget.value)}
+                  />
+                </div>
+
+                <div css={tagNameContainer}>
+                  <label htmlFor="restrictions">
+                    <input
+                      value={tagId}
+                      checked
+                      name="restrictions"
+                      type="radio"
+                      disabled={onEdit}
+                      onChange={(event) =>
+                        setTagId(Number(event.currentTarget.value))
+                      }
+                    />
+                    {tagName}
+                  </label>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div>
-              <div css={uploadImagesContainer}>
-                {preview.length ? (
-                  <div>
-                    {preview.map((url) => (
-                      <span key={`preview-${url}`}>
-                        <Image
-                          width="80px"
-                          height="73px"
-                          src={String(url)}
-                          alt="preview"
-                        />
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <div>
-                    {!preview[0] &&
-                      props.post.url.map((url) => (
-                        <span key={`url-${url}`}>
+            ) : (
+              <div>
+                <div css={uploadImagesContainer}>
+                  {preview.length ? (
+                    <div>
+                      {preview.map((url) => (
+                        <span key={`preview-${url}`}>
                           <Image
-                            src={url}
                             width="80px"
                             height="73px"
-                            alt={props.post.title}
+                            src={String(url)}
+                            alt="preview"
                           />
                         </span>
                       ))}
-                  </div>
-                )}
+                    </div>
+                  ) : (
+                    <div>
+                      {!preview[0] &&
+                        props.post.url.map((url) => (
+                          <span key={`url-${url}`}>
+                            <Image
+                              src={url}
+                              width="80px"
+                              height="73px"
+                              alt={props.post.title}
+                            />
+                          </span>
+                        ))}
+                    </div>
+                  )}
 
-                <br />
-                <div>
+                  <br />
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      multiple
+                    />
+                  </div>
+                </div>
+                <div css={titleContainer}>
                   <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    multiple
+                    value={title}
+                    autoComplete="off"
+                    disabled={onEdit}
+                    onChange={(event) => setTitle(event.currentTarget.value)}
                   />
                 </div>
+                <div css={tagsOnEditContainer}>
+                  {props.tags.map((tag) => {
+                    return (
+                      <div key={`tag-${tag.id}`}>
+                        <label htmlFor="restrictions">
+                          <input
+                            name="restrictions"
+                            type="radio"
+                            value={tag.id}
+                            onChange={(event) => {
+                              setTagId(Number(event.currentTarget.value));
+                              setTagName(tag.name);
+                            }}
+                          />
+                          {tag.name}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div css={titleContainer}>
-                <input
-                  value={title}
-                  autoComplete="off"
-                  disabled={onEdit}
-                  onChange={(event) => setTitle(event.currentTarget.value)}
-                />
-              </div>
-              <div css={tagsOnEditContainer}>
-                {props.tags.map((tag) => {
-                  return (
-                    <div key={`tag-${tag.id}`}>
-                      <label htmlFor="restrictions">
-                        <input
-                          name="restrictions"
-                          type="radio"
-                          value={tag.id}
-                          onChange={(event) => {
-                            setTagId(Number(event.currentTarget.value));
-                            setTagName(tag.name);
-                          }}
-                        />
-                        {tag.name}
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          <br />
-          <div css={descriptionContainer}>
-            <h2>Description</h2>
-            <textarea
-              value={description}
-              autoComplete="off"
-              placeholder="Description"
-              disabled={onEdit}
-              onChange={(event) => setDescription(event.currentTarget.value)}
-            ></textarea>
-
-            <br />
-          </div>
-
-          <div css={locationContainer}>
-            <input
-              value={street}
-              autoComplete="off"
-              placeholder="Street"
-              disabled={onEdit}
-              onChange={(event) => setStreet(event.currentTarget.value)}
-            />
-          </div>
-
-          <div css={districtAndPriceContainer}>
-            {onEdit ? (
-              <input
-                value={district}
-                disabled={onEdit}
-                name="district"
-                onChange={(event) =>
-                  setDistrict(parseInt(event.currentTarget.value))
-                }
-              />
-            ) : (
-              <input
-                value={district}
-                autoComplete="off"
-                name="district"
-                type="number"
-                onChange={(event) =>
-                  setDistrict(parseInt(event.currentTarget.value))
-                }
-              />
             )}
 
-            <label htmlFor="price">
-              €
-              <input
-                css={priceInput}
-                value={price}
+            <br />
+            <div css={descriptionContainer}>
+              <h2>Description</h2>
+              <textarea
+                value={description}
                 autoComplete="off"
+                placeholder="Description"
                 disabled={onEdit}
-                type="number"
-                onChange={(event) =>
-                  setPrice(parseInt(event.currentTarget.value))
-                }
-              />
-            </label>
-          </div>
+                onChange={(event) => setDescription(event.currentTarget.value)}
+              ></textarea>
 
-          <div css={buttonContainer}>
-            <button
-              css={editButton}
-              onClick={() => {
-                if (onEdit) {
-                  setOnEdit(false);
-                  setButtonText('Save');
-                  setSavedMessage('');
-                } else {
-                  setSavedMessage('Changes are saved');
-                  savePostHandler(props.post.id);
-                }
-              }}
-            >
-              {buttonText}
-            </button>
-            <p>{savedMessage}</p>
+              <br />
+            </div>
 
-            <button
-              css={deleteButton}
-              onClick={() => deletePostHandler(props.post.id)}
-            >
-              <Image
-                src="/bin.png"
-                width="22px"
-                height="25px"
-                alt="delete icon"
+            <div css={locationContainer}>
+              <input
+                value={street}
+                autoComplete="off"
+                placeholder="Street"
+                disabled={onEdit}
+                onChange={(event) => setStreet(event.currentTarget.value)}
               />
-            </button>
-          </div>
-        </form>
-      </main>
+            </div>
+
+            <div css={districtAndPriceContainer}>
+              {onEdit ? (
+                <input
+                  value={district}
+                  disabled={onEdit}
+                  name="district"
+                  onChange={(event) =>
+                    setDistrict(parseInt(event.currentTarget.value))
+                  }
+                />
+              ) : (
+                <input
+                  value={district}
+                  autoComplete="off"
+                  name="district"
+                  type="number"
+                  onChange={(event) =>
+                    setDistrict(parseInt(event.currentTarget.value))
+                  }
+                />
+              )}
+
+              <label htmlFor="price">
+                €
+                <input
+                  css={priceInput}
+                  value={price}
+                  autoComplete="off"
+                  disabled={onEdit}
+                  type="number"
+                  onChange={(event) =>
+                    setPrice(parseInt(event.currentTarget.value))
+                  }
+                />
+              </label>
+            </div>
+
+            <div css={buttonContainer}>
+              <button
+                css={editButton}
+                onClick={() => {
+                  if (onEdit) {
+                    setOnEdit(false);
+                    setButtonText('Save');
+                    setSavedMessage('');
+                  } else {
+                    setSavedMessage('Changes are saved');
+                    savePostHandler(props.post.id);
+                  }
+                }}
+              >
+                {buttonText}
+              </button>
+              <p>{savedMessage}</p>
+
+              <button
+                css={deleteButton}
+                onClick={() => deletePostHandler(props.post.id)}
+              >
+                <Image
+                  src="/bin.png"
+                  width="22px"
+                  height="25px"
+                  alt="delete icon"
+                />
+              </button>
+            </div>
+          </form>
+        </main>
+      </Transition>
     </div>
   );
 }

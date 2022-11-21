@@ -4,19 +4,165 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Transition } from '../../components/Animations/Transition';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const mainContainer = css`
-  padding-top: 70px;
+  padding-top: 60px;
   padding-left: 20px;
   padding-bottom: 100px;
+  z-index: 0;
+  overflow-x: hidden;
+  position: relative;
 
   img {
     object-fit: cover;
     margin-left: 20px;
+  }
+
+  .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .menu-items p {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: #3d3535;
+    margin-bottom: 10px;
+  }
+
+  select {
+    width: 175px;
+    height: 35px;
+    background: #ffffff;
+    border: 1px solid #939393;
+    border-radius: 40px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 21px;
+    color: #3d3535;
+    margin-bottom: 17px;
+  }
+
+  .navbar .nav-container li {
+    list-style: none;
+    width: 160px;
+    height: 33px;
+    border-radius: 65px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    background: white;
+  }
+
+  .nav-container .checkbox {
+    position: absolute;
+    display: block;
+    top: 70px;
+    left: 10px;
+    height: 45px;
+    width: 80px;
+    z-index: 7;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .navbar .menu-items {
+    width: 100vw;
+    height: 100vh;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-in-out;
+    margin: 0px auto;
+    margin-left: -20px;
+    margin-top: -43px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 6;
+  }
+
+  .navbar .menu-items li {
+    margin: 0px auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 30px;
+    width: 160px;
+    height: 33px;
+    border: 1px solid #939393;
+    background-color: #fff;
+    border-radius: 65px;
+  }
+
+  .nav-container input[type='checkbox']:checked ~ .menu-items {
+    transform: translateX(0);
+  }
+
+  input {
+    margin-left: 12px;
+    display: none;
+  }
+
+  .container-test input[type='checkbox']:checked ~ .menu-items li {
+    background-color: red;
+  }
+`;
+
+const buttonContainer = css`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 45px;
+`;
+
+const resetButton = css`
+  width: 130px;
+  height: 35px;
+  color: #588777;
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  background: #ffffff;
+  transition: 0.3s ease-in-out;
+  border: 1px solid #588777;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+
+  &:active {
+    background-color: #fff;
+  }
+`;
+const confirmButton = css`
+  width: 130px;
+  height: 35px;
+  padding-left: 20px;
+  color: #fff;
+  border-radius: 30px;
+  border: none;
+  background: #588777;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  background-image: url('/checked.png');
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position-y: center;
+  background-position-x: 6px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+
+  &:active {
+    background-color: #fff;
   }
 `;
 
@@ -43,39 +189,6 @@ const filterContainer = css`
   }
 `;
 
-const formStyles = css`
-  background-color: grey;
-  width: 100vw;
-  height: 800px;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  margin-bottom: 93px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  label {
-    width: 160px;
-    height: 33px;
-    border: 1px solid black;
-    border-radius: 65px;
-    margin-bottom: 10px;
-    /* background-image: url('/Vegan-filter.png'); */
-    line-height: 30px;
-    text-align: center;
-    background: white;
-    &:active {
-      background: red;
-    }
-  }
-
-  input {
-    margin-left: 12px;
-    appearance: none;
-  }
-`;
 const textContainer = css`
   width: 95%;
   display: inline-flex;
@@ -149,155 +262,180 @@ export default function Posts(props: Props) {
 
   return (
     <div>
-      <Head>
-        <title>FoodShare posts</title>
-        <meta name="description" content="Welcome to FoodShare" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Transition>
+        <Head>
+          <title>FoodShare posts</title>
+          <meta name="description" content="Welcome to FoodShare" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main css={mainContainer}>
-        <div css={filterContainer}>
-          <button onClick={() => setOnFilter(true)}>
-            {
-              <Image
-                src="/filter.png"
-                width="28px"
-                height="28px"
-                alt="filter icon"
-              />
-            }
-            Filter
-          </button>
-
-          <button onClick={() => setOnFilter(true)}>Sort by:</button>
-          <p>Most recent</p>
-        </div>
-        {onFilter ? (
-          <form
-            css={formStyles}
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
-          >
-            {props.tags.map((tag) => {
-              return (
-                <label>
-                  <input
-                    type="radio"
-                    key={`tag-${tag.id}`}
-                    value={tag.id}
-                    onChange={(event) => {
-                      setFilterTagId(Number(event.currentTarget.value));
-                    }}
-                  />
-                  {/* <Image
-                    src={`/${tag.name}-filter.png`}
-                    width="160px"
-                    height="33px"
-                    alt={`${tag.name} filter`}
-                  /> */}
-                  {tag.name}
-                </label>
-              );
-            })}
-
-            <button
-              onClick={() => {
-                setFilterSelected(filterTagId);
-                setOnFilter(false);
-              }}
-            >
-              Confirm
-            </button>
-            <button
-              onClick={() => {
-                setFilterSelected(0);
-                setOnFilter(false);
-              }}
-            >
-              Reset
-            </button>
-          </form>
-        ) : (
-          ''
-        )}
-
-        {!props.posts[0] ? (
-          <div>
-            <p>There are no posts yet</p>
-          </div>
-        ) : (
-          props.posts
-            .filter((post) => {
-              let isInTheList = true;
-
-              if (filterSelected && filterSelected !== post.tagId) {
-                isInTheList = false;
+        <main css={mainContainer}>
+          <div css={filterContainer}>
+            <button onClick={() => setOnFilter(true)}>
+              {
+                <Image
+                  src="/filter.png"
+                  width="28px"
+                  height="28px"
+                  alt="filter icon"
+                />
               }
+              Filter
+            </button>
 
-              return isInTheList;
-            })
-            .map((post) => {
-              return (
-                <div key={`post-${post.id}`}>
-                  <div css={textContainer}>
-                    <Link href={`/posts/${post.id}`}>
-                      <h2>{post.title}</h2>
-                    </Link>
-                    <p>€ {post.price}</p>
+            <button onClick={() => setOnFilter(true)}>Sort by:</button>
+            <p>Most recent</p>
+          </div>
+
+          {onFilter ? (
+            <div className="navbar">
+              <div className="container nav-container">
+                <input className="checkbox" type="checkbox" />
+                <div className="menu-items">
+                  <div className="dropdown-menu">
+                    <p>Sort by</p>
+                    <select>
+                      <option>Most recent</option>
+                      <option>A-Z</option>
+                      <option>Price</option>
+                    </select>
+                    <p>District</p>
+                    <select>
+                      <option>1010</option>
+                      <option>1020</option>
+                      <option>1030</option>
+                    </select>
+                    <p>Tags</p>
                   </div>
+                  {props.tags.map((tag) => {
+                    return (
+                      <li key={`tag-${tag.id}`}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            key={`tag-${tag.id}`}
+                            value={tag.id}
+                            onChange={(event) => {
+                              setFilterTagId(Number(event.currentTarget.value));
+                            }}
+                          />
+                          {tag.name}
+                        </label>
+                      </li>
+                    );
+                  })}
 
-                  {post && post.url[0] ? (
-                    <Link href={`/posts/${post.id}`} key={`url-${post.url[0]}`}>
-                      <a>
-                        <Image
-                          src={post.url[0]}
-                          width="350px"
-                          height="186px"
-                          alt=""
-                        />
-                      </a>
-                    </Link>
-                  ) : (
-                    ''
-                  )}
+                  <div css={buttonContainer}>
+                    <button
+                      css={resetButton}
+                      onClick={() => {
+                        setFilterSelected(0);
+                        setOnFilter(false);
+                      }}
+                    >
+                      Reset
+                    </button>
 
-                  {!post.url[0] && (
-                    <Link href={`/posts/${post.id}`} key={`url-${post.url[0]}`}>
-                      <a>
-                        <Image
-                          src="/ramen-illustration.png"
-                          width="350px"
-                          height="186px"
-                          alt="Post placeholder image"
-                        />
-                      </a>
-                    </Link>
-                  )}
-
-                  <div css={tagAndDistrict}>
-                    <Image
-                      src={`/${post.name}.png`}
-                      width="128px"
-                      height="28px"
-                      alt={`${post.name} tag`}
-                    />
-
-                    <div css={districtContainer}>
-                      <Image
-                        src="/position-pin.png"
-                        width="17px"
-                        height="23px"
-                        alt="location icon"
-                      />
-                      <p>{post.district}</p>
-                    </div>
+                    <button
+                      css={confirmButton}
+                      onClick={() => {
+                        setFilterSelected(filterTagId);
+                        setOnFilter(false);
+                      }}
+                    >
+                      Confirm
+                    </button>
                   </div>
                 </div>
-              );
-            })
-        )}
-      </main>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+
+          {!props.posts[0] ? (
+            <div>
+              <p>There are no posts yet</p>
+            </div>
+          ) : (
+            props.posts
+              .filter((post) => {
+                let isInTheList = true;
+
+                if (filterSelected && filterSelected !== post.tagId) {
+                  isInTheList = false;
+                }
+
+                return isInTheList;
+              })
+              .map((post) => {
+                return (
+                  <div key={`post-${post.id}`}>
+                    <div css={textContainer}>
+                      <Link href={`/posts/${post.id}`}>
+                        <h2>{post.title}</h2>
+                      </Link>
+                      <p>€ {post.price}</p>
+                    </div>
+
+                    {post && post.url[0] ? (
+                      <Link
+                        href={`/posts/${post.id}`}
+                        key={`url-${post.url[0]}`}
+                      >
+                        <a>
+                          <Image
+                            src={post.url[0]}
+                            width="350px"
+                            height="186px"
+                            alt=""
+                          />
+                        </a>
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    {!post.url[0] && (
+                      <Link
+                        href={`/posts/${post.id}`}
+                        key={`url-${post.url[0]}`}
+                      >
+                        <a>
+                          <Image
+                            src="/ramen-illustration.png"
+                            width="350px"
+                            height="186px"
+                            alt="Post placeholder image"
+                          />
+                        </a>
+                      </Link>
+                    )}
+
+                    <div css={tagAndDistrict}>
+                      <Image
+                        src={`/${post.name}.png`}
+                        width="128px"
+                        height="28px"
+                        alt={`${post.name} tag`}
+                      />
+
+                      <div css={districtContainer}>
+                        <Image
+                          src="/position-pin.png"
+                          width="17px"
+                          height="23px"
+                          alt="location icon"
+                        />
+                        <p>{post.district}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+          )}
+        </main>
+      </Transition>
     </div>
   );
 }

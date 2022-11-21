@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 
 const headerContainerStyles = css`
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
   position: fixed;
   top: 0;
   display: flex;
@@ -141,7 +140,7 @@ const headerContainerStyles = css`
     padding-top: 120px;
     height: 100vh;
     width: 100vw;
-    transform: translate(150%);
+    transform: translate(-100%);
     display: flex;
     flex-direction: column;
     margin-left: -250px;

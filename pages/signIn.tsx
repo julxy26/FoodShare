@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { ButtonHover } from '../components/Animations/ButtonHover';
+import { Transition } from '../components/Animations/Transition';
 import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/signIn';
 
@@ -136,59 +138,62 @@ export default function SignIn(props: Props) {
 
   return (
     <div>
-      <Head>
-        <title>Sign in to FoodShare</title>
-        <meta name="description" content="Sign in to FoodShare" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Transition>
+        <Head>
+          <title>Sign in to FoodShare</title>
+          <meta name="description" content="Sign in to FoodShare" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main css={mainStyles}>
-        <h1>Welcome back!</h1>
+        <main css={mainStyles}>
+          <h1>Welcome back!</h1>
 
-        <Image
-          src="/signin-illustration.jpg"
-          width="230px"
-          height="250px"
-          alt="Illustration of a blue bowl with lots of ingredients floating above it."
-        />
-
-        <div css={inputContainer}>
-          <label htmlFor="username">Username</label>
-          <br />
-          <input
-            value={username}
-            onChange={(event) => {
-              setUsername(event.currentTarget.value.toLowerCase());
-            }}
+          <Image
+            src="/signin-illustration.jpg"
+            width="230px"
+            height="250px"
+            alt="Illustration of a blue bowl with lots of ingredients floating above it."
           />
-          <br />
-          <label htmlFor="password">Password</label>
-          <br />
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.currentTarget.value);
-            }}
-          />
-        </div>
 
-        {errors.map((error) => {
-          return <p key={error.message}>{error.message}</p>;
-        })}
+          <div css={inputContainer}>
+            <label htmlFor="username">Username</label>
+            <br />
+            <input
+              value={username}
+              onChange={(event) => {
+                setUsername(event.currentTarget.value.toLowerCase());
+              }}
+            />
+            <br />
+            <label htmlFor="password">Password</label>
+            <br />
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.currentTarget.value);
+              }}
+            />
+          </div>
 
-        <button
-          onClick={async () => {
-            await loginHandler();
-          }}
-        >
-          Sign in
-        </button>
-        <br />
-        <div css={linkToRegister}>
-          <Link href="/register">I don't have an account yet!</Link>
-        </div>
-      </main>
+          {errors.map((error) => {
+            return <p key={error.message}>{error.message}</p>;
+          })}
+          <ButtonHover>
+            <button
+              onClick={async () => {
+                await loginHandler();
+              }}
+            >
+              Sign in
+            </button>
+          </ButtonHover>
+          <br />
+          <div css={linkToRegister}>
+            <Link href="/register">I don't have an account yet!</Link>
+          </div>
+        </main>
+      </Transition>
     </div>
   );
 }

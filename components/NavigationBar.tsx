@@ -51,6 +51,7 @@ export default function NavigationBar(props: Props) {
               />
             </a>
           </Link>
+
           <Link href="/profile/my-posts/add-post">
             <a>
               <Image
@@ -61,6 +62,7 @@ export default function NavigationBar(props: Props) {
               />
             </a>
           </Link>
+
           <Link href="/profile">
             <a>
               <Image

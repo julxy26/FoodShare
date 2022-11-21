@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Transition } from '../../components/Animations/Transition';
 import { Photo } from '../../database/images';
 import { getPostByPostId } from '../../database/posts';
 import { Tag } from '../../database/tags';
@@ -151,89 +152,94 @@ export default function SinglePost(props: Props) {
   if ('error' in props) {
     return (
       <div>
-        <Head>
-          <title>Post not found</title>
-          <meta name="description" content="Post not found" />
-        </Head>
-        <h1>{props.error}</h1>
-        Sorry, try the <Link href="/posts">Posts page</Link>
+        <Transition>
+          <Head>
+            <title>Post not found</title>
+            <meta name="description" content="Post not found" />
+          </Head>
+          <h1>{props.error}</h1>
+          Sorry, try the <Link href="/posts">Posts page</Link>
+        </Transition>
       </div>
     );
   }
   return (
     <div>
-      <Head>
-        <title>{props.post.title}</title>
-        <meta name="description" content="Welcome to FoodShare" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Transition>
+        <Head>
+          <title>{props.post.title}</title>
+          <meta name="description" content="Welcome to FoodShare" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main css={mainStyles}>
-        <div css={imageContainer}>
-          {props.post.url.map((url) => (
-            <div key={`url-${url}`} css={imageContainer}>
+        <main css={mainStyles}>
+          <div css={imageContainer}>
+            {props.post.url.map((url) => (
+              <div key={`url-${url}`} css={imageContainer}>
+                <Image
+                  src={url}
+                  width="393px"
+                  height="321px"
+                  alt={props.post.title}
+                />
+              </div>
+            ))}
+          </div>
+
+          {!props.post.url[0] && (
+            <div css={imageContainer}>
               <Image
-                src={url}
+                src="/ramen-illustration.png"
                 width="393px"
                 height="321px"
-                alt={props.post.title}
+                alt="Post placeholder image"
               />
             </div>
-          ))}
-        </div>
+          )}
 
-        {!props.post.url[0] && (
-          <div css={imageContainer}>
+          <div css={titleAndPriceContainer}>
+            <h1>{props.post.title}</h1>
+            <p>{props.post.price}€</p>
+          </div>
+
+          <div css={tagName}>
             <Image
-              src="/ramen-illustration.png"
-              width="393px"
-              height="321px"
-              alt="Post placeholder image"
+              src={`/${props.post.name}-post.png`}
+              width="160px"
+              height="33px"
+              alt={`${props.post.name} tag`}
             />
           </div>
-        )}
-        <div css={titleAndPriceContainer}>
-          <h1>{props.post.title}</h1>
-          <p>{props.post.price}€</p>
-        </div>
 
-        <div css={tagName}>
-          <Image
-            src={`/${props.post.name}-post.png`}
-            width="160px"
-            height="33px"
-            alt={`${props.post.name} tag`}
-          />
-        </div>
+          <div css={descriptionContainer}>
+            <h2>Description</h2>
+            <p>{props.post.description}</p>
+          </div>
 
-        <div css={descriptionContainer}>
-          <h2>Description</h2>
-          <p>{props.post.description}</p>
-        </div>
+          <div css={locationContainer}>
+            <Image
+              src="/position-pin.png"
+              width="20px"
+              height="27px"
+              alt="location icon"
+            />
+            <p>
+              {props.post.street}, {props.post.district}
+            </p>
+          </div>
 
-        <div css={locationContainer}>
-          <Image
-            src="/position-pin.png"
-            width="20px"
-            height="27px"
-            alt="location icon"
-          />
-          <p>
-            {props.post.street}, {props.post.district}
-          </p>
-        </div>
-
-        <button
-          css={contactButton}
-          onClick={async () =>
-            await router.push(
-              `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.username}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.username}.`,
-            )
-          }
-        >
-          Contact {props.postUser.username}
-        </button>
-      </main>
+          <button
+            css={contactButton}
+            onClick={async () =>
+              await router.push(
+                `mailto:${props.postUser.email}?subject=FoodShare request&body=Hi, ${props.postUser.username}! Your post looks delicious. I would love to purchase it from you. Is it still available? If yes, where and when can I pick it up? Cheers, ${props.loggedUser.username}.`,
+              )
+            }
+          >
+            Contact {props.postUser.username}
+          </button>
+        </main>
+      </Transition>
     </div>
   );
 }
