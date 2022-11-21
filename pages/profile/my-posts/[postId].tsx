@@ -461,16 +461,17 @@ export default function SingleUserPost(props: Props) {
                   </div>
                 ) : (
                   <div>
-                    {props.post.url.map((url) => (
-                      <span key={`url-${url}`}>
-                        <Image
-                          src={url}
-                          width="80px"
-                          height="73px"
-                          alt={props.post.title}
-                        />
-                      </span>
-                    ))}
+                    {!preview[0] &&
+                      props.post.url.map((url) => (
+                        <span key={`url-${url}`}>
+                          <Image
+                            src={url}
+                            width="80px"
+                            height="73px"
+                            alt={props.post.title}
+                          />
+                        </span>
+                      ))}
                   </div>
                 )}
 

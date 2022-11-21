@@ -69,7 +69,7 @@ const newestPostsText = css`
 const postContainer = css`
   display: flex;
   gap: 8px;
-  max-width: 100%;
+  width: 100%;
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
@@ -102,8 +102,7 @@ const imageContainer = css`
 
   img {
     border-radius: 10px;
-    margin: 0 100px;
-    object-fit: cover;
+    margin: 0px 100px;
   }
 `;
 
@@ -227,7 +226,7 @@ export default function Home(props: Props) {
 
             <div css={homeImageContainer}>
               <Image
-                src="/home-image.png"
+                src="/home-image.jpg"
                 width="416px"
                 height="370px"
                 alt="Three glasses of pink lemonades on a wooden serving board with raspberries next to it."

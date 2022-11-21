@@ -22,7 +22,7 @@ const mainStyles = css`
 `;
 
 const formContainer = css`
-  margin-top: 14px;
+  margin-top: 29px;
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -73,6 +73,7 @@ const formContainer = css`
     background-position-y: center;
     background-position-x: 10px;
     font-weight: 700;
+    font-size: 16px;
     line-height: 20px;
     text-align: center;
     color: #ffffff;

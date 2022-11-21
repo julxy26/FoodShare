@@ -17,6 +17,7 @@ const mainBodyStyles = css`
   width: 100vw;
   background-image: url('/profile-background.png');
   background-position: 50% 100%;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,9 +56,9 @@ const mainBodyStyles = css`
 `;
 
 const saveButton = css`
-  width: 160px;
+  width: 165px;
   height: 38px;
-  margin-left: 15%;
+  margin-left: 13%;
   margin-top: 24px;
   background: #c07e6e;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -69,7 +70,8 @@ const saveButton = css`
   background-position-y: center;
   background-position-x: 7px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 17px;
+
   line-height: 20px;
   text-align: center;
   color: #ffffff;

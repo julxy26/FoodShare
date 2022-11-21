@@ -61,7 +61,7 @@ const titleAndPriceContainer = css`
   }
 `;
 const tagName = css`
-  margin-right: 54%;
+  margin-right: 47%;
 `;
 const descriptionContainer = css`
   width: 344px;
@@ -102,7 +102,7 @@ const locationContainer = css`
 `;
 
 const contactButton = css`
-  width: 160px;
+  width: 50%;
   height: 38px;
   background-color: #ffdb9d;
   padding-left: 20px;
@@ -200,8 +200,8 @@ export default function SinglePost(props: Props) {
         <div css={tagName}>
           <Image
             src={`/${props.post.name}-post.png`}
-            width="128px"
-            height="28px"
+            width="160px"
+            height="33px"
             alt={`${props.post.name} tag`}
           />
         </div>

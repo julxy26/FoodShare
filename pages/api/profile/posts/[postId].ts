@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  createImage,
-  deleteImagesByPostId,
-  updateImages,
-} from '../../../../database/images';
+import { createImage, deleteImagesByPostId } from '../../../../database/images';
 import {
   deletePostByPostId,
   getPostByPostId,
@@ -68,9 +64,7 @@ export default async function handler(
     const newTag = await updateTag(postId, tagId);
 
     const images = [];
-
-    const deleteImage =
-      !request.body.urls && (await deleteImagesByPostId(postId));
+    const deleteImage = await deleteImagesByPostId(postId);
 
     for (const url of urls) {
       images.push(await createImage(postId, url));

@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { getAllTags, Tag } from '../../../database/tags';
 
 const mainStyles = css`
-  margin-top: 90px;
+  margin-top: 88px;
   padding-bottom: 120px;
   display: flex;
   flex-direction: column;
@@ -207,7 +207,7 @@ const districtAndPriceContainer = css`
   }
 `;
 
-const errorMessage = css`
+const messageContainer = css`
   display: flex;
   justify-content: center;
   color: #c07e6e;
@@ -239,11 +239,11 @@ const addButton = css`
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  background-image: url('/edit.png');
+  background-image: url('/add.png');
   background-repeat: no-repeat;
-  background-size: 20px;
-  background-position-y: 6px;
-  background-position-x: 9px;
+  background-size: 24px;
+  background-position-y: center;
+  background-position-x: 5px;
   transition: 0.3s ease-in-out;
 
   &:active {
@@ -274,6 +274,7 @@ export default function AddPost(
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const [imageMessage, setImageMessage] = useState<string>();
   const router = useRouter();
+  const [addedMessage, setAddedMessage] = useState<string>('');
 
   async function addPostHandler() {
     const response = await fetch('/api/profile/posts', {
@@ -347,17 +348,22 @@ export default function AddPost(
       <main css={mainStyles}>
         <form onSubmit={(event) => event.preventDefault()}>
           <div css={uploadImagesContainer}>
-            {preview.length &&
-              preview.map((url) => (
-                <span key={`url-${url}`}>
-                  <Image
-                    width="80px"
-                    height="73px"
-                    src={String(url)}
-                    alt="preview"
-                  />
-                </span>
-              ))}
+            {preview.length ? (
+              <div>
+                {preview.map((url) => (
+                  <span key={`url-${url}`}>
+                    <Image
+                      width="80px"
+                      height="73px"
+                      src={String(url)}
+                      alt="preview"
+                    />
+                  </span>
+                ))}
+              </div>
+            ) : (
+              ''
+            )}
 
             <input
               type="file"
@@ -375,7 +381,10 @@ export default function AddPost(
                 name="title"
                 autoComplete="false"
                 value={title}
-                onChange={(event) => setTitle(event.currentTarget.value)}
+                onChange={(event) => {
+                  setTitle(event.currentTarget.value);
+                  setErrors([]);
+                }}
               />
             </label>
           </div>
@@ -391,9 +400,10 @@ export default function AddPost(
                         name="restrictions"
                         type="radio"
                         value={tag.id}
-                        onChange={(event) =>
-                          setTagId(Number(event.currentTarget.value))
-                        }
+                        onChange={(event) => {
+                          setTagId(Number(event.currentTarget.value));
+                          setErrors([]);
+                        }}
                       />
                       {tag.name}
                     </label>
@@ -410,7 +420,10 @@ export default function AddPost(
                 name="description"
                 autoComplete="off"
                 value={description}
-                onChange={(event) => setDescription(event.currentTarget.value)}
+                onChange={(event) => {
+                  setDescription(event.currentTarget.value);
+                  setErrors([]);
+                }}
               />
             </label>
           </div>
@@ -422,7 +435,10 @@ export default function AddPost(
                 name="street"
                 autoComplete="off"
                 value={street}
-                onChange={(event) => setStreet(event.currentTarget.value)}
+                onChange={(event) => {
+                  setStreet(event.currentTarget.value);
+                  setErrors([]);
+                }}
               />
             </label>
           </div>
@@ -431,13 +447,14 @@ export default function AddPost(
             <label htmlFor="district">
               District
               <input
-                value={price}
+                value={district}
                 autoComplete="off"
                 name="district"
                 type="number"
-                onChange={(event) =>
-                  setDistrict(parseInt(event.currentTarget.value))
-                }
+                onChange={(event) => {
+                  setDistrict(parseInt(event.currentTarget.value));
+                  setErrors([]);
+                }}
               />
             </label>
 
@@ -449,23 +466,31 @@ export default function AddPost(
                 pattern="[0-9]"
                 type="number"
                 value={price || ''}
-                onChange={(event) =>
-                  setPrice(parseInt(event.currentTarget.value))
-                }
+                onChange={(event) => {
+                  setPrice(parseInt(event.currentTarget.value));
+                  setErrors([]);
+                }}
               />
             </label>
           </div>
 
-          <div css={errorMessage}>
+          <div css={messageContainer}>
             {errors.map((error) => {
               return <p key={error.message}>{error.message}</p>;
             })}
           </div>
 
+          <div css={messageContainer}>
+            <p>{addedMessage}</p>
+          </div>
+
           <div css={buttonContainer}>
             <button
               css={addButton}
-              onClick={async () => await addPostHandler()}
+              onClick={async () => {
+                await addPostHandler();
+                !errors.length && setAddedMessage('Post added!');
+              }}
             >
               Add
             </button>
