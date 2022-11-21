@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Anchor from '../../components/Anchor';
+import HeaderWithoutArrow from '../../components/HeaderWithoutArrow';
+import HeaderWithSession from '../../components/HeaderWithSession';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const avatarStyles = css`
@@ -172,6 +174,7 @@ export default function Profile(props: Props) {
         <meta name="description" content="This is my profile" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <div css={mainBodyStyles}>
         <span>
           <Image

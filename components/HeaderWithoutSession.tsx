@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const headerContainerStyles = css`
   z-index: 1;
@@ -34,19 +35,17 @@ const headerContainerStyles = css`
 `;
 
 export default function HeaderWithoutSession() {
+  const router = useRouter();
+
   return (
     <header css={headerContainerStyles}>
-      <div>
-        <Link href="/">
-          <a>
-            <Image
-              src="/back.png"
-              width="35px"
-              height="35px"
-              alt="Arrow icon to go back"
-            />
-          </a>
-        </Link>
+      <div onClick={() => router.back()}>
+        <Image
+          src="/back.png"
+          width="35px"
+          height="35px"
+          alt="Arrow icon to go back"
+        />
       </div>
 
       <Link href="/">
