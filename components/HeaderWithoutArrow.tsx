@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { filterProps } from 'framer-motion';
 import Link from 'next/link';
 
 const headerContainerStyles = css`
@@ -12,7 +13,7 @@ const headerContainerStyles = css`
   height: 90px;
   gap: 50px;
   padding-right: 30px;
-  z-index: 3;
+  z-index: 5;
 
   a {
     color: #ffffff;
@@ -138,7 +139,7 @@ const headerContainerStyles = css`
     padding-top: 120px;
     height: 100vh;
     width: 100vw;
-    transform: translate(-100%);
+    transform: translate(100%);
     display: flex;
     flex-direction: column;
     margin-left: -250px;
@@ -157,6 +158,7 @@ const headerContainerStyles = css`
 
   .nav-container input[type='checkbox']:checked ~ .menu-items {
     transform: translateX(0);
+    transition: 0.5s all ease-in-out;
   }
 
   .nav-container input[type='checkbox']:checked ~ .hamburger-lines .line1 {
@@ -199,7 +201,7 @@ export default function HeaderWithoutArrow() {
               <Link href="/profile/my-posts">My Posts</Link>
             </li>
             <li>
-              <Link href="/">Q&A</Link>
+              <Link href="/faq">Q&A</Link>
             </li>
           </div>
         </div>

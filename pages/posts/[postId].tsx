@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Transition } from '../../components/Animations/Transition';
+import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
 import { Photo } from '../../database/images';
 import { getPostByPostId } from '../../database/posts';
 import { Tag } from '../../database/tags';
@@ -152,20 +152,20 @@ export default function SinglePost(props: Props) {
   if ('error' in props) {
     return (
       <div>
-        <Transition>
+        <SlideInFromRight>
           <Head>
             <title>Post not found</title>
             <meta name="description" content="Post not found" />
           </Head>
           <h1>{props.error}</h1>
           Sorry, try the <Link href="/posts">Posts page</Link>
-        </Transition>
+        </SlideInFromRight>
       </div>
     );
   }
   return (
     <div>
-      <Transition>
+      <SlideInFromRight>
         <Head>
           <title>{props.post.title}</title>
           <meta name="description" content="Welcome to FoodShare" />
@@ -239,7 +239,7 @@ export default function SinglePost(props: Props) {
             Contact {props.postUser.username}
           </button>
         </main>
-      </Transition>
+      </SlideInFromRight>
     </div>
   );
 }

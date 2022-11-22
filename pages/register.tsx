@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ButtonHover } from '../components/Animations/ButtonHover';
-import { Transition } from '../components/Animations/Transition';
+import { SlideInFromRight } from '../components/Animations/SlideInFromRight';
 import { getValidSessionByToken } from '../database/sessions';
 import { RegisterResponseBody } from './api/register';
 
@@ -154,107 +154,105 @@ export default function Register(props: Props) {
   }
 
   return (
-    <div>
-      <Transition>
-        <Head>
-          <title>Register</title>
-          <meta name="description" content="Register to FoodShare" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <SlideInFromRight>
+      <Head>
+        <title>Register</title>
+        <meta name="description" content="Register to FoodShare" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <main css={mainStyles}>
-          <div css={formContainer}>
-            <Image
-              css={avatarStyles}
-              src="/profile-pic.jpg"
-              width="128px"
-              height="128px"
-              alt="user profile picture"
-            />
+      <main css={mainStyles}>
+        <div css={formContainer}>
+          <Image
+            css={avatarStyles}
+            src="/profile-pic.jpg"
+            width="128px"
+            height="128px"
+            alt="user profile picture"
+          />
 
-            <div>
-              <label htmlFor="username">Username</label>
-              <br />
-              <input
-                value={username}
-                onChange={(event) => {
-                  setUsername(event.currentTarget.value.toLowerCase());
-                  setMessage('');
-                }}
-              />
-              <br />
-              <label htmlFor="password">Password</label>
-              <br />
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => {
-                  setPassword(event.currentTarget.value);
-                  setMessage('');
-                }}
-              />
-              <br />
-              <label htmlFor="name">Name</label>
-              <br />
-              <input
-                value={name}
-                onChange={(event) => {
-                  setName(event.currentTarget.value);
-                  setMessage('');
-                }}
-              />
-              <br />
-              <label htmlFor="email">E-mail</label>
-              <br />
-              <input
-                value={email}
-                onChange={(event) => {
-                  setEmail(event.currentTarget.value);
-                  setMessage('');
-                }}
-              />
-              <br />
-              <label htmlFor="phone-number">Phone number (optional)</label>
-              <br />
-              <input
-                value={phoneNumber}
-                type="number"
-                onChange={(event) => {
-                  setPhoneNumber(event.currentTarget.value);
-                  setMessage('');
-                }}
-              />
-            </div>
-            {errors.map((error) => {
-              return <p key={error.message}>{error.message}</p>;
-            })}
-
-            <p>{message}</p>
-            <ButtonHover>
-              <button
-                onClick={async () => {
-                  if (password === '') {
-                    setMessage('Password required');
-                  } else if (password.length < 6) {
-                    setMessage('Password is too short (min. 6 characters)');
-                  } else {
-                    setMessage('');
-                    await registerHandler();
-                  }
-                }}
-              >
-                Register
-              </button>
-            </ButtonHover>
-
+          <div>
+            <label htmlFor="username">Username</label>
             <br />
-            <div css={linkToLogin}>
-              <Link href="/signIn">I already have an account!</Link>
-            </div>
+            <input
+              value={username}
+              onChange={(event) => {
+                setUsername(event.currentTarget.value.toLowerCase());
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="password">Password</label>
+            <br />
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="name">Name</label>
+            <br />
+            <input
+              value={name}
+              onChange={(event) => {
+                setName(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="email">E-mail</label>
+            <br />
+            <input
+              value={email}
+              onChange={(event) => {
+                setEmail(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="phone-number">Phone number (optional)</label>
+            <br />
+            <input
+              value={phoneNumber}
+              type="number"
+              onChange={(event) => {
+                setPhoneNumber(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
           </div>
-        </main>
-      </Transition>
-    </div>
+          {errors.map((error) => {
+            return <p key={error.message}>{error.message}</p>;
+          })}
+
+          <p>{message}</p>
+          <ButtonHover>
+            <button
+              onClick={async () => {
+                if (password === '') {
+                  setMessage('Password required');
+                } else if (password.length < 6) {
+                  setMessage('Password is too short (min. 6 characters)');
+                } else {
+                  setMessage('');
+                  await registerHandler();
+                }
+              }}
+            >
+              Register
+            </button>
+          </ButtonHover>
+
+          <br />
+          <div css={linkToLogin}>
+            <Link href="/signIn">I already have an account!</Link>
+          </div>
+        </div>
+      </main>
+    </SlideInFromRight>
   );
 }
 

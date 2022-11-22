@@ -1,11 +1,10 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
-import { Transition } from '../components/Animations/Transition';
+import { SlideInFromRight } from '../components/Animations/SlideInFromRight';
 
 export default function QuestionsAndAnswers() {
   return (
-    <div>
-            <Transition>
-
+    <SlideInFromRight>
       <Head>
         <title>Q&A</title>
         <meta name="description" content="How FoodShare works" />
@@ -13,8 +12,6 @@ export default function QuestionsAndAnswers() {
       </Head>
 
       <h1>Q&A</h1>
-      </Transition>
-
-    </div>
+    </SlideInFromRight>
   );
 }

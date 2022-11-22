@@ -2,30 +2,26 @@ import { motion } from 'framer-motion';
 
 export const Transition = (props: any) => {
   const variants = {
-    enter: {
-      x: -1000,
+    out: {
       opacity: 0,
+      y: 100,
+      transition: {
+        duration: 0,
+      },
     },
-    center: {
-      x: 0,
+
+    in: {
       opacity: 1,
-    },
-    exit: {
-      opacity: 0,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0,
+      },
     },
   };
 
   return (
-    <motion.div
-      variants={variants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={{
-        x: { type: 'spring', stiffness: 400, damping: 70 },
-        opacity: { duration: 0.2 },
-      }}
-    >
+    <motion.div variants={variants} animate="in" initial="out" exit="out">
       {props.children}
     </motion.div>
   );

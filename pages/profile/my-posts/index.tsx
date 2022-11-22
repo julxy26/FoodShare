@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Transition } from '../../../components/Animations/Transition';
+import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
 import { Photo } from '../../../database/images';
 import { getPostsByUserId } from '../../../database/posts';
 import { Tag } from '../../../database/tags';
@@ -84,66 +84,64 @@ type Props = {
 export default function UserPosts(props: Props) {
   const router = useRouter();
   return (
-    <div>
-      <Transition>
-        <Head>
-          <title>My Posts</title>
-          <meta name="description" content="My Posts" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main css={mainStyles}>
-          {!props.posts[0] ? (
-            <p>There are no posts yet</p>
-          ) : (
-            <div>
-              {props.posts.map((post) => {
-                return (
-                  <div key={`userPost-${post.id}`}>
-                    <div>
-                      <Link
-                        href={`/profile/my-posts/${post.id}`}
-                        key={`url-${post.url[0]}`}
-                      >
-                        <a>
-                          {post && post.url[0] ? (
-                            <Image
-                              src={post.url[0]}
-                              width="350px"
-                              height="186px"
-                              alt={post.title}
-                            />
-                          ) : (
-                            <Image
-                              src="/ramen-illustration.png"
-                              width="350px"
-                              height="186px"
-                              alt={post.title}
-                            />
-                          )}
-                        </a>
-                      </Link>
-                    </div>
-
-                    <button
-                      onClick={async () =>
-                        await router.push(`/profile/my-posts/${post.id}`)
-                      }
+    <SlideInFromRight>
+      <Head>
+        <title>My Posts</title>
+        <meta name="description" content="My Posts" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main css={mainStyles}>
+        {!props.posts[0] ? (
+          <p>There are no posts yet</p>
+        ) : (
+          <div>
+            {props.posts.map((post) => {
+              return (
+                <div key={`userPost-${post.id}`}>
+                  <div>
+                    <Link
+                      href={`/profile/my-posts/${post.id}`}
+                      key={`url-${post.url[0]}`}
                     >
-                      Edit post
-                    </button>
-
-                    <div css={textContainer}>
-                      <h2>{post.title}</h2>
-                      <p>€ {post.price}</p>
-                    </div>
+                      <a>
+                        {post && post.url[0] ? (
+                          <Image
+                            src={post.url[0]}
+                            width="350px"
+                            height="186px"
+                            alt={post.title}
+                          />
+                        ) : (
+                          <Image
+                            src="/ramen-illustration.png"
+                            width="350px"
+                            height="186px"
+                            alt={post.title}
+                          />
+                        )}
+                      </a>
+                    </Link>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </main>
-      </Transition>
-    </div>
+
+                  <button
+                    onClick={async () =>
+                      await router.push(`/profile/my-posts/${post.id}`)
+                    }
+                  >
+                    Edit post
+                  </button>
+
+                  <div css={textContainer}>
+                    <h2>{post.title}</h2>
+                    <p>€ {post.price}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </main>
+    </SlideInFromRight>
   );
 }
 

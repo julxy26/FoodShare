@@ -64,11 +64,14 @@ export default async function handler(
     const newTag = await updateTag(postId, tagId);
 
     const images = [];
+
     const deleteImage = await deleteImagesByPostId(postId);
 
     for (const url of urls) {
       images.push(await createImage(postId, url));
     }
+
+    if (!request.body.url) return;
 
     if (!newPost) {
       return response.status(404).json({ message: 'Not a valid Id' });

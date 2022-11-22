@@ -73,7 +73,7 @@ export default function NavigationBar(props: Props) {
               />
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/faq">
             <a>
               <Image
                 src="/question.png"

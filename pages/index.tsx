@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ButtonHover } from '../components/Animations/ButtonHover';
-import { Transition } from '../components/Animations/Transition';
+import { SlideInFromLeft } from '../components/Animations/SlideInFromLeft';
 import HeaderWithoutArrow from '../components/HeaderWithoutArrow';
 import { Photo } from '../database/images';
 import { getPostsWithLimit } from '../database/posts';
@@ -214,14 +214,14 @@ export type Props = {
 export default function Home(props: Props) {
   const router = useRouter();
   return (
-    <Transition>
-      <div>
+    <>
+      <HeaderWithoutArrow />
+      <SlideInFromLeft>
         <Head>
           <title>Welcome to FoodShare</title>
           <meta name="description" content="Welcome to FoodShare" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <HeaderWithoutArrow />
 
         <main css={mainStyles}>
           {props.userIsSignedIn ? (
@@ -328,8 +328,8 @@ export default function Home(props: Props) {
             </div>
           )}
         </main>
-      </div>
-    </Transition>
+      </SlideInFromLeft>
+    </>
   );
 }
 

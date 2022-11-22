@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Transition } from '../../components/Animations/Transition';
+import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -85,13 +85,17 @@ const mainContainer = css`
     background-color: #fff;
     position: absolute;
     z-index: 6;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .navbar .menu-items li {
+  .navbar .menu-items > li > button {
     margin: 0px auto;
     margin-top: 0px;
     margin-bottom: 20px;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     line-height: 30px;
     width: 160px;
@@ -99,19 +103,26 @@ const mainContainer = css`
     border: 1px solid #939393;
     background-color: #fff;
     border-radius: 65px;
+    color: #3d3535;
+
+    &:focus {
+      background-color: #ffdb9d;
+    }
   }
 
   .nav-container input[type='checkbox']:checked ~ .menu-items {
     transform: translateX(0);
+    opacity: 1;
+    transition: 0.6s all ease-in-out;
+  }
+  button:active ~ .menu-items {
+    transform: translateX(100);
+    transition: 0.7s all ease-in-out;
   }
 
   input {
     margin-left: 12px;
     display: none;
-  }
-
-  .container-test input[type='checkbox']:checked ~ .menu-items li {
-    background-color: red;
   }
 `;
 
@@ -197,11 +208,11 @@ const textContainer = css`
   font-size: 19px;
   font-weight: 300px;
   padding: 0px 10px;
-  margin-bottom: -10px;
+  margin-bottom: -15px;
   margin-top: -15px;
 
   h2 {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 600;
   }
 `;
@@ -233,6 +244,7 @@ const tagAndDistrict = css`
   gap: 14px;
   margin-top: 5px;
   margin-bottom: 15px;
+  width: 100%;
 `;
 
 type Props = {
@@ -262,7 +274,7 @@ export default function Posts(props: Props) {
 
   return (
     <div>
-      <Transition>
+      <SlideInFromRight>
         <Head>
           <title>FoodShare posts</title>
           <meta name="description" content="Welcome to FoodShare" />
@@ -310,17 +322,15 @@ export default function Posts(props: Props) {
                   {props.tags.map((tag) => {
                     return (
                       <li key={`tag-${tag.id}`}>
-                        <label>
-                          <input
-                            type="checkbox"
-                            key={`tag-${tag.id}`}
-                            value={tag.id}
-                            onChange={(event) => {
-                              setFilterTagId(Number(event.currentTarget.value));
-                            }}
-                          />
+                        <button
+                          key={`tag-${tag.id}`}
+                          value={tag.id}
+                          onClick={(event) => {
+                            setFilterTagId(Number(event.currentTarget.value));
+                          }}
+                        >
                           {tag.name}
-                        </label>
+                        </button>
                       </li>
                     );
                   })}
@@ -414,7 +424,7 @@ export default function Posts(props: Props) {
 
                     <div css={tagAndDistrict}>
                       <Image
-                        src={`/${post.name}.png`}
+                        src={`/${post.name}-tag.png`}
                         width="128px"
                         height="28px"
                         alt={`${post.name} tag`}
@@ -435,7 +445,7 @@ export default function Posts(props: Props) {
               })
           )}
         </main>
-      </Transition>
+      </SlideInFromRight>
     </div>
   );
 }

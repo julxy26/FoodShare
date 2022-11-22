@@ -58,7 +58,6 @@ function MyApp({ Component, pageProps }) {
             font-weight: 400;
             margin: 20px 0;
             color: #3d3535;
-            overflow-x: hidden;
           }
 
           h1 {

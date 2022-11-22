@@ -1,7 +1,7 @@
 const tagNames = [
   { id: 1, name: 'Vegetarian' },
   { id: 2, name: 'Vegan' },
-  { id: 3, name: 'No restrictions' },
+  { id: 3, name: 'With meat' },
 ];
 
 export async function up(sql) {
