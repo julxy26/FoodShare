@@ -14,7 +14,6 @@ const headerContainerStyles = css`
   gap: 50px;
   display: flex;
   align-items: center;
-  background-color: red;
   padding-left: 20px;
 
   p {
