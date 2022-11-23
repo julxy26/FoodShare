@@ -14,7 +14,7 @@ import { getUserBySessionToken } from '../../database/users';
 const mainContainer = css`
   padding-top: 60px;
   padding-left: 20px;
-  margin-bottom: 200px;
+  margin-bottom: 480px;
   z-index: 0;
   position: relative;
   height: 100vh;
