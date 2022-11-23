@@ -4,9 +4,9 @@ export const Transition = (props: any) => {
   const variants = {
     out: {
       opacity: 0,
-      y: 100,
+      y: 250,
       transition: {
-        duration: 0,
+        duration: 0.8,
       },
     },
 

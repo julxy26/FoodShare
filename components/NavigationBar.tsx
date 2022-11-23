@@ -8,7 +8,7 @@ const containerStyles = css`
   width: 100vw;
   bottom: 0px;
   position: fixed;
-  z-index: 5;
+  z-index: 4;
 
   div {
     height: 93px;

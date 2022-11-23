@@ -4,20 +4,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const headerContainerStyles = css`
-  z-index: 1;
+  z-index: 2;
   background-color: #fff;
   position: fixed;
   top: 0;
-  display: flex;
-  align-items: center;
   width: 100vw;
   height: 90px;
   gap: 50px;
-
-  div {
-    margin-left: 20px;
-    margin-top: 3px;
-  }
+  display: flex;
+  margin-left: 20px;
+  align-items: center;
 
   p {
     font-family: 'Yeseva One';
@@ -31,6 +27,14 @@ const headerContainerStyles = css`
     width: 179px;
     height: 37px;
   }
+
+  button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 8;
+    opacity: 0;
+  }
 `;
 
 export default function HeaderWithoutSession() {
@@ -38,15 +42,15 @@ export default function HeaderWithoutSession() {
 
   return (
     <header css={headerContainerStyles}>
-      <div onClick={() => router.back()}>
+      <span>
+        <button onClick={() => router.back()} />
         <Image
           src="/back.png"
           width="35px"
           height="35px"
-          alt="Arrow icon to go back"
+          alt="Arrow icon to go to the previous page."
         />
-      </div>
-
+      </span>
       <Link href="/">
         <p>FoodShare</p>
       </Link>

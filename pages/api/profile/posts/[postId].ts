@@ -31,6 +31,7 @@ export default async function handler(
 
   if (request.method === 'GET') {
     const post = await getPostByPostId(postId);
+    console.log(post);
 
     if (!post) {
       return response.status(404).json({ message: 'Not a valid Id' });

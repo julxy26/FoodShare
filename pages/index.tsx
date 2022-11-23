@@ -18,7 +18,7 @@ const mainStyles = css`
 
   h1 {
     position: absolute;
-    z-index: 3;
+    z-index: 8;
     margin-top: 50px;
     left: 30px;
     font-size: 35px;
@@ -34,7 +34,7 @@ const loggedInIndex = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 17px;
   position: absolute;
   z-index: 0;
 `;
@@ -73,6 +73,7 @@ const postContainer = css`
   gap: 8px;
   width: 100%;
   overflow-x: scroll;
+  margin-left: -20px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -92,6 +93,7 @@ const postContainer = css`
   p {
     margin: 0 15px;
     width: 150px;
+    margin-left: 25px;
   }
 `;
 
@@ -115,7 +117,7 @@ const priceText = css`
 // USER NOT LOGGED IN
 
 const notLoggedInIndex = css`
-  top: -20px;
+  top: -43px;
   background-color: #588777;
   height: 100vh;
   width: 100vw;
@@ -123,7 +125,6 @@ const notLoggedInIndex = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   position: absolute;
   z-index: 5;
 
@@ -198,7 +199,7 @@ const signInButton = css`
 
 export type Props = {
   userIsSignedIn: string;
-  posts: {
+  posts?: {
     id: number;
     title: string;
     price: number;
@@ -230,6 +231,7 @@ export default function Home(props: Props) {
 
               <div css={homeImageContainer}>
                 <Image
+                  priority
                   src="/home-image.jpg"
                   width="416px"
                   height="370px"
@@ -253,38 +255,39 @@ export default function Home(props: Props) {
               </div>
 
               <div css={postContainer}>
-                {props.posts.map((post) => {
-                  return (
-                    <div key={`post-${post.id}`}>
-                      <ButtonHover>
-                        <div css={imageContainer}>
-                          <Link href={`/posts/${post.id}`}>
-                            <a>
-                              {post && post.url[0] ? (
-                                <Image
-                                  src={post.url[0]}
-                                  width="150px"
-                                  height="138x"
-                                  alt={`Picture of ${post.title}`}
-                                />
-                              ) : (
-                                <Image
-                                  src="/ramen-illustration.png"
-                                  width="150px"
-                                  height="138x"
-                                  alt="Post placeholder image"
-                                />
-                              )}
-                            </a>
-                          </Link>
-                        </div>
-                      </ButtonHover>
+                {props.posts &&
+                  props.posts.map((post) => {
+                    return (
+                      <div key={`post-${post.id}`}>
+                        <ButtonHover>
+                          <div css={imageContainer}>
+                            <Link href={`/posts/${post.id}`}>
+                              <a>
+                                {post.url[0] ? (
+                                  <Image
+                                    src={post.url[0]}
+                                    width="150px"
+                                    height="138x"
+                                    alt={`Picture of ${post.title}`}
+                                  />
+                                ) : (
+                                  <Image
+                                    src="/ramen-illustration.png"
+                                    width="150px"
+                                    height="138x"
+                                    alt="Post placeholder image"
+                                  />
+                                )}
+                              </a>
+                            </Link>
+                          </div>
+                        </ButtonHover>
 
-                      <p>{post.title}</p>
-                      <p css={priceText}>€ {post.price}</p>
-                    </div>
-                  );
-                })}
+                        <p>{post.title}</p>
+                        <p css={priceText}>€ {post.price}</p>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           ) : (
@@ -343,7 +346,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       userIsSignedIn: userIsSignedIn || null,
-      posts: posts,
+      posts: posts || null,
     },
   };
 }

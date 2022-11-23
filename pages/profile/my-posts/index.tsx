@@ -14,7 +14,7 @@ const mainStyles = css`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 70px;
+  padding-top: 45px;
   position: relative;
   padding-bottom: 80px;
 
@@ -68,7 +68,7 @@ const textContainer = css`
 `;
 
 type Props = {
-  posts: {
+  posts?: {
     id: number;
     title: string;
     price: number;
@@ -91,7 +91,7 @@ export default function UserPosts(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main css={mainStyles}>
-        {!props.posts[0] ? (
+        {!props.posts ? (
           <p>There are no posts yet</p>
         ) : (
           <div>
@@ -104,7 +104,7 @@ export default function UserPosts(props: Props) {
                       key={`url-${post.url[0]}`}
                     >
                       <a>
-                        {post && post.url[0] ? (
+                        {post.url[0] ? (
                           <Image
                             src={post.url[0]}
                             width="350px"
@@ -156,7 +156,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        posts,
+        posts: posts || null,
       },
     };
   }

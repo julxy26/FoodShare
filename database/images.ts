@@ -1,5 +1,4 @@
 import { sql } from './connect';
-import { Post } from './posts';
 
 export type Photo = {
   id: number;
@@ -7,10 +6,10 @@ export type Photo = {
   url: string;
 };
 
-export async function getImageIdByPost(postId: Post['id']) {
-  const [image] = await sql<Photo[]>`
+export async function getImageIdByPost(postId: number) {
+  const [image] = await sql<{ id: number }[]>`
   SELECT
-    id,
+    id
   FROM
     images
   WHERE
@@ -20,7 +19,9 @@ export async function getImageIdByPost(postId: Post['id']) {
 }
 
 export async function getAllImages() {
-  const images = await sql<Photo[]>`
+  const images = await sql<
+    { id: number; postId: number | null; url: string }[]
+  >`
   SELECT
     *
   FROM
@@ -29,8 +30,8 @@ export async function getAllImages() {
   return images;
 }
 
-export async function updateImages(postId: Post['id'], url: Photo['url']) {
-  const image = await sql<Photo[]>`
+export async function updateImages(postId: number, url: Photo['url']) {
+  const image = await sql<{ url: string }[]>`
 UPDATE
   images
 SET
@@ -44,7 +45,7 @@ RETURNING
 }
 
 export async function createImage(post_id: number, url: string) {
-  const photo = await sql<Photo[]>`
+  const photo = await sql<{ id: number; postId: number | null; url: string }[]>`
   INSERT INTO images
     (post_id, url)
   VALUES
@@ -56,8 +57,10 @@ export async function createImage(post_id: number, url: string) {
   return photo;
 }
 
-export async function deleteImagesByPostId(postId: Post['id']) {
-  const [image] = await sql<Post[]>`
+export async function deleteImagesByPostId(postId: number) {
+  const [image] = await sql<
+    { id: number; postId: number | null; url: string }[]
+  >`
     DELETE FROM
       images
     WHERE

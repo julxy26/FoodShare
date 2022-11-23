@@ -17,7 +17,7 @@ import {
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 const mainStyles = css`
-  margin-top: 90px;
+  margin-top: 47px;
   padding-bottom: 120px;
   display: flex;
   flex-direction: column;

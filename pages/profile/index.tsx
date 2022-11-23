@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Anchor from '../../components/Anchor';
 import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
 import { getUserBySessionToken, User } from '../../database/users';
 
@@ -21,6 +21,7 @@ const mainBodyStyles = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: -25px;
 
   p {
     color: #c07e6e;
@@ -128,7 +129,7 @@ export default function Profile(props: Props) {
     return deletedUser;
   }
 
-  async function updateUserFromApiByUsername(username: string) {
+  async function updateUserFromApiByUsername() {
     const response = await fetch(`/api/profile`, {
       method: 'PUT',
       headers: {
@@ -246,7 +247,7 @@ export default function Profile(props: Props) {
               } else if (password.length < 6) {
                 setMessage('Password is too short (min. 6 characters)');
               } else {
-                await updateUserFromApiByUsername(username);
+                await updateUserFromApiByUsername();
               }
             }}
           >
@@ -256,29 +257,29 @@ export default function Profile(props: Props) {
 
         <br />
 
-        {props.user.id ? (
-          <Anchor>
+        <Link href="/logout">
+          <a>
             <Image
               src="/logout.png"
               width="23px"
               height="23px"
               alt="logout icon"
             />
-          </Anchor>
-        ) : (
-          ' '
-        )}
+          </a>
+        </Link>
 
-        <Anchor>
-          <button
-            css={buttonToDeleteAccount}
-            onClick={async () => {
-              await deleteUserFromApiByUsername();
-            }}
-          >
-            Delete account
-          </button>
-        </Anchor>
+        <Link href="/logout">
+          <a>
+            <button
+              css={buttonToDeleteAccount}
+              onClick={async () => {
+                await deleteUserFromApiByUsername();
+              }}
+            >
+              Delete account
+            </button>
+          </a>
+        </Link>
       </div>
     </SlideInFromRight>
   );

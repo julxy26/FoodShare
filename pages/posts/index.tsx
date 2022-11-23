@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
+import { SlideInFromLeft } from '../../components/Animations/SlideInFromLeft';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -13,10 +13,10 @@ import { getUserBySessionToken, User } from '../../database/users';
 const mainContainer = css`
   padding-top: 60px;
   padding-left: 20px;
-  padding-bottom: 100px;
+  margin-bottom: 200px;
   z-index: 0;
-  overflow-x: hidden;
   position: relative;
+  height: 100vh;
 
   img {
     object-fit: cover;
@@ -65,12 +65,13 @@ const mainContainer = css`
   .nav-container .checkbox {
     position: absolute;
     display: block;
-    top: 70px;
-    left: 10px;
+    top: 45px;
+    left: 20px;
     height: 45px;
-    width: 80px;
+    width: 45px;
     z-index: 7;
     opacity: 0;
+
     cursor: pointer;
   }
 
@@ -81,7 +82,7 @@ const mainContainer = css`
     transition: transform 0.5s ease-in-out;
     margin: 0px auto;
     margin-left: -20px;
-    margin-top: -43px;
+    margin-top: -47px;
     background-color: #fff;
     position: absolute;
     z-index: 6;
@@ -104,9 +105,14 @@ const mainContainer = css`
     background-color: #fff;
     border-radius: 65px;
     color: #3d3535;
+    transition: 0.2s all ease-in-out;
 
     &:focus {
       background-color: #ffdb9d;
+    }
+
+    &:focus::after {
+      background-color: #fff;
     }
   }
 
@@ -181,6 +187,7 @@ const filterContainer = css`
   font-weight: 400;
   font-size: 16px;
   display: flex;
+  margin-top: -20px;
 
   button {
     border: none;
@@ -224,11 +231,11 @@ const districtContainer = css`
   gap: 2px;
 
   p {
-    line-height: 4px;
+    line-height: 0px;
     text-decoration: underline;
     text-underline-offset: 3px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   div {
@@ -248,7 +255,7 @@ const tagAndDistrict = css`
 `;
 
 type Props = {
-  posts: {
+  posts?: {
     id: number;
     title: string;
     price: number;
@@ -274,7 +281,7 @@ export default function Posts(props: Props) {
 
   return (
     <div>
-      <SlideInFromRight>
+      <SlideInFromLeft>
         <Head>
           <title>FoodShare posts</title>
           <meta name="description" content="Welcome to FoodShare" />
@@ -284,14 +291,12 @@ export default function Posts(props: Props) {
         <main css={mainContainer}>
           <div css={filterContainer}>
             <button onClick={() => setOnFilter(true)}>
-              {
-                <Image
-                  src="/filter.png"
-                  width="28px"
-                  height="28px"
-                  alt="filter icon"
-                />
-              }
+              <Image
+                src="/filter.png"
+                width="28px"
+                height="28px"
+                alt="filter icon"
+              />
               Filter
             </button>
 
@@ -363,7 +368,7 @@ export default function Posts(props: Props) {
             ''
           )}
 
-          {!props.posts[0] ? (
+          {!props.posts ? (
             <div>
               <p>There are no posts yet</p>
             </div>
@@ -388,7 +393,7 @@ export default function Posts(props: Props) {
                       <p>€ {post.price}</p>
                     </div>
 
-                    {post && post.url[0] ? (
+                    {post.url[0] ? (
                       <Link
                         href={`/posts/${post.id}`}
                         key={`url-${post.url[0]}`}
@@ -445,7 +450,7 @@ export default function Posts(props: Props) {
               })
           )}
         </main>
-      </SlideInFromRight>
+      </SlideInFromLeft>
     </div>
   );
 }
@@ -469,6 +474,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const tags = await getAllTags();
 
   return {
-    props: { posts, tags },
+    props: {
+      posts: posts || null,
+      tags: tags,
+    },
   };
 }

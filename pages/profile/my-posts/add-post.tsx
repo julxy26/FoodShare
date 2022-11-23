@@ -1,9 +1,4 @@
 import { css } from '@emotion/react';
-import {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,7 +7,7 @@ import { Transition } from '../../../components/Animations/Transition';
 import { getAllTags, Tag } from '../../../database/tags';
 
 const mainStyles = css`
-  margin-top: 88px;
+  margin-top: 44px;
   padding-bottom: 120px;
   display: flex;
   flex-direction: column;
@@ -261,11 +256,7 @@ export type AddPostResponseBody =
   | { errors: { message: string }[] }
   | { user: { username: string } };
 
-export default function AddPost(
-  props: Props,
-  request: NextApiRequest,
-  response: NextApiResponse<AddPostResponseBody>,
-) {
+export default function AddPost(props: Props) {
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>();
   const [description, setDescription] = useState<string>('');
@@ -301,7 +292,7 @@ export default function AddPost(
       return console.log(addPostResponseBody.errors);
     }
 
-    !errors && (await router.push(`/profile/my-posts`));
+    await router.push(`/profile/my-posts`);
     return addPostResponseBody;
   }
 
@@ -313,8 +304,6 @@ export default function AddPost(
       setMessage('Amount of images exceeded');
       return;
     }
-
-    if (!files) return;
 
     for (const file of files) {
       const formData = new FormData();
@@ -489,7 +478,7 @@ export default function AddPost(
               css={addButton}
               onClick={async () => {
                 await addPostHandler();
-                !errors.length && setMessage('Post added!');
+                errors[0] && setMessage('Post added!');
               }}
             >
               Add post
@@ -501,7 +490,7 @@ export default function AddPost(
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps() {
   const tags = await getAllTags();
 
   return {

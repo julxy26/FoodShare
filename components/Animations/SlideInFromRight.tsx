@@ -8,7 +8,7 @@ const container = css`
 export const SlideInFromRight = (props: any) => {
   const variants = {
     initialState: {
-      x: 500,
+      x: 600,
       y: 0,
       opacity: 0,
     },
@@ -30,7 +30,7 @@ export const SlideInFromRight = (props: any) => {
         animate="animateState"
         exit="exitState"
         transition={{
-          x: { type: 'spring', stiffness: 400, damping: 70 },
+          x: { type: 'spring', stiffness: 200, damping: 40 },
           opacity: { duration: 0.2 },
         }}
       >

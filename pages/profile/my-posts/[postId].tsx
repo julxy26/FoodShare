@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
@@ -12,7 +11,7 @@ import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const mainStyles = css`
-  margin-top: 90px;
+  margin-top: 47px;
   padding-bottom: 120px;
   display: flex;
   justify-content: center;
@@ -54,7 +53,6 @@ const imageContainer = css`
   max-width: 100%;
   display: inline-block;
   scroll-snap-type: x mandatory;
-  background-color: black;
 
   span {
     scroll-snap-align: start;
@@ -129,7 +127,7 @@ const titleContainer = css`
     font-size: 19px;
     font-weight: 600;
     border: 1px solid #ddd;
-    width: 348px;
+    width: 90%;
   }
 `;
 const tagNameContainer = css`
@@ -160,8 +158,8 @@ const tagsOnEditContainer = css`
     line-height: 39px;
   }
   input {
-    margin-right: 5px;
-    width: 13px;
+    margin-right: 8px;
+    width: 16px;
   }
 `;
 const descriptionContainer = css`
@@ -228,7 +226,7 @@ const districtAndPriceContainer = css`
     margin-left: 50px;
   }
   input {
-    width: 165px;
+    width: 160px;
     font-size: 16px;
   }
 `;
@@ -286,40 +284,24 @@ const deleteButton = css`
   background: none;
   margin-top: 20px;
 `;
-type Props =
-  | {
-      post: {
-        id: number;
-        title: string;
-        price: number;
-        description: string;
-        street: string;
-        district: number;
-        userId: number;
-        url: Photo['url'][];
-        tagId: Tag['id'];
-        name: Tag['name'];
-      };
-      tags: Tag[];
-    }
-  | {
-      error: string;
-    };
+
+type Props = {
+  post: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    street: string;
+    district: number;
+    userId: number;
+    url: Photo['url'][];
+    tagId: Tag['id'];
+    name: Tag['name'];
+  };
+  tags: Tag[];
+};
 
 export default function SingleUserPost(props: Props) {
-  if ('error' in props) {
-    return (
-      <SlideInFromRight>
-        <Head>
-          <title>Post not found</title>
-          <meta name="description" content="Post not found" />
-        </Head>
-        <h1>{props.error}</h1>
-        Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
-      </SlideInFromRight>
-    );
-  }
-
   const [title, setTitle] = useState<string>(props.post.title);
   const [price, setPrice] = useState<number>(props.post.price);
   const [description, setDescription] = useState<string>(
@@ -349,8 +331,6 @@ export default function SingleUserPost(props: Props) {
       setMessage('Amount of images exceeded');
       return;
     }
-
-    if (!files) return;
 
     for (const file of files) {
       const formData = new FormData();
@@ -393,6 +373,7 @@ export default function SingleUserPost(props: Props) {
     const updatedPost = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
+
     return updatedPost;
   }
 
@@ -415,8 +396,8 @@ export default function SingleUserPost(props: Props) {
   return (
     <SlideInFromRight>
       <Head>
-        <title>{props.post.title}</title>
-        <meta name="description" content={`${props.post.title}`} />
+        <title>My Post</title>
+        <meta name="description" content="My post" />
       </Head>
 
       <main css={mainStyles}>
@@ -552,7 +533,7 @@ export default function SingleUserPost(props: Props) {
               placeholder="Description"
               disabled={onEdit}
               onChange={(event) => setDescription(event.currentTarget.value)}
-            ></textarea>
+            />
 
             <br />
           </div>
@@ -611,14 +592,14 @@ export default function SingleUserPost(props: Props) {
           <div css={buttonContainer}>
             <button
               css={editButton}
-              onClick={() => {
+              onClick={async () => {
                 if (onEdit) {
                   setOnEdit(false);
                   setButtonText('Save');
                   setMessage('');
                 } else {
                   setMessage('Changes are saved');
-                  savePostHandler(props.post.id);
+                  await savePostHandler(props.post.id);
                 }
               }}
             >
@@ -648,20 +629,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const foundPost = postId && (await getPostByPostId(postId));
 
-  if (typeof foundPost === 'undefined') {
-    context.res.statusCode = 404;
-    return {
-      props: {
-        error: 'Post not found',
-      },
-    };
-  }
-
   const tags = await getAllTags();
 
   return {
     props: {
-      post: foundPost,
+      post: foundPost || null,
       tags,
     },
   };

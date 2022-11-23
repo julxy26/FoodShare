@@ -6,13 +6,26 @@ export type User = {
   passwordHash: string;
   name: string;
   email: string;
-  phoneNumber: number | null;
+  phoneNumber: string | null;
+};
+
+export type UserWithoutPassword = {
+  username: string;
+  name: string;
+  email: string;
+  phoneNumber: string | null;
 };
 
 export async function getUserByPost(postId: number) {
   if (!postId) return undefined;
 
-  const [user] = await sql<User[]>`
+  const [user] = await sql<
+    {
+      username: string;
+      name: string;
+      email: string;
+    }[]
+  >`
   SELECT
     username,
     name,
@@ -61,7 +74,8 @@ export async function updateUserByUsername(
       username = ${username}
     OR
       users.email = ${email}
-    RETURNING *
+    RETURNING
+      *
   `;
   return user;
 }
@@ -69,15 +83,7 @@ export async function updateUserByUsername(
 export async function getUserById(id: number) {
   if (!id) return undefined;
 
-  const [user] = await sql<
-    {
-      id: number;
-      username: string;
-      name: string;
-      email: string;
-      phoneNumber: number | null;
-    }[]
-  >`
+  const [user] = await sql<UserWithoutPassword[]>`
   SELECT
     username,
     name,
@@ -95,14 +101,7 @@ export async function getUserById(id: number) {
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
-  const [user] = await sql<
-    {
-      username: string;
-      name: string;
-      email: string;
-      phoneNumber: number | null;
-    }[]
-  >`
+  const [user] = await sql<UserWithoutPassword[]>`
   SELECT
     username,
     name,
@@ -120,14 +119,7 @@ export async function getUserByUsername(username: string) {
 export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
-  const [user] = await sql<
-    {
-      username: string;
-      name: string;
-      email: string;
-      phoneNumber: number | null;
-    }[]
-  >`
+  const [user] = await sql<UserWithoutPassword[]>`
   SELECT
     username,
     name,
@@ -166,7 +158,7 @@ export async function getUserBySessionToken(token: string) {
       username: string;
       name: string;
       email: string;
-      phoneNumber: number | null;
+      phoneNumber: string | null;
     }[]
   >`
   SELECT
@@ -176,12 +168,13 @@ export async function getUserBySessionToken(token: string) {
     users.email,
     users.phone_number
   FROM
-    users,
-    sessions
-  WHERE
-    sessions.token = ${token} AND
-    sessions.user_id = users.id AND
-    sessions.expiry_timestamp > now();
+    users
+  INNER JOIN
+    sessions ON (
+      sessions.token = ${token} AND
+      sessions.user_id = users.id AND
+      sessions.expiry_timestamp > now()
+    )
   `;
 
   return user;
@@ -198,9 +191,10 @@ export async function createUser(
     {
       id: number;
       username: string;
+      passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: number | null;
+      phoneNumber: string | null;
     }[]
   >`
   INSERT INTO users
@@ -208,11 +202,7 @@ export async function createUser(
   VALUES
     (${username}, ${password_hash}, ${name}, ${email}, ${phone_number})
   RETURNING
-    id,
-    username,
-    name,
-    email,
-    phone_number
+    *
   `;
 
   return userWithoutPassword!;

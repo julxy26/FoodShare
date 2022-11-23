@@ -1,18 +1,9 @@
 import { css, Global } from '@emotion/react';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState();
-  const router = useRouter;
-
-  const spring = {
-    type: 'spring',
-    damping: 20,
-    stiffness: 100,
-    when: 'afterChildren',
-  };
 
   const refreshUserProfile = useCallback(async () => {
     const profileResponse = await fetch('/api/profile');
@@ -36,10 +27,6 @@ function MyApp({ Component, pageProps }) {
         rel="preconnect"
         href="https://fonts.gstatic.com"
         crossOrigin="true"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Yeseva+One&display=swap"
-        rel="stylesheet"
       />
 
       <Global

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { User } from '../database/users';
-import HeaderWithoutSession from './HeaderWithoutSession';
 import HeaderWithSession from './HeaderWithSession';
 import NavigationBar from './NavigationBar';
 
@@ -15,11 +14,8 @@ export default function Layout(props: Props) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {props.user ? <HeaderWithSession /> : <HeaderWithoutSession />}
-
+      <HeaderWithSession />
       <main>{props.children}</main>
-
       <NavigationBar user={props.user} />
     </>
   );

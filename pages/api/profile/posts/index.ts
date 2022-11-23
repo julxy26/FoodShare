@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createImage } from '../../../../database/images';
 import { createPost, getPostsByUserId } from '../../../../database/posts';
-import { createPostsTags, getTagIdByTagName } from '../../../../database/tags';
+import { createPostsTags } from '../../../../database/tags';
 import { getUserBySessionToken } from '../../../../database/users';
 
 export default async function handler(
@@ -72,7 +72,7 @@ export default async function handler(
         userId,
       );
 
-      const postId = post.id;
+      const postId = post!.id;
 
       const [postsTags] = await createPostsTags(postId, tagId);
 

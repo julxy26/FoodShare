@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
-import { filterProps } from 'framer-motion';
 import Link from 'next/link';
 
 const headerContainerStyles = css`
   background-color: #fff;
   position: fixed;
-  top: 0;
+  top: 0px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -185,9 +184,9 @@ export default function HeaderWithoutArrow() {
         <div className="container nav-container">
           <input className="checkbox" type="checkbox" />
           <div className="hamburger-lines">
-            <span className="line line1"></span>
-            <span className="line line2"></span>
-            <span className="line line3"></span>
+            <span className="line line1" />
+            <span className="line line2" />
+            <span className="line line3" />
           </div>
 
           <div className="menu-items">

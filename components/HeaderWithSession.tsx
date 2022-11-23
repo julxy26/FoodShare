@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 const headerContainerStyles = css`
   background-color: #fff;
   position: fixed;
-  top: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -15,6 +14,7 @@ const headerContainerStyles = css`
   gap: 50px;
   padding-right: 30px;
   z-index: 2;
+  top: -1px;
 
   a {
     color: #ffffff;
@@ -179,6 +179,14 @@ const arrowContainer = css`
   left: 20px;
   top: 28px;
   bottom: 27px;
+
+  button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 8;
+    opacity: 0;
+  }
 `;
 
 export default function HeaderWithSession() {
@@ -186,7 +194,8 @@ export default function HeaderWithSession() {
 
   return (
     <header css={headerContainerStyles}>
-      <span onClick={() => router.back()} css={arrowContainer}>
+      <span css={arrowContainer}>
+        <button onClick={() => router.back()} />
         <Image
           src="/back.png"
           width="35px"
@@ -203,9 +212,9 @@ export default function HeaderWithSession() {
         <div className="container nav-container">
           <input className="checkbox" type="checkbox" />
           <div className="hamburger-lines">
-            <span className="line line1"></span>
-            <span className="line line2"></span>
-            <span className="line line3"></span>
+            <span className="line line1" />
+            <span className="line line2" />
+            <span className="line line3" />
           </div>
 
           <div className="menu-items">
