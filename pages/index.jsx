@@ -1,5 +1,8 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext } from 'next';
+// import { Tag } from '../database/tags';
+// import { User } from '../database/users';
+import { CldImage } from 'next-cloudinary';
+// import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,11 +10,9 @@ import { useRouter } from 'next/router';
 import { ButtonHover } from '../components/Animations/ButtonHover';
 import { SlideInFromLeft } from '../components/Animations/SlideInFromLeft';
 import HeaderWithoutArrow from '../components/HeaderWithoutArrow';
-import { Photo } from '../database/images';
+// import { Photo } from '../database/images';
 import { getPostsWithLimit } from '../database/posts';
 import { getValidSessionByToken } from '../database/sessions';
-import { Tag } from '../database/tags';
-import { User } from '../database/users';
 
 const mainStyles = css`
   position: relative;
@@ -197,22 +198,22 @@ const signInButton = css`
   }
 `;
 
-export type Props = {
-  userIsSignedIn: string;
-  posts?: {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    street: string;
-    district: number;
-    userId: User['id'];
-    url: Photo['url'][];
-    name: Tag['name'];
-  }[];
-};
+// export type Props = {
+//   userIsSignedIn: string;
+//   posts?: {
+//     id: number;
+//     title: string;
+//     price: number;
+//     description: string;
+//     street: string;
+//     district: number;
+//     userId: User['id'];
+//     url: Photo['url'][];
+//     name: Tag['name'];
+//   }[];
+// };
 
-export default function Home(props: Props) {
+export default function Home(props) {
   const router = useRouter();
   return (
     <>
@@ -264,7 +265,7 @@ export default function Home(props: Props) {
                             <Link href={`/posts/${post.id}`}>
                               <a>
                                 {post.url[0] ? (
-                                  <Image
+                                  <CldImage
                                     src={post.url[0]}
                                     width="150px"
                                     height="138x"
@@ -336,17 +337,17 @@ export default function Home(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const token = context.req.cookies.sessionToken;
 
   const userIsSignedIn = token && (await getValidSessionByToken(token));
 
   const posts = await getPostsWithLimit(4);
-
+  // posts & userIsSignedIn || null
   return {
     props: {
-      userIsSignedIn: userIsSignedIn || null,
-      posts: posts || null,
+      userIsSignedIn: userIsSignedIn,
+      posts: posts,
     },
   };
 }

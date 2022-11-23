@@ -1,18 +1,18 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext } from 'next';
+import { CldImage } from 'next-cloudinary';
+// import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
-import { Photo } from '../../database/images';
+// import { Photo } from '../../database/images';
 import { getPostByPostId } from '../../database/posts';
-import { Tag } from '../../database/tags';
+// import { Tag } from '../../database/tags';
 import {
   getUserById,
   getUserByPost,
   getUserBySessionToken,
-  User,
 } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
@@ -126,27 +126,27 @@ const contactButton = css`
   }
 `;
 
-type Props =
-  | {
-      post: {
-        id: number;
-        title: string;
-        price: number;
-        description: string;
-        street: string;
-        district: number;
-        userId: number;
-        url: Photo['url'][];
-        name: Tag['name'];
-      };
-      loggedUser: User;
-      postUser: User;
-    }
-  | {
-      error: string;
-    };
+// type Props =
+//   | {
+//       post: {
+//         id: number;
+//         title: string;
+//         price: number;
+//         description: string;
+//         street: string;
+//         district: number;
+//         userId: number;
+//         url: Photo['url'][];
+//         name: Tag['name'];
+//       };
+//       loggedUser: User;
+//       postUser: User;
+//     }
+//   | {
+//       error: string;
+//     };
 
-export default function SinglePost(props: Props) {
+export default function SinglePost(props) {
   const router = useRouter();
 
   if ('error' in props) {
@@ -176,7 +176,7 @@ export default function SinglePost(props: Props) {
           <div css={imageContainer}>
             {props.post.url.map((url) => (
               <div key={`url-${url}`} css={imageContainer}>
-                <Image
+                <CldImage
                   src={url}
                   width="393px"
                   height="321px"
@@ -244,7 +244,7 @@ export default function SinglePost(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
   const foundPost = postId && (await getPostByPostId(postId));

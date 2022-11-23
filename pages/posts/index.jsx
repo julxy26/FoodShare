@@ -1,14 +1,15 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext } from 'next';
+// import { GetServerSidePropsContext } from 'next';
+import { CldImage } from 'next-cloudinary';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SlideInFromLeft } from '../../components/Animations/SlideInFromLeft';
-import { Photo } from '../../database/images';
+// import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
-import { getAllTags, Tag } from '../../database/tags';
-import { getUserBySessionToken, User } from '../../database/users';
+import { getAllTags } from '../../database/tags';
+import { getUserBySessionToken } from '../../database/users';
 
 const mainContainer = css`
   padding-top: 60px;
@@ -254,30 +255,34 @@ const tagAndDistrict = css`
   width: 100%;
 `;
 
-type Props = {
-  posts?: {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    street: string;
-    district: number;
-    userId: User['id'];
-    url: Photo['url'][];
-    name: Tag['name'];
-    tagId: Tag['id'];
-  }[];
+// type Props = {
+//   posts?: {
+//     id: number;
+//     title: string;
+//     price: number;
+//     description: string;
+//     street: string;
+//     district: number;
+//     userId: User['id'];
+//     url: Photo['url'][];
+//     name: Tag['name'];
+//     tagId: Tag['id'];
+//   }[];
 
-  tags: {
-    id: number;
-    name: string;
-  }[];
-};
+//   tags: {
+//     id: number;
+//     name: string;
+//   }[];
+// };
 
-export default function Posts(props: Props) {
-  const [filterTagId, setFilterTagId] = useState<number>();
-  const [filterSelected, setFilterSelected] = useState<number>();
-  const [onFilter, setOnFilter] = useState<boolean>(false);
+// export default function Posts(props: Props) {
+//   const [filterTagId, setFilterTagId] = useState<number>();
+//   const [filterSelected, setFilterSelected] = useState<number>();
+//   const [onFilter, setOnFilter] = useState<boolean>(false);
+export default function Posts(props) {
+  const [filterTagId, setFilterTagId] = useState();
+  const [filterSelected, setFilterSelected] = useState();
+  const [onFilter, setOnFilter] = useState(false);
 
   return (
     <div>
@@ -377,9 +382,13 @@ export default function Posts(props: Props) {
               .filter((post) => {
                 let isInTheList = true;
 
-                if (filterSelected && filterSelected !== post.tagId) {
+                if (filterSelected !== post.tagId) {
                   isInTheList = false;
                 }
+
+                // if (filterSelected && filterSelected !== post.tagId) {
+                //   isInTheList = false;
+                // }
 
                 return isInTheList;
               })
@@ -399,7 +408,7 @@ export default function Posts(props: Props) {
                         key={`url-${post.url[0]}`}
                       >
                         <a>
-                          <Image
+                          <CldImage
                             src={post.url[0]}
                             width="350px"
                             height="186px"
@@ -455,7 +464,7 @@ export default function Posts(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const token = context.req.cookies.sessionToken;
 
   const user = token && (await getUserBySessionToken(token));
@@ -475,7 +484,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      posts: posts || null,
+      posts: posts,
       tags: tags,
     },
   };

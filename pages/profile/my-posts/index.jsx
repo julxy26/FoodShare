@@ -1,14 +1,15 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext } from 'next';
+// import Image from 'next/image';
+import { CldImage } from 'next-cloudinary';
+// import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
-import { Photo } from '../../../database/images';
+// import { Photo } from '../../../database/images';
 import { getPostsByUserId } from '../../../database/posts';
-import { Tag } from '../../../database/tags';
-import { getUserBySessionToken, User } from '../../../database/users';
+// import { Tag } from '../../../database/tags';
+import { getUserBySessionToken } from '../../../database/users';
 
 const mainStyles = css`
   display: flex;
@@ -67,21 +68,23 @@ const textContainer = css`
   }
 `;
 
-type Props = {
-  posts?: {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    street: string;
-    district: number;
-    userId: User['id'];
-    url: Photo['url'][];
-    name: Tag['name'];
-  }[];
-};
+// type Props = {
+//   posts?: {
+//     id: number,
+//     title: string,
+//     price: number,
+//     description: string,
+//     street: string,
+//     district: number,
+//     userId: User['id'],
+//     url: Photo['url'][],
+//     name: Tag['name'],
+//   }[],
+// };
 
-export default function UserPosts(props: Props) {
+// Props
+
+export default function UserPosts(props) {
   const router = useRouter();
   return (
     <SlideInFromRight>
@@ -105,14 +108,14 @@ export default function UserPosts(props: Props) {
                     >
                       <a>
                         {post.url[0] ? (
-                          <Image
+                          <CldImage
                             src={post.url[0]}
                             width="350px"
                             height="186px"
                             alt={post.title}
                           />
                         ) : (
-                          <Image
+                          <CldImage
                             src="/ramen-illustration.png"
                             width="350px"
                             height="186px"
@@ -145,7 +148,9 @@ export default function UserPosts(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+// GetServerSidePropsContext
+
+export async function getServerSideProps(context) {
   const token = context.req.cookies.sessionToken;
 
   const user = token && (await getUserBySessionToken(token));
@@ -156,7 +161,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        posts: posts || null,
+        posts: posts,
       },
     };
   }

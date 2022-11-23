@@ -16,7 +16,7 @@ export default async function handler(
       const userId = user.id;
       const posts = await getPostsByUserId(userId);
 
-      if (!posts) {
+      if (typeof posts === 'undefined') {
         return response
           .status(400)
           .json({ errors: [{ message: 'No posts found' }] });

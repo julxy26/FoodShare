@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
+import { CldImage } from 'next-cloudinary';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Transition } from '../../../components/Animations/Transition';
-import { getAllTags, Tag } from '../../../database/tags';
+import { getAllTags } from '../../../database/tags';
 
 const mainStyles = css`
   margin-top: 44px;
@@ -248,25 +248,37 @@ const addButton = css`
   }
 `;
 
-type Props = {
-  tags: Tag[];
-};
+// type Props = {
+//   tags: Tag[];
+// };
 
-export type AddPostResponseBody =
-  | { errors: { message: string }[] }
-  | { user: { username: string } };
+// export type AddPostResponseBody =
+//   | { errors: { message: string }[] }
+//   | { user: { username: string } };
 
-export default function AddPost(props: Props) {
-  const [title, setTitle] = useState<string>('');
-  const [price, setPrice] = useState<number>();
-  const [description, setDescription] = useState<string>('');
-  const [street, setStreet] = useState<string>('');
-  const [district, setDistrict] = useState<number>();
-  const [preview, setPreview] = useState<string[]>([]);
-  const [tagId, setTagId] = useState<number>();
-  const [errors, setErrors] = useState<{ message: string }[]>([]);
+// export default function AddPost(props: Props) {
+//   const [title, setTitle] = useState<string>('');
+//   const [price, setPrice] = useState<number>();
+//   const [description, setDescription] = useState<string>('');
+//   const [street, setStreet] = useState<string>('');
+//   const [district, setDistrict] = useState<number>();
+//   const [preview, setPreview] = useState<string[]>([]);
+//   const [tagId, setTagId] = useState<number>();
+//   const [errors, setErrors] = useState<{ message: string }[]>([]);
+//   const router = useRouter();
+//   const [message, setMessage] = useState<string>('');
+
+export default function AddPost(props) {
+  const [title, setTitle] = useState('');
+  const [price, setPrice] = useState();
+  const [description, setDescription] = useState('');
+  const [street, setStreet] = useState('');
+  const [district, setDistrict] = useState('');
+  const [preview, setPreview] = useState([]);
+  const [tagId, setTagId] = useState();
+  const [errors, setErrors] = useState([]);
   const router = useRouter();
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState('');
 
   async function addPostHandler() {
     const response = await fetch('/api/profile/posts', {
@@ -285,7 +297,8 @@ export default function AddPost(props: Props) {
       }),
     });
 
-    const addPostResponseBody = (await response.json()) as AddPostResponseBody;
+    const addPostResponseBody = await response.json();
+    // const addPostResponseBody = (await response.json()) as AddPostResponseBody;
 
     if ('errors' in addPostResponseBody) {
       setErrors(addPostResponseBody.errors);
@@ -296,9 +309,13 @@ export default function AddPost(props: Props) {
     return addPostResponseBody;
   }
 
-  const handleFileChange = async (e: any) => {
-    const files: (string | Blob)[] = Object.values(e.target.files);
-    const imageLinks: string[] = [];
+  // const handleFileChange = async (e: any) => {
+  //   const files: (string | Blob)[] = Object.values(e.target.files);
+  //   const imageLinks: string[] = [];
+
+  const handleFileChange = async (e) => {
+    const files = Object.values(e.target.files);
+    const imageLinks = [];
 
     if (files.length > 4) {
       setMessage('Amount of images exceeded');
@@ -342,7 +359,7 @@ export default function AddPost(props: Props) {
               <div>
                 {preview.map((url) => (
                   <span key={`url-${url}`}>
-                    <Image
+                    <CldImage
                       width="80px"
                       height="73px"
                       src={String(url)}
@@ -454,7 +471,7 @@ export default function AddPost(props: Props) {
                 autoComplete="off"
                 pattern="[0-9]"
                 type="number"
-                value={price || ''}
+                value={price}
                 onChange={(event) => {
                   setPrice(parseInt(event.currentTarget.value));
                   setErrors([]);

@@ -184,7 +184,9 @@ export async function updatePostById(
   return post;
 }
 
-export async function getPostByPostId(postId: number): Promise<object> {
+export async function getPostByPostId(
+  postId: number,
+): Promise<object | undefined> {
   const [post] = await sql<
     {
       id: number;
@@ -216,6 +218,7 @@ export async function getPostByPostId(postId: number): Promise<object> {
   WHERE
     post_id = ${post!.id}
 `;
+  if (!post) return undefined;
 
   const rawTag = await sql<{ name: string }[]>`
   SELECT
@@ -223,7 +226,7 @@ export async function getPostByPostId(postId: number): Promise<object> {
   FROM
     posts_tags, tags
   WHERE
-    posts_tags.post_id = ${post!.id}
+    posts_tags.post_id = ${post.id}
   AND
     tags.id = posts_tags.tag_id
 `;
@@ -241,7 +244,9 @@ export async function getPostByPostId(postId: number): Promise<object> {
   return fullPost;
 }
 
-export async function getPostsByUserId(userId: number): Promise<object> {
+export async function getPostsByUserId(
+  userId: number,
+): Promise<object | undefined> {
   const posts = await sql<
     {
       id: number;
@@ -264,6 +269,8 @@ export async function getPostsByUserId(userId: number): Promise<object> {
   ORDER BY
     posts.id DESC
   `;
+
+  if (!posts.length) return undefined;
 
   // loop over each post and get an array of promises with the urls for each post
   const rawImages = posts.map((post) => {
