@@ -343,11 +343,11 @@ export async function getServerSideProps(context) {
   const userIsSignedIn = token && (await getValidSessionByToken(token));
 
   const posts = await getPostsWithLimit(4);
-  // posts & userIsSignedIn || null
+
   return {
     props: {
-      userIsSignedIn: userIsSignedIn,
-      posts: posts,
+      userIsSignedIn: userIsSignedIn || null,
+      posts: posts || null,
     },
   };
 }
