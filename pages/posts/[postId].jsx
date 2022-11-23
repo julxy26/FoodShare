@@ -203,7 +203,7 @@ export default function SinglePost(props) {
           </div>
 
           <div css={tagName}>
-            <Image
+            <CldImage
               src={`/${props.post.name}-post.png`}
               width="160px"
               height="33px"
