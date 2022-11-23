@@ -22,15 +22,15 @@ const mainStyles = css`
   background-position: 50% 130%;
   background-repeat: no-repeat;
   background-size: 607px;
-  margin-top: 50px;
+  margin-top: 68px;
   overflow-y: hidden;
 `;
 
 const formContainer = css`
+  padding-top: 33px;
   flex-direction: column;
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: grey;
   width: 303px;
   height: 656px;
@@ -49,7 +49,7 @@ const formContainer = css`
     border-radius: 40px;
     line-height: 21px;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #3d3535;
 
     &:focus {
@@ -97,6 +97,7 @@ const avatarStyles = css`
 const linkToLogin = css`
   margin-top: 15px;
   font-weight: 400;
+  font-size: 16px;
   line-height: 21px;
   text-decoration: underline;
   text-underline-offset: 4px;

@@ -17,7 +17,7 @@ const mainStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 40px;
 
   h1 {
     margin-top: 14px;

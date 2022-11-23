@@ -8,12 +8,14 @@ const headerContainerStyles = css`
   background-color: #fff;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 90px;
   gap: 50px;
   display: flex;
-  margin-left: 20px;
   align-items: center;
+  background-color: red;
+  padding-left: 20px;
 
   p {
     font-family: 'Yeseva One';
