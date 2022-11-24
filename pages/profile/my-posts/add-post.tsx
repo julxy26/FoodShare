@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Transition } from '../../../components/Animations/Transition';
-import { getAllTags } from '../../../database/tags';
+import { getAllTags, Tag } from '../../../database/tags';
 
 const mainStyles = css`
   margin-top: 44px;
@@ -248,37 +248,25 @@ const addButton = css`
   }
 `;
 
-// type Props = {
-//   tags: Tag[];
-// };
+type Props = {
+  tags: Tag[];
+};
 
-// export type AddPostResponseBody =
-//   | { errors: { message: string }[] }
-//   | { user: { username: string } };
+export type AddPostResponseBody =
+  | { errors: { message: string }[] }
+  | { user: { username: string } };
 
-// export default function AddPost(props: Props) {
-//   const [title, setTitle] = useState<string>('');
-//   const [price, setPrice] = useState<number>();
-//   const [description, setDescription] = useState<string>('');
-//   const [street, setStreet] = useState<string>('');
-//   const [district, setDistrict] = useState<number>();
-//   const [preview, setPreview] = useState<string[]>([]);
-//   const [tagId, setTagId] = useState<number>();
-//   const [errors, setErrors] = useState<{ message: string }[]>([]);
-//   const router = useRouter();
-//   const [message, setMessage] = useState<string>('');
-
-export default function AddPost(props) {
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState();
-  const [description, setDescription] = useState('');
-  const [street, setStreet] = useState('');
-  const [district, setDistrict] = useState('');
-  const [preview, setPreview] = useState([]);
-  const [tagId, setTagId] = useState();
-  const [errors, setErrors] = useState([]);
+export default function AddPost(props: Props) {
+  const [title, setTitle] = useState<string>('');
+  const [price, setPrice] = useState<number>();
+  const [description, setDescription] = useState<string>('');
+  const [street, setStreet] = useState<string>('');
+  const [district, setDistrict] = useState<number>();
+  const [preview, setPreview] = useState<string[]>([]);
+  const [tagId, setTagId] = useState<number>();
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
 
   async function addPostHandler() {
     const response = await fetch('/api/profile/posts', {
@@ -309,13 +297,9 @@ export default function AddPost(props) {
     return addPostResponseBody;
   }
 
-  // const handleFileChange = async (e: any) => {
-  //   const files: (string | Blob)[] = Object.values(e.target.files);
-  //   const imageLinks: string[] = [];
-
-  const handleFileChange = async (e) => {
-    const files = Object.values(e.target.files);
-    const imageLinks = [];
+  const handleFileChange = async (e: any) => {
+    const files: (string | Blob)[] = Object.values(e.target.files);
+    const imageLinks: string[] = [];
 
     if (files.length > 4) {
       setMessage('Amount of images exceeded');

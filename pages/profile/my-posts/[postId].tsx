@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import { CldImage } from 'next-cloudinary';
-// import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
-// import { Photo } from '../../../database/images';
-import { getPostByPostId } from '../../../database/posts';
-import { getAllTags } from '../../../database/tags';
+import { Photo } from '../../../database/images';
+import { getPostByPostId, Post } from '../../../database/posts';
+import { getAllTags, Tag } from '../../../database/tags';
 import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const mainStyles = css`
@@ -286,70 +286,47 @@ const deleteButton = css`
   margin-top: 20px;
 `;
 
-// type Props = {
-//   post: {
-//     id: number,
-//     title: string,
-//     price: number,
-//     description: string,
-//     street: string,
-//     district: number,
-//     userId: number,
-//     url: Photo['url'][],
-//     tagId: Tag['id'],
-//     name: Tag['name'],
-//   },
-//   tags: Tag[],
-// };
+type Props = {
+  post: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    street: string;
+    district: number;
+    userId: number;
+    url: Photo['url'][];
+    tagId: Tag['id'];
+    name: Tag['name'];
+  };
+  tags: Tag[];
+};
 
-// export default function SingleUserPost(props: Props) {
-//   const [title, setTitle] = useState<string>(props.post.title);
-//   const [price, setPrice] = useState<number>(props.post.price);
-//   const [description, setDescription] = useState<string>(
-//     props.post.description,
-//   );
-//   const [street, setStreet] = useState<string>(props.post.street);
-//   const [district, setDistrict] = useState<number>(props.post.district);
-
-//   const [tagId, setTagId] = useState(props.post.tagId);
-//   const [tagName, setTagName] = useState(props.post.name);
-
-//   const [buttonText, setButtonText] = useState('Edit');
-
-//   const [onEdit, setOnEdit] = useState<boolean>(true);
-
-//   const [preview, setPreview] = useState<string[]>([]);
-
-//   const [message, setMessage] = useState<string>('');
-
-//   const router = useRouter();
-export default function SingleUserPost(props) {
-  const [title, setTitle] = useState(props.post.title);
-  const [price, setPrice] = useState(props.post.price);
-  const [description, setDescription] = useState(props.post.description);
-  const [street, setStreet] = useState(props.post.street);
-  const [district, setDistrict] = useState(props.post.district);
+export default function SingleUserPost(props: Props) {
+  const [title, setTitle] = useState<string>(props.post.title);
+  const [price, setPrice] = useState<number>(props.post.price);
+  const [description, setDescription] = useState<string>(
+    props.post.description,
+  );
+  const [street, setStreet] = useState<string>(props.post.street);
+  const [district, setDistrict] = useState<number>(props.post.district);
 
   const [tagId, setTagId] = useState(props.post.tagId);
   const [tagName, setTagName] = useState(props.post.name);
 
   const [buttonText, setButtonText] = useState('Edit');
 
-  const [onEdit, setOnEdit] = useState(true);
+  const [onEdit, setOnEdit] = useState<boolean>(true);
 
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState<string[]>([]);
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
 
   const router = useRouter();
 
-  // const handleFileChange = async (e: any) => {
-  //   const files: (string | Blob)[] = Object.values(e.target.files);
-  //   const imageLinks: string[] = [];
-
-  const handleFileChange = async (e) => {
-    const files = Object.values(e.target.files);
-    const imageLinks = [];
+  const handleFileChange = async (e: any) => {
+    const files: (string | Blob)[] = Object.values(e.target.files);
+    const imageLinks: string[] = [];
 
     if (files.length > 4) {
       setMessage('Amount of images exceeded');
@@ -379,7 +356,7 @@ export default function SingleUserPost(props) {
   };
 
   // number
-  async function savePostHandler(postId) {
+  async function savePostHandler(postId: number) {
     const response = await fetch(`/api/profile/posts/${postId}`, {
       method: 'PUT',
       headers: {
@@ -395,15 +372,14 @@ export default function SingleUserPost(props) {
         tagId: tagId,
       }),
     });
-    // const updatedPost = (await response.json()) as Post;
-    const updatedPost = await response.json();
+    const updatedPost = (await response.json()) as Post;
     setOnEdit(true);
     setButtonText('Edit');
 
     return updatedPost;
   }
 
-  async function deletePostHandler(postId) {
+  async function deletePostHandler(postId: number) {
     const response = await fetch(`/api/profile/posts/${postId}`, {
       method: 'DELETE',
       headers: {
@@ -414,8 +390,7 @@ export default function SingleUserPost(props) {
       }),
     });
 
-    // const deletedPost = (await response.json()) as Post;
-    const deletedPost = await response.json();
+    const deletedPost = (await response.json()) as Post;
     await router.push(`/profile/my-posts`);
     return deletedPost;
   }
@@ -652,7 +627,7 @@ export default function SingleUserPost(props) {
 }
 
 // GetServerSidePropsContext
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postId = parseIntFromContextQuery(context.query.postId);
 
   const foundPost = postId && (await getPostByPostId(postId));

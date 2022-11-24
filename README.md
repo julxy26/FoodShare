@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Mobile first application. For the best experience, please set the screen size to iPhone 12 Pro.
+
 ## Getting Started
 
 First, run the development server:
