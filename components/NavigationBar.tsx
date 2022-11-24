@@ -34,7 +34,7 @@ export default function NavigationBar(props: Props) {
           <Link href="/">
             <a>
               <Image
-                src="/zuhause.png"
+                src="/home.png"
                 width="33px"
                 height="33px"
                 alt="home icon"

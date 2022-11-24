@@ -100,6 +100,17 @@ const headerContainerStyles = css`
     cursor: pointer;
   }
 
+  .nav-container .profile {
+    position: absolute;
+    display: block;
+    width: 30px;
+    height: 30px;
+    top: 260px;
+    right: 45%;
+    z-index: 5;
+    cursor: pointer;
+  }
+
   .nav-container .hamburger-lines {
     display: block;
     height: 17px;

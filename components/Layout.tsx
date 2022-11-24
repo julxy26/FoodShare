@@ -14,7 +14,7 @@ export default function Layout(props: Props) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {typeof props.user !== 'undefined' ? <HeaderWithSession /> : ''}
+      {typeof props.user !== 'undefined' && <HeaderWithSession />}
       <main>{props.children}</main>
       <NavigationBar user={props.user} />
     </>
