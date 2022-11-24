@@ -12,18 +12,17 @@ import { getValidSessionByToken } from '../database/sessions';
 import { RegisterResponseBody } from './api/register';
 
 const mainStyles = css`
-  height: 87vh;
+  height: 85vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 90px;
   background-image: url('/register-background.jpg');
-  background-position: 50% 130%;
+  background-position: 50% 120%;
   background-repeat: no-repeat;
   background-size: 607px;
   margin-top: 68px;
-  overflow-y: hidden;
 `;
 
 const formContainer = css`

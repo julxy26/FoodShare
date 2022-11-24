@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import { CldImage } from 'next-cloudinary';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
@@ -112,7 +113,7 @@ export default function UserPosts(props: Props) {
                             alt={post.title}
                           />
                         ) : (
-                          <CldImage
+                          <Image
                             src="/ramen-illustration.png"
                             width="350px"
                             height="186px"
