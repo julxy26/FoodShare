@@ -266,6 +266,8 @@ export async function getPostsByUserId(
     users ON ${userId} = users.id
   WHERE
     ${userId} = users.id
+  AND
+    ${userId} = posts.user_id
   ORDER BY
     posts.id DESC
   `;
