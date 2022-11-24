@@ -275,8 +275,8 @@ type Props = {
 };
 
 export default function Posts(props: Props) {
-  const [filterTagId, setFilterTagId] = useState<number>();
-  const [filterSelected, setFilterSelected] = useState<number>();
+  const [filterTagId, setFilterTagId] = useState<string>();
+  const [filterSelected, setFilterSelected] = useState<string>();
   const [onFilter, setOnFilter] = useState<boolean>(false);
 
   return (
@@ -329,9 +329,9 @@ export default function Posts(props: Props) {
                       <li key={`tag-${tag.id}`}>
                         <button
                           key={`tag-${tag.id}`}
-                          value={tag.id}
+                          value={tag.name}
                           onClick={(event) => {
-                            setFilterTagId(Number(event.currentTarget.value));
+                            setFilterTagId(event.currentTarget.value);
                           }}
                         >
                           {tag.name}
@@ -344,7 +344,7 @@ export default function Posts(props: Props) {
                     <button
                       css={resetButton}
                       onClick={() => {
-                        setFilterSelected(0);
+                        setFilterSelected('');
                         setOnFilter(false);
                       }}
                     >
@@ -377,13 +377,9 @@ export default function Posts(props: Props) {
               .filter((post) => {
                 let isInTheList = true;
 
-                if (filterSelected !== post.tagId) {
+                if (filterSelected && filterSelected !== post.name[0]) {
                   isInTheList = false;
                 }
-
-                // if (filterSelected && filterSelected !== post.tagId) {
-                //   isInTheList = false;
-                // }
 
                 return isInTheList;
               })

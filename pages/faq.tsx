@@ -60,11 +60,10 @@ export default function QuestionsAndAnswers() {
 
         <h2>WHAT IS FoodShare?</h2>
         <p>
-          Too Good To Go fights food waste primarily through our app, that
-          connects users with stores and restaurants that have unsold surplus
-          food at the end of the day. Our greater mission, as an international
-          company, is to inspire and empower everyone to take action against
-          food waste.
+          FoodShare fights food waste primarily through our app, that connects
+          users with stores and restaurants that have unsold surplus food at the
+          end of the day. Our greater mission, as an international company, is
+          to inspire and empower everyone to take action against food waste.
         </p>
       </main>
     </SlideInFromRight>

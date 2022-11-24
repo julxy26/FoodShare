@@ -1,15 +1,14 @@
 import { css } from '@emotion/react';
-// import Image from 'next/image';
+import { GetServerSidePropsContext } from 'next';
 import { CldImage } from 'next-cloudinary';
-// import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
-// import { Photo } from '../../../database/images';
+import { Photo } from '../../../database/images';
 import { getPostsByUserId } from '../../../database/posts';
-// import { Tag } from '../../../database/tags';
-import { getUserBySessionToken } from '../../../database/users';
+import { Tag } from '../../../database/tags';
+import { getUserBySessionToken, User } from '../../../database/users';
 
 const mainStyles = css`
   display: flex;
@@ -68,23 +67,21 @@ const textContainer = css`
   }
 `;
 
-// type Props = {
-//   posts?: {
-//     id: number,
-//     title: string,
-//     price: number,
-//     description: string,
-//     street: string,
-//     district: number,
-//     userId: User['id'],
-//     url: Photo['url'][],
-//     name: Tag['name'],
-//   }[],
-// };
+type Props = {
+  posts?: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    street: string;
+    district: number;
+    userId: User['id'];
+    url: Photo['url'][];
+    name: Tag['name'];
+  }[];
+};
 
-// Props
-
-export default function UserPosts(props) {
+export default function UserPosts(props: Props) {
   const router = useRouter();
   return (
     <SlideInFromRight>
@@ -148,9 +145,7 @@ export default function UserPosts(props) {
   );
 }
 
-// GetServerSidePropsContext
-
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
 
   const user = token && (await getUserBySessionToken(token));
