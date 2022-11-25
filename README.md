@@ -2,6 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Mobile first application. For the best experience, please set the screen size to iPhone 12 Pro.
 
+![inspiration page](public/inspo.png)
+![moodboard](public/moodboard.png)
+![layout in grey scale](public/layout-grey.png)
+![layout in color](public/layout-color.png)
+
 ## Getting Started
 
 First, run the development server:
