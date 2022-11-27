@@ -417,7 +417,6 @@ export default function SingleUserPost(props: Props) {
   return (
     <>
       <HeaderWithSession />
-
       <SlideInFromRight>
         <Head>
           <title>My Post</title>
@@ -426,7 +425,7 @@ export default function SingleUserPost(props: Props) {
 
         <main css={mainStyles}>
           <form onSubmit={(event) => event.preventDefault()}>
-            {onEdit ? (
+            {onEdit && props.post ? (
               <div>
                 <div css={imageContainer}>
                   {props.post.url.map((url) => (
