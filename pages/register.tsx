@@ -23,6 +23,11 @@ const mainStyles = css`
   background-repeat: no-repeat;
   background-size: 607px;
   margin-top: 68px;
+
+  @media (max-width: 380px) {
+    height: 100vh;
+    margin-top: 50px;
+  }
 `;
 
 const formContainer = css`

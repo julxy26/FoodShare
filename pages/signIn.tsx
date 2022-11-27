@@ -75,6 +75,10 @@ const mainStyles = css`
       background-color: #e4b19b;
     }
   }
+
+  @media (max-width: 380px) {
+    margin-bottom: 50px;
+  }
 `;
 
 const inputContainer = css`
