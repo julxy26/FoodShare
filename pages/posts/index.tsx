@@ -475,7 +475,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      posts: posts,
+      posts: posts || null,
       tags: tags,
     },
   };

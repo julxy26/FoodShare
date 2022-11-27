@@ -155,9 +155,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const userId = user.id;
     const posts = await getPostsByUserId(userId);
 
+    if (!token) {
+      return {
+        redirect: {
+          destination: '/signIn?returnTo=/profile/my-posts',
+          permanent: false,
+        },
+      };
+    }
+
     return {
       props: {
-        posts: posts,
+        posts: posts || null,
       },
     };
   }

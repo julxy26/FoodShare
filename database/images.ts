@@ -30,16 +30,18 @@ export async function getAllImages() {
   return images;
 }
 
-export async function updateImages(postId: number, url: Photo['url']) {
-  const image = await sql<{ url: string }[]>`
+export async function updateImages(postId: number, url: string) {
+  const [image] = await sql<
+    { id: number; postId: number | null; url: string }[]
+  >`
 UPDATE
   images
 SET
   url = ${url}
 WHERE
-  ${postId} = post_id
+  ${postId} = images.post_id
 RETURNING
-  url
+  *
 `;
   return image;
 }
