@@ -35,7 +35,7 @@ For the optimal experience, please set the window to a mobile screen size.
 <li>Copy the environment variables from .env-example into .env</li>
 <li>Replace the placeholders xxxxx with your username, password and name of database</li>
 <li>Sign up to cloudinary and paste the account name in the .env and next.config.js file</li>
-<li>Install dotenv-cli with `yarn add dotenv-cli`</li>
+<li>Install dotenv-cli with ´yarn add dotenv-cli´</li>
 <li>Run `yarn install` in your command line</li>
 <li>Run the migrations with `yarn migrate up`</li>
 <li>Start the server by running `yarn dev`</li>
