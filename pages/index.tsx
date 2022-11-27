@@ -38,6 +38,14 @@ const loggedInIndex = css`
   margin-top: 17px;
   position: absolute;
   z-index: 0;
+
+  @media (max-width: 380px) {
+    height: 113vh;
+  }
+
+  @media (max-width: 360px) {
+    height: 100vh;
+  }
 `;
 
 const homeImageContainer = css`
