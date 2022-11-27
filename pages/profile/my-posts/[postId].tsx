@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from 'next';
 import { CldImage } from 'next-cloudinary';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SlideInFromRight } from '../../../components/Animations/SlideInFromRight';
@@ -302,7 +301,6 @@ type Props = {
     name: Tag['name'];
   };
   tags: Tag[];
-  error: string;
 };
 
 export default function SingleUserPost(props: Props) {
@@ -395,22 +393,6 @@ export default function SingleUserPost(props: Props) {
     const deletedPost = (await response.json()) as Post;
     await router.push(`/profile/my-posts`);
     return deletedPost;
-  }
-
-  if ('error' in props) {
-    return (
-      <div>
-        <HeaderWithSession />
-        <SlideInFromRight>
-          <Head>
-            <title>Post not found</title>
-            <meta name="description" content="Post not found" />
-          </Head>
-          <h1>{props.error}</h1>
-          Sorry, try the <Link href="/profile/my-posts">My Posts page</Link>
-        </SlideInFromRight>
-      </div>
-    );
   }
 
   return (
@@ -654,18 +636,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const tags = await getAllTags();
 
-  if (typeof foundPost === 'undefined') {
-    return {
-      props: {
-        error: 'Post not found',
-      },
-    };
-  } else {
-    return {
-      props: {
-        post: foundPost,
-        tags,
-      },
-    };
-  }
+  return {
+    props: {
+      post: foundPost,
+      tags,
+    },
+  };
 }
