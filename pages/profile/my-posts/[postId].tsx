@@ -302,7 +302,6 @@ type Props = {
     name: Tag['name'];
   };
   tags: Tag[];
-
   error: string;
 };
 
@@ -425,7 +424,7 @@ export default function SingleUserPost(props: Props) {
 
         <main css={mainStyles}>
           <form onSubmit={(event) => event.preventDefault()}>
-            {onEdit && props.post ? (
+            {onEdit ? (
               <div>
                 <div css={imageContainer}>
                   {props.post.url.map((url) => (
@@ -661,12 +660,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         error: 'Post not found',
       },
     };
+  } else {
+    return {
+      props: {
+        post: foundPost,
+        tags,
+      },
+    };
   }
-
-  return {
-    props: {
-      post: foundPost || null,
-      tags,
-    },
-  };
 }
