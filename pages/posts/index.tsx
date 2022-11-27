@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SlideInFromLeft } from '../../components/Animations/SlideInFromLeft';
+import HeaderWithSession from '../../components/HeaderWithSession';
 import { Photo } from '../../database/images';
 import { getAllPosts } from '../../database/posts';
 import { getAllTags, Tag } from '../../database/tags';
@@ -281,6 +282,7 @@ export default function Posts(props: Props) {
 
   return (
     <div>
+      <HeaderWithSession />
       <SlideInFromLeft>
         <Head>
           <title>FoodShare posts</title>

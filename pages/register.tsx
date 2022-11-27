@@ -158,7 +158,6 @@ export default function Register(props: Props) {
   return (
     <>
       <HeaderWithoutSession />
-
       <SlideInFromRight>
         <Head>
           <title>Register</title>

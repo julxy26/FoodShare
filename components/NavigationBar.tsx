@@ -29,7 +29,7 @@ type Props = {
 export default function NavigationBar(props: Props) {
   return (
     <div css={containerStyles}>
-      {props.user !== undefined ? (
+      {typeof props.user !== 'undefined' ? (
         <div>
           <Link href="/">
             <a>
@@ -85,7 +85,7 @@ export default function NavigationBar(props: Props) {
           </Link>
         </div>
       ) : (
-        ' '
+        ''
       )}
     </div>
   );

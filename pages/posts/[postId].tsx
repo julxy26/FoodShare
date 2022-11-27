@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
+import HeaderWithSession from '../../components/HeaderWithSession';
 import { Photo } from '../../database/images';
 import { getPostByPostId } from '../../database/posts';
 import { Tag } from '../../database/tags';
@@ -153,6 +154,7 @@ export default function SinglePost(props: Props) {
   if ('error' in props) {
     return (
       <div>
+        <HeaderWithSession />
         <SlideInFromRight>
           <Head>
             <title>Post not found</title>
@@ -166,6 +168,7 @@ export default function SinglePost(props: Props) {
   }
   return (
     <div>
+      <HeaderWithSession />
       <SlideInFromRight>
         <Head>
           <title>{props.post.title}</title>

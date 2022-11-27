@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Transition } from '../../../components/Animations/Transition';
+import HeaderWithSession from '../../../components/HeaderWithSession';
 import { getAllTags, Tag } from '../../../database/tags';
 
 const mainStyles = css`
@@ -329,6 +330,9 @@ export default function AddPost(props: Props) {
   };
 
   return (
+    <>
+          <HeaderWithSession />
+
     <Transition>
       <Head>
         <title>Add new Post</title>
@@ -488,6 +492,7 @@ export default function AddPost(props: Props) {
         </form>
       </main>
     </Transition>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SlideInFromRight } from '../../components/Animations/SlideInFromRight';
+import HeaderWithSession from '../../components/HeaderWithSession';
 import { getUserBySessionToken, User } from '../../database/users';
 
 const avatarStyles = css`
@@ -166,122 +167,126 @@ export default function Profile(props: Props) {
   }
 
   return (
-    <SlideInFromRight>
-      <Head>
-        <title>My profile</title>
-        <meta name="description" content="This is my profile" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <HeaderWithSession />
 
-      <div css={mainBodyStyles}>
-        <span>
-          <Image
-            css={avatarStyles}
-            src="/profile-pic.jpg"
-            width="128px"
-            height="128px"
-            alt="user profile picture"
-          />
-        </span>
+      <SlideInFromRight>
+        <Head>
+          <title>My profile</title>
+          <meta name="description" content="This is my profile" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-        <div>
-          <label htmlFor="username">Username</label>
-          <br />
-          <input
-            value={username}
-            onChange={(event) => {
-              setUsername(event.currentTarget.value.toLowerCase());
-              setMessage('');
-            }}
-          />
-          <br />
-          <label htmlFor="password">Password</label>
-          <br />
-          <input
-            required
-            minLength={5}
-            type="password"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.currentTarget.value);
-              setMessage('');
-            }}
-          />
-          <br />
-          <label htmlFor="name">Name</label>
-          <br />
-          <input
-            value={name}
-            onChange={(event) => {
-              setName(event.currentTarget.value);
-              setMessage('');
-            }}
-          />
-          <br />
-          <label htmlFor="email">E-mail</label>
-          <br />
-          <input
-            value={email}
-            onChange={(event) => {
-              setEmail(event.currentTarget.value);
-              setMessage('');
-            }}
-          />
-          <br />
-          <label htmlFor="phone-number">Phone number (optional)</label>
-          <br />
-          <input
-            value={phoneNumber}
-            onChange={(event) => {
-              setPhoneNumber(event.currentTarget.value);
-              setMessage('');
-            }}
-          />
-          <p>{message}</p>
-
-          <button
-            css={saveButton}
-            onClick={async () => {
-              if (password === '') {
-                setMessage('Password required');
-              } else if (password.length < 6) {
-                setMessage('Password is too short (min. 6 characters)');
-              } else {
-                await updateUserFromApiByUsername();
-              }
-            }}
-          >
-            Save changes
-          </button>
-        </div>
-
-        <br />
-
-        <Link href="/logout">
-          <a>
+        <div css={mainBodyStyles}>
+          <span>
             <Image
-              src="/logout.png"
-              width="23px"
-              height="23px"
-              alt="logout icon"
+              css={avatarStyles}
+              src="/profile-pic.jpg"
+              width="128px"
+              height="128px"
+              alt="user profile picture"
             />
-          </a>
-        </Link>
+          </span>
 
-        <Link href="/logout">
-          <a>
+          <div>
+            <label htmlFor="username">Username</label>
+            <br />
+            <input
+              value={username}
+              onChange={(event) => {
+                setUsername(event.currentTarget.value.toLowerCase());
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="password">Password</label>
+            <br />
+            <input
+              required
+              minLength={5}
+              type="password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="name">Name</label>
+            <br />
+            <input
+              value={name}
+              onChange={(event) => {
+                setName(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="email">E-mail</label>
+            <br />
+            <input
+              value={email}
+              onChange={(event) => {
+                setEmail(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <br />
+            <label htmlFor="phone-number">Phone number (optional)</label>
+            <br />
+            <input
+              value={phoneNumber}
+              onChange={(event) => {
+                setPhoneNumber(event.currentTarget.value);
+                setMessage('');
+              }}
+            />
+            <p>{message}</p>
+
             <button
-              css={buttonToDeleteAccount}
+              css={saveButton}
               onClick={async () => {
-                await deleteUserFromApiByUsername();
+                if (password === '') {
+                  setMessage('Password required');
+                } else if (password.length < 6) {
+                  setMessage('Password is too short (min. 6 characters)');
+                } else {
+                  await updateUserFromApiByUsername();
+                }
               }}
             >
-              Delete account
+              Save changes
             </button>
-          </a>
-        </Link>
-      </div>
-    </SlideInFromRight>
+          </div>
+
+          <br />
+
+          <Link href="/logout">
+            <a>
+              <Image
+                src="/logout.png"
+                width="23px"
+                height="23px"
+                alt="logout icon"
+              />
+            </a>
+          </Link>
+
+          <Link href="/logout">
+            <a>
+              <button
+                css={buttonToDeleteAccount}
+                onClick={async () => {
+                  await deleteUserFromApiByUsername();
+                }}
+              >
+                Delete account
+              </button>
+            </a>
+          </Link>
+        </div>
+      </SlideInFromRight>
+    </>
   );
 }
 
