@@ -4,8 +4,8 @@
 
 The concept of this application is a mobile first platform where users are able to post their leftover, homecooked meals to prevent food from being wasted. Every user has the option to post and/or buy a meal. Up to four images can be uploaded when creating or editing a post and the posts can be filtered based on the users preferences.
 
-Click here to see the <a href="https://foodshare.fly.dev/">deployed version</a>.
-For the optimal experience, please set the window to a mobile screen size.
+Click here to see the <a href="https://foodshare.fly.dev/">deployed version</a>. <br />
+For the optimal experience, please set the window to a mobile screen size (like iPhone 12 Pro).
 
 ### Ideas & Planning
 
