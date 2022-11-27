@@ -36,23 +36,23 @@ For the optimal experience, please set the window to a mobile screen size.
 <li>Replace the placeholders xxxxx with your username, password and name of database</li>
 <li>Sign up to cloudinary and paste the account name in the .env and next.config.js file</li>
 <li>Install dotenv-cli with 
-```
+````
 yarn add dotenv-cli
-```
+````
 </li>
 <li>Run 
-```
+````
 yarn install in your command line</li>
-```
+````
 <li>Run the migrations with 
-```
+````
 yarn migrate up</li>
-```
+````
 <li>Start the server by running 
-```
+````
 yarn dev</li>
-```
-<li>Open http://localhost:3000 with your browser to see the result</li>
+````
+<li>Open <a href="http://localhost:3000">localhost</a> with your browser to see the result</li>
 </ol>
 
 ### Deploy on Fly.io
@@ -61,9 +61,9 @@ yarn dev</li>
 <li>Generate a Fly.io Token, called GitHub Actions Deploy Token and copy the token</li>
 <li>Create a new repository secret in the GitHub repo, named FLY_API_TOKEN</li>
 <li>Log into Fly.io on the command line with 
-```
+````
 flyctl auth login
-```
+````
 </li>
 <li>Create an app flyctl apps create --name <app name>
 </li>
@@ -72,7 +72,7 @@ flyctl auth login
 <li>Add built time environment variables to the config files (fly.toml, Dockerfile) as described <a href="https://fly.io/docs/languages-and-frameworks/nextjs/#what-about-build-time-environment-variables">on Fly.io</a></li>
 <li>Create a 1GB volume for the PostgreSQL database in Frankfurt flyctl volumes create postgres --size 1 --region fra</li>
 <li>Run 
-```
+````
 flyctl deploy 
 ````
 in your command line to deploy</li>
