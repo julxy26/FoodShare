@@ -35,6 +35,23 @@ const mainStyles = css`
       outline: none;
     }
   }
+
+  @media (max-width: 380px) {
+    padding-top: 160px;
+    margin-bottom: 180px;
+  }
+
+  @media (min-width: 400px) {
+  }
+
+  @media (min-width: 540px) {
+  }
+
+  @media (min-width: 700px) {
+  }
+
+  @media (min-width: 1200px) {
+  }
 `;
 
 const uploadImagesContainer = css`
@@ -331,167 +348,167 @@ export default function AddPost(props: Props) {
 
   return (
     <>
-          <HeaderWithSession />
+      <HeaderWithSession />
 
-    <Transition>
-      <Head>
-        <title>Add new Post</title>
-        <meta name="description" content="Add new Post" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Transition>
+        <Head>
+          <title>Add new Post</title>
+          <meta name="description" content="Add new Post" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main css={mainStyles}>
-        <form onSubmit={(event) => event.preventDefault()}>
-          <div css={uploadImagesContainer}>
-            {preview.length < 5 ? (
-              <div>
-                {preview.map((url) => (
-                  <span key={`url-${url}`}>
-                    <CldImage
-                      width="80px"
-                      height="73px"
-                      src={String(url)}
-                      alt="preview"
-                    />
-                  </span>
-                ))}
-              </div>
-            ) : (
-              ''
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              multiple
-            />
-          </div>
-
-          <div css={titleContainer}>
-            <label htmlFor="title">
-              Title
-              <input
-                name="title"
-                autoComplete="false"
-                value={title}
-                onChange={(event) => {
-                  setTitle(event.currentTarget.value);
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={tagsContainer}>
-            <p>Restrictions</p>
-            <div>
-              {props.tags.map((tag) => {
-                return (
-                  <div key={`tag-${tag.id}`}>
-                    <label htmlFor="tags">
-                      <input
-                        name="restrictions"
-                        type="radio"
-                        value={tag.id}
-                        onChange={(event) => {
-                          setTagId(Number(event.currentTarget.value));
-                          setErrors([]);
-                        }}
+        <main css={mainStyles}>
+          <form onSubmit={(event) => event.preventDefault()}>
+            <div css={uploadImagesContainer}>
+              {preview.length < 5 ? (
+                <div>
+                  {preview.map((url) => (
+                    <span key={`url-${url}`}>
+                      <CldImage
+                        width="80px"
+                        height="73px"
+                        src={String(url)}
+                        alt="preview"
                       />
-                      {tag.name}
-                    </label>
-                  </div>
-                );
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                ''
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                multiple
+              />
+            </div>
+
+            <div css={titleContainer}>
+              <label htmlFor="title">
+                Title
+                <input
+                  name="title"
+                  autoComplete="false"
+                  value={title}
+                  onChange={(event) => {
+                    setTitle(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={tagsContainer}>
+              <p>Restrictions</p>
+              <div>
+                {props.tags.map((tag) => {
+                  return (
+                    <div key={`tag-${tag.id}`}>
+                      <label htmlFor="tags">
+                        <input
+                          name="restrictions"
+                          type="radio"
+                          value={tag.id}
+                          onChange={(event) => {
+                            setTagId(Number(event.currentTarget.value));
+                            setErrors([]);
+                          }}
+                        />
+                        {tag.name}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div css={descriptionContainer}>
+              <label htmlFor="description">
+                Description
+                <textarea
+                  name="description"
+                  autoComplete="off"
+                  value={description}
+                  onChange={(event) => {
+                    setDescription(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={locationContainer}>
+              <label htmlFor="street">
+                Street
+                <input
+                  name="street"
+                  autoComplete="off"
+                  value={street}
+                  onChange={(event) => {
+                    setStreet(event.currentTarget.value);
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={districtAndPriceContainer}>
+              <label htmlFor="district">
+                District
+                <input
+                  value={district}
+                  autoComplete="off"
+                  name="district"
+                  type="number"
+                  onChange={(event) => {
+                    setDistrict(parseInt(event.currentTarget.value));
+                    setErrors([]);
+                  }}
+                />
+              </label>
+
+              <label htmlFor="price">
+                Price
+                <input
+                  name="price"
+                  autoComplete="off"
+                  pattern="[0-9]"
+                  type="number"
+                  value={price}
+                  onChange={(event) => {
+                    setPrice(parseInt(event.currentTarget.value));
+                    setErrors([]);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div css={messageContainer}>
+              {errors.map((error) => {
+                return <p key={error.message}>{error.message}</p>;
               })}
             </div>
-          </div>
 
-          <div css={descriptionContainer}>
-            <label htmlFor="description">
-              Description
-              <textarea
-                name="description"
-                autoComplete="off"
-                value={description}
-                onChange={(event) => {
-                  setDescription(event.currentTarget.value);
-                  setErrors([]);
+            <div css={messageContainer}>
+              <p>{message}</p>
+            </div>
+
+            <div css={buttonContainer}>
+              <button
+                css={addButton}
+                onClick={async () => {
+                  await addPostHandler();
+                  errors[0] && setMessage('Post added!');
                 }}
-              />
-            </label>
-          </div>
-
-          <div css={locationContainer}>
-            <label htmlFor="street">
-              Street
-              <input
-                name="street"
-                autoComplete="off"
-                value={street}
-                onChange={(event) => {
-                  setStreet(event.currentTarget.value);
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={districtAndPriceContainer}>
-            <label htmlFor="district">
-              District
-              <input
-                value={district}
-                autoComplete="off"
-                name="district"
-                type="number"
-                onChange={(event) => {
-                  setDistrict(parseInt(event.currentTarget.value));
-                  setErrors([]);
-                }}
-              />
-            </label>
-
-            <label htmlFor="price">
-              Price
-              <input
-                name="price"
-                autoComplete="off"
-                pattern="[0-9]"
-                type="number"
-                value={price}
-                onChange={(event) => {
-                  setPrice(parseInt(event.currentTarget.value));
-                  setErrors([]);
-                }}
-              />
-            </label>
-          </div>
-
-          <div css={messageContainer}>
-            {errors.map((error) => {
-              return <p key={error.message}>{error.message}</p>;
-            })}
-          </div>
-
-          <div css={messageContainer}>
-            <p>{message}</p>
-          </div>
-
-          <div css={buttonContainer}>
-            <button
-              css={addButton}
-              onClick={async () => {
-                await addPostHandler();
-                errors[0] && setMessage('Post added!');
-              }}
-            >
-              Add post
-            </button>
-          </div>
-        </form>
-      </main>
-    </Transition>
+              >
+                Add post
+              </button>
+            </div>
+          </form>
+        </main>
+      </Transition>
     </>
   );
 }

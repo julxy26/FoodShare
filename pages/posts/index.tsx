@@ -72,13 +72,12 @@ const mainContainer = css`
     width: 45px;
     z-index: 7;
     opacity: 0;
-
     cursor: pointer;
   }
 
   .navbar .menu-items {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
     margin: 0px auto;

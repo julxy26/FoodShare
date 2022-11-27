@@ -54,6 +54,32 @@ const mainBodyStyles = css`
   span {
     margin: 20px 0;
   }
+
+  @media (max-width: 380px) {
+    padding-top: 60px;
+    padding-bottom: 120px;
+    background-position: 50% 0%;
+    background-size: 400px 800px;
+    height: 100%;
+  }
+
+  @media (min-width: 400px) {
+    padding-top: 90px;
+    padding-bottom: 120px;
+    background-position: 50% 100%;
+    background-size: 450px 800px;
+    height: 100%;
+  }
+
+  @media (min-width: 700px) {
+    margin-top: 60px;
+    padding-top: 80px;
+    padding-bottom: 250px;
+    background-position: 50% 0%;
+    background-size: 820px 1200px;
+    height: 100%;
+    overflow: hidden;
+  }
 `;
 
 const saveButton = css`

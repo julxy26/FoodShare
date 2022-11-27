@@ -11,7 +11,7 @@ const headerContainerStyles = css`
   justify-content: flex-end;
   width: 100vw;
   height: 90px;
-  gap: 50px;
+  gap: 14.5%;
   padding-right: 30px;
   z-index: 2;
   top: -1px;
@@ -183,6 +183,26 @@ const headerContainerStyles = css`
 
   .nav-container input[type='checkbox']:checked ~ .hamburger-lines .line3 {
     transform: rotate(-45deg);
+  }
+
+  @media (max-width: 360px) {
+    gap: 10.5%;
+  }
+
+  @media (min-width: 400px) {
+    gap: 17%;
+  }
+
+  @media (min-width: 540px) {
+    gap: 24.6%;
+  }
+
+  @media (min-width: 700px) {
+    gap: 33%;
+  }
+
+  @media (min-width: 1200px) {
+    gap: 39%;
   }
 `;
 const arrowContainer = css`
