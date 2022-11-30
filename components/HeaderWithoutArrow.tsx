@@ -12,7 +12,7 @@ const headerContainerStyles = css`
   height: 90px;
   gap: 14.5%;
   padding-right: 30px;
-  /* z-index: 2; */
+  z-index: 1;
 
   a {
     color: #ffffff;
@@ -48,7 +48,7 @@ const headerContainerStyles = css`
     background-color: #fff;
     background-image: url('/menu-background.jpg');
     background-repeat: no-repeat;
-    background-position: 18% 70%;
+    background-position: 50% 70%;
     background-size: 373px 490px;
   }
 
@@ -61,13 +61,6 @@ const headerContainerStyles = css`
   .container {
     margin: -50px;
     width: 100%;
-  }
-
-  .nav-container {
-    background: none;
-    display: flex;
-    height: 62px;
-    margin-right: -30px;
   }
 
   .navbar .nav-container li {
@@ -84,6 +77,8 @@ const headerContainerStyles = css`
     display: block;
     position: relative;
     height: 60px;
+    margin-right: -30px;
+    background: none;
   }
 
   .nav-container .checkbox {

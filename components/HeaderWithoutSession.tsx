@@ -13,7 +13,6 @@ const headerContainerStyles = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4;
 
   div {
     position: absolute;

@@ -8,19 +8,19 @@ const headerContainerStyles = css`
   position: fixed;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100vw;
   height: 90px;
   padding-right: 30px;
   top: -1px;
-  z-index: 2;
+  z-index: 4;
 
   a {
     color: #ffffff;
   }
 
   h1 {
-    margin: -10px auto;
+    margin: 0px auto;
     padding-bottom: 50px;
     width: 300px;
     line-height: 50px;
@@ -38,9 +38,6 @@ const headerContainerStyles = css`
     width: 179px;
     height: 37px;
     position: absolute;
-    left: 27.23%;
-    right: 27.23%;
-    bottom: 26.67%;
     z-index: 2;
   }
 
@@ -153,7 +150,7 @@ const headerContainerStyles = css`
     transform: translate(100%);
     display: flex;
     flex-direction: column;
-    margin-left: -250px;
+    margin-left: 50px;
     transition: transform 0.5s ease-in-out;
     text-align: center;
   }
