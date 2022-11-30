@@ -11,10 +11,9 @@ const headerContainerStyles = css`
   justify-content: flex-end;
   width: 100vw;
   height: 90px;
-  gap: 14.5%;
   padding-right: 30px;
-  z-index: 2;
   top: -1px;
+  z-index: 2;
 
   a {
     color: #ffffff;
@@ -50,7 +49,7 @@ const headerContainerStyles = css`
     background: #fff;
     background-image: url('/menu-background.jpg');
     background-repeat: no-repeat;
-    background-position: 18% 70%;
+    background-position: 50% 70%;
     background-size: 373px 490px;
   }
 
@@ -185,7 +184,7 @@ const headerContainerStyles = css`
     transform: rotate(-45deg);
   }
 
-  @media (max-width: 360px) {
+  /* @media (max-width: 360px) {
     gap: 10.5%;
   }
 
@@ -203,7 +202,7 @@ const headerContainerStyles = css`
 
   @media (min-width: 1200px) {
     gap: 39%;
-  }
+  } */
 `;
 const arrowContainer = css`
   position: absolute;

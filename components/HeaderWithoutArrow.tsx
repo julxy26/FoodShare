@@ -12,7 +12,7 @@ const headerContainerStyles = css`
   height: 90px;
   gap: 14.5%;
   padding-right: 30px;
-  z-index: 4;
+  /* z-index: 2; */
 
   a {
     color: #ffffff;

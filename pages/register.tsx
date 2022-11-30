@@ -25,8 +25,12 @@ const mainStyles = css`
   margin-top: 68px;
 
   @media (max-width: 380px) {
-    height: 100vh;
+    width: 100vw;
     margin-top: 50px;
+  }
+  @media (min-width: 550px) {
+    background-size: 800px;
+    background-position: 50% 60%;
   }
 `;
 

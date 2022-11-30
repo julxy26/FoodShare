@@ -126,7 +126,7 @@ const priceText = css`
 // USER NOT LOGGED IN
 
 const notLoggedInIndex = css`
-  top: -43px;
+  top: -44px;
   background-color: #588777;
   height: 100vh;
   width: 100vw;
@@ -135,7 +135,7 @@ const notLoggedInIndex = css`
   justify-content: center;
   align-items: center;
   position: absolute;
-  z-index: 5;
+  z-index: 8;
 
   div {
     margin-bottom: 40px;
@@ -151,9 +151,22 @@ const notLoggedInIndex = css`
 `;
 
 const buttonContainer = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: inline-flex;
+
+  button + button {
+    margin-left: 25px;
+  }
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button + button {
+      margin-left: 0px;
+      margin-top: 25px;
+    }
+  }
 `;
 
 const registerButton = css`
@@ -174,14 +187,12 @@ const registerButton = css`
   background-position-y: center;
   background-position-x: 10px;
   transition: 0.3s ease-in-out;
-  margin-bottom: -10px;
 
   &:active {
     background-color: #b2bfb6;
   }
 `;
 const signInButton = css`
-  margin-top: -10px;
   width: 160px;
   height: 38px;
   background: #b2bfb6;
@@ -224,17 +235,18 @@ export type Props = {
 export default function Home(props: Props) {
   const router = useRouter();
   return (
-    <>
-      <HeaderWithoutArrow />
-      <SlideInFromLeft>
-        <Head>
-          <title>Welcome to FoodShare</title>
-          <meta name="description" content="Welcome to FoodShare" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <SlideInFromLeft>
+      <Head>
+        <title>Welcome to FoodShare</title>
+        <meta name="description" content="Welcome to FoodShare" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <main css={mainStyles}>
-          {props.userIsSignedIn ? (
+      <main css={mainStyles}>
+        {props.userIsSignedIn ? (
+          <div>
+            <HeaderWithoutArrow />
+
             <div css={loggedInIndex}>
               <h1>Because sharing is caring.</h1>
 
@@ -299,49 +311,49 @@ export default function Home(props: Props) {
                   })}
               </div>
             </div>
-          ) : (
-            <div css={notLoggedInIndex}>
-              <p>Welcome to</p>
-              <div>
-                <Image
-                  src="/foodshare-logo.png"
-                  width="262"
-                  height="63"
-                  alt="FoodShare logo"
-                />
-              </div>
+          </div>
+        ) : (
+          <div css={notLoggedInIndex}>
+            <p>Welcome to</p>
+            <div>
+              <Image
+                src="/foodshare-logo.png"
+                width="262"
+                height="63"
+                alt="FoodShare logo"
+              />
+            </div>
 
-              <div>
-                <Image
-                  src="/ramen-illustration.png"
-                  width="320"
-                  height="320"
-                  alt="Illustration of a bowl of ramen"
-                />
-              </div>
+            <div>
+              <Image
+                src="/ramen-illustration.png"
+                width="320"
+                height="320"
+                alt="Illustration of a bowl of ramen"
+              />
+            </div>
 
-              <ButtonHover css={buttonContainer}>
+            <ButtonHover>
+              <div css={buttonContainer}>
                 <button
                   css={registerButton}
                   onClick={async () => await router.push('/register')}
                 >
                   Register
                 </button>
-              </ButtonHover>
 
-              <ButtonHover css={buttonContainer}>
                 <button
                   css={signInButton}
                   onClick={async () => await router.push('/signIn')}
                 >
                   Sign in
                 </button>
-              </ButtonHover>
-            </div>
-          )}
-        </main>
-      </SlideInFromLeft>
-    </>
+              </div>
+            </ButtonHover>
+          </div>
+        )}
+      </main>
+    </SlideInFromLeft>
   );
 }
 

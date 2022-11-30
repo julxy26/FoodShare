@@ -156,8 +156,8 @@ export default function SignIn(props: Props) {
 
           <Image
             src="/signin-illustration.jpg"
-            width="230px"
-            height="250px"
+            width="240px"
+            height="260px"
             alt="Illustration of a blue bowl with lots of ingredients floating above it."
           />
 
