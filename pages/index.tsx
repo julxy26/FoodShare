@@ -18,16 +18,6 @@ const mainStyles = css`
   position: relative;
 `;
 
-const h1Styles = css`
-  position: absolute;
-  z-index: 8;
-  margin-top: 50px;
-  left: 30px;
-  font-size: 35px;
-  line-height: 40px;
-  width: 300px;
-`;
-
 // USER LOGGED IN
 const loggedInIndex = css`
   height: 90vh;
@@ -48,24 +38,66 @@ const loggedInIndex = css`
   }
 `;
 
-const homeImageContainer = css`
-  margin-top: 30px;
+const imageAndTextContainer = css`
+  display: flex;
+  justify-content: center;
 `;
 
-const allPostsLink = css`
-  width: 140px;
-  height: 38px;
-  background: #ffdb9d;
-  border: 1px solid #ffdb9d;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 33px;
-  text-align: center;
-  position: absolute;
-  left: 30px;
-  margin-top: 140px;
+const homeImageContainer = css`
+  margin-top: 30px;
+  width: 100vw;
+  height: 370px;
+  display: flex;
+  justify-content: center;
+  background-image: url('/home-image.jpg');
+  background-size: 400px auto;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  h1 {
+    position: absolute;
+    z-index: 8;
+    top: 20px;
+    left: 20px;
+    font-size: 35px;
+    line-height: 40px;
+    width: 300px;
+  }
+
+  div {
+    width: 140px;
+    height: 38px;
+    background: #ffdb9d;
+    border: 1px solid #ffdb9d;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 33px;
+    text-align: center;
+    position: absolute;
+    left: 20px;
+    top: 135px;
+  }
+
+  @media (min-width: 400px) {
+    background-size: 100% auto;
+    background-position: 50% 55%;
+  }
+
+  @media (min-width: 572px) {
+    h1 {
+      width: 90%;
+      padding-right: 50px;
+      top: 50px;
+      left: 50px;
+    }
+    div {
+      margin-right: 150px;
+      left: 50px;
+      top: 130px;
+    }
+  }
 `;
 
 const newestPostsText = css`
@@ -73,14 +105,20 @@ const newestPostsText = css`
   height: 25px;
   line-height: 0;
   gap: 5px;
-  margin-top: 5px;
+  margin-top: 30px;
   font-weight: 600;
+`;
+
+const postsMainContainer = css`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const postContainer = css`
   display: flex;
+  justify-content: flex-start;
   gap: 8px;
-  width: 100%;
   overflow-x: scroll;
   margin-left: -20px;
 
@@ -138,7 +176,7 @@ const notLoggedInIndex = css`
   z-index: 8;
 
   div {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -156,7 +194,7 @@ const notLoggedInIndex = css`
 `;
 
 const buttonContainer = css`
-  margin-top: 10px;
+  margin-top: 30px;
   width: 100vw;
   display: inline-flex;
   flex-direction: row;
@@ -167,6 +205,7 @@ const buttonContainer = css`
   }
 
   @media (max-width: 500px) {
+    margin-top: 10px;
     flex-direction: column;
     align-items: center;
 
@@ -256,23 +295,16 @@ export default function Home(props: Props) {
             <HeaderWithoutArrow />
             <SlideInFromLeft>
               <div css={loggedInIndex}>
-                <h1 css={h1Styles}>Because sharing is caring.</h1>
+                <div css={imageAndTextContainer}>
+                  <div css={homeImageContainer}>
+                    <h1>Because sharing is caring.</h1>
 
-                <div css={homeImageContainer}>
-                  <Image
-                    priority
-                    src="/home-image.jpg"
-                    width="416px"
-                    height="370px"
-                    alt="Three glasses of pink lemonades on a wooden serving board with raspberries next to it."
-                  />
+                    <div>
+                      <Link href="/posts">See all posts</Link>
+                    </div>
+                  </div>
                 </div>
 
-                <br />
-
-                <div css={allPostsLink}>
-                  <Link href="/posts">See all posts</Link>
-                </div>
                 <div css={newestPostsText}>
                   <Image
                     src="/salat.png"
@@ -283,40 +315,42 @@ export default function Home(props: Props) {
                   <p>Newest posts</p>
                 </div>
 
-                <div css={postContainer}>
-                  {props.posts &&
-                    props.posts.map((post) => {
-                      return (
-                        <div key={`post-${post.id}`}>
-                          <ButtonHover>
-                            <div css={imageContainer}>
-                              <Link href={`/posts/${post.id}`}>
-                                <a>
-                                  {post.url[0] ? (
-                                    <CldImage
-                                      src={post.url[0]}
-                                      width="150px"
-                                      height="138x"
-                                      alt={`Picture of ${post.title}`}
-                                    />
-                                  ) : (
-                                    <Image
-                                      src="/ramen-illustration.png"
-                                      width="150px"
-                                      height="138x"
-                                      alt="Post placeholder image"
-                                    />
-                                  )}
-                                </a>
-                              </Link>
-                            </div>
-                          </ButtonHover>
+                <div css={postsMainContainer}>
+                  <div css={postContainer}>
+                    {props.posts &&
+                      props.posts.map((post) => {
+                        return (
+                          <div key={`post-${post.id}`}>
+                            <ButtonHover>
+                              <div css={imageContainer}>
+                                <Link href={`/posts/${post.id}`}>
+                                  <a>
+                                    {post.url[0] ? (
+                                      <CldImage
+                                        src={post.url[0]}
+                                        width="150px"
+                                        height="138x"
+                                        alt={`Picture of ${post.title}`}
+                                      />
+                                    ) : (
+                                      <Image
+                                        src="/ramen-illustration.png"
+                                        width="150px"
+                                        height="138x"
+                                        alt="Post placeholder image"
+                                      />
+                                    )}
+                                  </a>
+                                </Link>
+                              </div>
+                            </ButtonHover>
 
-                          <p>{post.title}</p>
-                          <p css={priceText}>€ {post.price}</p>
-                        </div>
-                      );
-                    })}
+                            <p>{post.title}</p>
+                            <p css={priceText}>€ {post.price}</p>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
               </div>
             </SlideInFromLeft>
