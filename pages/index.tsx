@@ -16,16 +16,16 @@ import { User } from '../database/users';
 
 const mainStyles = css`
   position: relative;
+`;
 
-  h1 {
-    position: absolute;
-    z-index: 8;
-    margin-top: 50px;
-    left: 30px;
-    font-size: 35px;
-    line-height: 40px;
-    width: 300px;
-  }
+const h1Styles = css`
+  position: absolute;
+  z-index: 8;
+  margin-top: 50px;
+  left: 30px;
+  font-size: 35px;
+  line-height: 40px;
+  width: 300px;
 `;
 
 // USER LOGGED IN
@@ -138,7 +138,11 @@ const notLoggedInIndex = css`
   z-index: 8;
 
   div {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 
   p {
@@ -147,18 +151,22 @@ const notLoggedInIndex = css`
     font-weight: 700;
     letter-spacing: 0.8px;
     margin: 15px;
+    text-align: center;
   }
 `;
 
 const buttonContainer = css`
+  margin-top: 10px;
+  width: 100vw;
   display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
 
   button + button {
     margin-left: 25px;
   }
 
-  @media (max-width: 700px) {
-    display: flex;
+  @media (max-width: 500px) {
     flex-direction: column;
     align-items: center;
 
@@ -235,7 +243,7 @@ export type Props = {
 export default function Home(props: Props) {
   const router = useRouter();
   return (
-    <SlideInFromLeft>
+    <>
       <Head>
         <title>Welcome to FoodShare</title>
         <meta name="description" content="Welcome to FoodShare" />
@@ -246,114 +254,117 @@ export default function Home(props: Props) {
         {props.userIsSignedIn ? (
           <div>
             <HeaderWithoutArrow />
+            <SlideInFromLeft>
+              <div css={loggedInIndex}>
+                <h1 css={h1Styles}>Because sharing is caring.</h1>
 
-            <div css={loggedInIndex}>
-              <h1>Because sharing is caring.</h1>
+                <div css={homeImageContainer}>
+                  <Image
+                    priority
+                    src="/home-image.jpg"
+                    width="416px"
+                    height="370px"
+                    alt="Three glasses of pink lemonades on a wooden serving board with raspberries next to it."
+                  />
+                </div>
 
-              <div css={homeImageContainer}>
-                <Image
-                  priority
-                  src="/home-image.jpg"
-                  width="416px"
-                  height="370px"
-                  alt="Three glasses of pink lemonades on a wooden serving board with raspberries next to it."
-                />
+                <br />
+
+                <div css={allPostsLink}>
+                  <Link href="/posts">See all posts</Link>
+                </div>
+                <div css={newestPostsText}>
+                  <Image
+                    src="/salat.png"
+                    width="24px"
+                    height="23px"
+                    alt="salad bowl icon"
+                  />
+                  <p>Newest posts</p>
+                </div>
+
+                <div css={postContainer}>
+                  {props.posts &&
+                    props.posts.map((post) => {
+                      return (
+                        <div key={`post-${post.id}`}>
+                          <ButtonHover>
+                            <div css={imageContainer}>
+                              <Link href={`/posts/${post.id}`}>
+                                <a>
+                                  {post.url[0] ? (
+                                    <CldImage
+                                      src={post.url[0]}
+                                      width="150px"
+                                      height="138x"
+                                      alt={`Picture of ${post.title}`}
+                                    />
+                                  ) : (
+                                    <Image
+                                      src="/ramen-illustration.png"
+                                      width="150px"
+                                      height="138x"
+                                      alt="Post placeholder image"
+                                    />
+                                  )}
+                                </a>
+                              </Link>
+                            </div>
+                          </ButtonHover>
+
+                          <p>{post.title}</p>
+                          <p css={priceText}>€ {post.price}</p>
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
-
-              <br />
-
-              <div css={allPostsLink}>
-                <Link href="/posts">See all posts</Link>
-              </div>
-              <div css={newestPostsText}>
-                <Image
-                  src="/salat.png"
-                  width="24px"
-                  height="23px"
-                  alt="salad bowl icon"
-                />
-                <p>Newest posts</p>
-              </div>
-
-              <div css={postContainer}>
-                {props.posts &&
-                  props.posts.map((post) => {
-                    return (
-                      <div key={`post-${post.id}`}>
-                        <ButtonHover>
-                          <div css={imageContainer}>
-                            <Link href={`/posts/${post.id}`}>
-                              <a>
-                                {post.url[0] ? (
-                                  <CldImage
-                                    src={post.url[0]}
-                                    width="150px"
-                                    height="138x"
-                                    alt={`Picture of ${post.title}`}
-                                  />
-                                ) : (
-                                  <Image
-                                    src="/ramen-illustration.png"
-                                    width="150px"
-                                    height="138x"
-                                    alt="Post placeholder image"
-                                  />
-                                )}
-                              </a>
-                            </Link>
-                          </div>
-                        </ButtonHover>
-
-                        <p>{post.title}</p>
-                        <p css={priceText}>€ {post.price}</p>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
+            </SlideInFromLeft>
           </div>
         ) : (
           <div css={notLoggedInIndex}>
-            <p>Welcome to</p>
-            <div>
-              <Image
-                src="/foodshare-logo.png"
-                width="262"
-                height="63"
-                alt="FoodShare logo"
-              />
-            </div>
-
-            <div>
-              <Image
-                src="/ramen-illustration.png"
-                width="320"
-                height="320"
-                alt="Illustration of a bowl of ramen"
-              />
-            </div>
-
-            <ButtonHover>
-              <div css={buttonContainer}>
-                <button
-                  css={registerButton}
-                  onClick={async () => await router.push('/register')}
-                >
-                  Register
-                </button>
-
-                <button
-                  css={signInButton}
-                  onClick={async () => await router.push('/signIn')}
-                >
-                  Sign in
-                </button>
+            <SlideInFromLeft>
+              <p>Welcome to</p>
+              <div>
+                <Image
+                  src="/foodshare-logo.png"
+                  width="262"
+                  height="63"
+                  alt="FoodShare logo"
+                />
               </div>
-            </ButtonHover>
+
+              <div>
+                <Image
+                  src="/ramen-illustration.png"
+                  width="320"
+                  height="320"
+                  alt="Illustration of a bowl of ramen"
+                />
+              </div>
+
+              <ButtonHover>
+                <span css={buttonContainer}>
+                  <button
+                    css={registerButton}
+                    onClick={async () => await router.push('/register')}
+                  >
+                    Register
+                  </button>
+
+                  <button
+                    css={signInButton}
+                    onClick={async () => await router.push('/signIn')}
+                  >
+                    Sign in
+                  </button>
+                </span>
+              </ButtonHover>
+            </SlideInFromLeft>
           </div>
         )}
       </main>
-    </SlideInFromLeft>
+    </>
   );
 }
 

@@ -4,22 +4,21 @@ import Link from 'next/link';
 const headerContainerStyles = css`
   background-color: #fff;
   position: fixed;
-  top: 0px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100vw;
   height: 90px;
-  gap: 14.5%;
   padding-right: 30px;
-  z-index: 1;
+  top: -1px;
+  z-index: 4;
 
   a {
     color: #ffffff;
   }
 
   h1 {
-    margin: -10px auto;
+    margin: 0px auto;
     padding-bottom: 50px;
     width: 300px;
     line-height: 50px;
@@ -37,15 +36,13 @@ const headerContainerStyles = css`
     width: 179px;
     height: 37px;
     position: absolute;
-    left: 27.23%;
-    right: 27.23%;
-    bottom: 26.67%;
     z-index: 2;
+    margin-left: 28px;
   }
 
   div {
     margin-top: 6px;
-    background-color: #fff;
+    background: #fff;
     background-image: url('/menu-background.jpg');
     background-repeat: no-repeat;
     background-position: 50% 70%;
@@ -63,6 +60,13 @@ const headerContainerStyles = css`
     width: 100%;
   }
 
+  .nav-container {
+    background: none;
+    display: flex;
+    height: 62px;
+    margin-right: -30px;
+  }
+
   .navbar .nav-container li {
     list-style: none;
     width: 220px;
@@ -77,8 +81,6 @@ const headerContainerStyles = css`
     display: block;
     position: relative;
     height: 60px;
-    margin-right: -30px;
-    background: none;
   }
 
   .nav-container .checkbox {
@@ -132,11 +134,11 @@ const headerContainerStyles = css`
   .navbar .menu-items {
     padding-top: 120px;
     height: 100vh;
-    width: 100vw;
+    width: 101vw;
     transform: translate(100%);
     display: flex;
     flex-direction: column;
-    margin-left: -250px;
+    margin-left: 50px;
     transition: transform 0.5s ease-in-out;
     text-align: center;
   }
@@ -166,26 +168,6 @@ const headerContainerStyles = css`
   .nav-container input[type='checkbox']:checked ~ .hamburger-lines .line3 {
     transform: rotate(-45deg);
   }
-
-  @media (max-width: 360px) {
-    gap: 10.5%;
-  }
-
-  @media (min-width: 400px) {
-    gap: 17%;
-  }
-
-  @media (min-width: 540px) {
-    gap: 24.6%;
-  }
-
-  @media (min-width: 700px) {
-    gap: 33%;
-  }
-
-  @media (min-width: 1200px) {
-    gap: 39%;
-  }
 `;
 
 export default function HeaderWithoutArrow() {
@@ -208,6 +190,7 @@ export default function HeaderWithoutArrow() {
             <h1>
               Hello, <br /> nice to see you!
             </h1>
+
             <li>
               <Link href="/profile">My Profile</Link>
             </li>
