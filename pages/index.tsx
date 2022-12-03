@@ -165,6 +165,7 @@ const priceText = css`
 
 const notLoggedInIndex = css`
   top: -44px;
+  padding-top: 80px;
   background-color: #588777;
   height: 100vh;
   width: 100vw;
