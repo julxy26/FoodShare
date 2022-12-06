@@ -29,12 +29,8 @@ const loggedInIndex = css`
   position: absolute;
   z-index: 0;
 
-  @media (max-width: 380px) {
-    height: 113vh;
-  }
-
-  @media (max-width: 360px) {
-    height: 100vh;
+  @media (max-height: 750px) {
+    height: 120vh;
   }
 `;
 
@@ -105,7 +101,7 @@ const newestPostsText = css`
   height: 25px;
   line-height: 0;
   gap: 5px;
-  margin-top: 30px;
+  margin-top: 45px;
   font-weight: 600;
 `;
 
@@ -127,7 +123,7 @@ const postContainer = css`
   }
 
   div {
-    margin-top: 12px;
+    margin-top: 13px;
     width: 150px;
     overflow-x: visible;
     margin-bottom: 8px;

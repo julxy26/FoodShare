@@ -14,14 +14,16 @@ import { getUserBySessionToken, User } from '../../database/users';
 
 const mainContainer = css`
   padding-top: 60px;
-  padding-left: 20px;
   z-index: 0;
   position: relative;
   padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 
   img {
     object-fit: cover;
-    margin-left: 20px;
   }
 
   .dropdown-menu {
@@ -67,7 +69,7 @@ const mainContainer = css`
     position: absolute;
     display: block;
     top: 45px;
-    left: 20px;
+    left: 15px;
     height: 45px;
     width: 45px;
     z-index: 7;
@@ -81,8 +83,8 @@ const mainContainer = css`
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
     margin: 0px auto;
-    margin-left: -20px;
-    margin-top: -47px;
+    left: 0;
+    top: 0px;
     background-color: #fff;
     position: absolute;
     z-index: 6;
@@ -90,6 +92,7 @@ const mainContainer = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: flex-start;
   }
 
   .navbar .menu-items > li > button {
@@ -130,6 +133,15 @@ const mainContainer = css`
     margin-left: 12px;
     display: none;
   }
+
+  @media (max-height: 750px) {
+  }
+`;
+
+const postsContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const buttonContainer = css`
@@ -208,15 +220,13 @@ const filterContainer = css`
 `;
 
 const textContainer = css`
-  width: 95%;
+  width: 100%;
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: 19px;
   font-weight: 300px;
-  padding: 0px 10px;
-  margin-bottom: -15px;
-  margin-top: -15px;
+  margin: -15px 0px;
 
   h2 {
     font-size: 20px;
@@ -386,7 +396,7 @@ export default function Posts(props: Props) {
               })
               .map((post) => {
                 return (
-                  <div key={`post-${post.id}`}>
+                  <div key={`post-${post.id}`} css={postsContainer}>
                     <div css={textContainer}>
                       <Link href={`/posts/${post.id}`}>
                         <h2>{post.title}</h2>
