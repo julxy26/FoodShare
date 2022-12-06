@@ -192,6 +192,18 @@ const notLoggedInIndex = css`
     margin: 15px;
     text-align: center;
   }
+
+  @media (max-height: 750px) {
+    padding-top: 40px;
+
+    p {
+      font-size: 18px;
+    }
+    div {
+      width: 88%;
+      margin-bottom: 25px;
+    }
+  }
 `;
 
 const buttonContainer = css`

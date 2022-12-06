@@ -23,11 +23,13 @@ const mainStyles = css`
   background-repeat: no-repeat;
   background-size: 607px;
   margin-top: 68px;
+  overflow-y: hidden;
 
   @media (max-width: 380px) {
     width: 100vw;
     margin-top: 50px;
   }
+
   @media (min-width: 550px) {
     background-size: 800px;
     background-position: 50% 60%;
@@ -96,6 +98,19 @@ const formContainer = css`
       background-color: #e4b19b;
     }
   }
+
+  @media (max-height: 750px) {
+    height: 99%;
+    padding-top: 15px;
+
+    input {
+      margin-bottom: 7px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
 `;
 
 const avatarStyles = css`
@@ -109,6 +124,11 @@ const linkToLogin = css`
   line-height: 21px;
   text-decoration: underline;
   text-underline-offset: 4px;
+
+  @media (max-height: 750px) {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
 `;
 
 type Props = {

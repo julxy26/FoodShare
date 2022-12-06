@@ -18,6 +18,7 @@ const mainStyles = css`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
+  overflow-y: hidden;
 
   h1 {
     margin-top: 14px;
@@ -76,13 +77,30 @@ const mainStyles = css`
     }
   }
 
-  @media (max-width: 380px) {
+  @media (max-height: 750px) {
     margin-bottom: 50px;
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    input {
+      margin-bottom: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+    }
   }
 `;
 
 const inputContainer = css`
   margin-top: 24px;
+
+  @media (max-height: 750px) {
+    margin-top: 0px;
+  }
 `;
 
 const linkToRegister = css`
@@ -92,6 +110,10 @@ const linkToRegister = css`
   line-height: 21px;
   text-decoration: underline;
   text-underline-offset: 4px;
+
+  @media (max-height: 750px) {
+    margin-top: -10px;
+  }
 `;
 
 type Props = {
