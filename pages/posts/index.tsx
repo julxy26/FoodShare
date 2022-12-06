@@ -84,7 +84,7 @@ const mainContainer = css`
     transition: transform 0.5s ease-in-out;
     margin: 0px auto;
     left: 0;
-    top: 0px;
+    top: 50px;
     background-color: #fff;
     position: absolute;
     z-index: 6;
@@ -93,6 +93,10 @@ const mainContainer = css`
     flex-direction: column;
     align-items: center;
     align-self: flex-start;
+
+    @media (max-height: 750px) {
+      top: 0;
+    }
   }
 
   .navbar .menu-items > li > button {
