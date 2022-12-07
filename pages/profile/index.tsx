@@ -16,8 +16,9 @@ const mainBodyStyles = css`
   height: 90vh;
   width: 100vw;
   background-image: url('/profile-background.png');
-  background-position: 50% 100%;
+  background-position: 50% 140%;
   background-repeat: no-repeat;
+  background-size: 105%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,6 +54,18 @@ const mainBodyStyles = css`
 
   span {
     margin: 20px 0;
+  }
+
+  @media (max-height: 750px) {
+    height: 103vh;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    background-position: 50% -200%;
+    justify-content: none;
+
+    span {
+      margin: 0;
+    }
   }
 `;
 

@@ -36,21 +36,9 @@ const mainStyles = css`
     }
   }
 
-  @media (max-width: 380px) {
+  @media (max-height: 750px) {
     padding-top: 160px;
-    margin-bottom: 180px;
-  }
-
-  @media (min-width: 400px) {
-  }
-
-  @media (min-width: 540px) {
-  }
-
-  @media (min-width: 700px) {
-  }
-
-  @media (min-width: 1200px) {
+    margin-bottom: 165px;
   }
 `;
 

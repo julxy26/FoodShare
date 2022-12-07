@@ -8,7 +8,7 @@ const mainContainer = css`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
-  padding-bottom: 120px;
+  padding-bottom: 90px;
 
   h1,
   h2,
@@ -31,6 +31,15 @@ export default function QuestionsAndAnswers() {
         </Head>
         <main css={mainContainer}>
           <h1>Q&A</h1>
+
+          <h2>WHAT IS FoodShare?</h2>
+          <p>
+            FoodShare fights food waste primarily through our app, that connects
+            users with stores and restaurants that have unsold surplus food at
+            the end of the day. Our greater mission, as an international
+            company, is to inspire and empower everyone to take action against
+            food waste.
+          </p>
 
           <h2>WHAT IS FOOD WASTE?</h2>
           <p>
@@ -60,15 +69,6 @@ export default function QuestionsAndAnswers() {
             world and the entire food supply chain. Find more information on who
             wastes the most amount food in the food supply chain and where in
             the world food waste is the greatest issue.
-          </p>
-
-          <h2>WHAT IS FoodShare?</h2>
-          <p>
-            FoodShare fights food waste primarily through our app, that connects
-            users with stores and restaurants that have unsold surplus food at
-            the end of the day. Our greater mission, as an international
-            company, is to inspire and empower everyone to take action against
-            food waste.
           </p>
         </main>
       </SlideInFromRight>

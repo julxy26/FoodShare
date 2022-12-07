@@ -11,7 +11,7 @@ const containerStyles = css`
   z-index: 4;
 
   div {
-    height: 93px;
+    height: 80px;
     width: 100vw;
     background: #588777;
     border-radius: 20px 20px 0 0;

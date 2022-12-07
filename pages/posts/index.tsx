@@ -16,7 +16,7 @@ const mainContainer = css`
   padding-top: 60px;
   z-index: 0;
   position: relative;
-  padding-bottom: 100px;
+  padding-bottom: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,7 +79,7 @@ const mainContainer = css`
 
   .navbar .menu-items {
     width: 100vw;
-    height: 100%;
+    height: 130vh;
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
     margin: 0px auto;
@@ -137,9 +137,6 @@ const mainContainer = css`
     margin-left: 12px;
     display: none;
   }
-
-  @media (max-height: 750px) {
-  }
 `;
 
 const postsContainer = css`
@@ -152,7 +149,7 @@ const buttonContainer = css`
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: 45px;
+  margin-top: 35px;
 `;
 
 const resetButton = css`
@@ -204,6 +201,8 @@ const filterContainer = css`
   font-size: 16px;
   display: flex;
   margin-top: -20px;
+  width: 95%;
+  justify-content: space-between;
 
   button {
     border: none;
@@ -218,8 +217,8 @@ const filterContainer = css`
     color: #3d3535;
   }
 
-  button + button {
-    margin-left: 117px;
+  div {
+    display: inline-flex;
   }
 `;
 
@@ -314,9 +313,10 @@ export default function Posts(props: Props) {
               />
               Filter
             </button>
-
-            <button onClick={() => setOnFilter(true)}>Sort by:</button>
-            <p>Most recent</p>
+            <div>
+              <button onClick={() => setOnFilter(true)}>Sort by:</button>
+              <p>Most recent</p>
+            </div>
           </div>
 
           {onFilter ? (
@@ -418,7 +418,8 @@ export default function Posts(props: Props) {
                             src={post.url[0]}
                             width="350px"
                             height="186px"
-                            alt=""
+                            alt={post.title}
+                            priority
                           />
                         </a>
                       </Link>

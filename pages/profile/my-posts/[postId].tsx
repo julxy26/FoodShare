@@ -14,18 +14,10 @@ import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const mainStyles = css`
   margin-top: 47px;
-  padding-bottom: 120px;
+  padding-bottom: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
-  @keyframes moveToLeft {
-    from {
-    }
-    to {
-      -webkit-transform: translateX(-100%);
-      transform: translateX(-100%);
-    }
-  }
 
   input {
     width: 100%;

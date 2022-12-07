@@ -20,7 +20,7 @@ const mainStyles = css`
 
 // USER LOGGED IN
 const loggedInIndex = css`
-  height: 90vh;
+  height: 95vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
