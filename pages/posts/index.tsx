@@ -20,7 +20,6 @@ const mainContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
 
   img {
     object-fit: cover;

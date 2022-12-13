@@ -43,7 +43,16 @@ export async function getUserByPost(postId: number) {
 }
 
 export async function deleteUserByUsername(username: string) {
-  const [user] = await sql<User[]>`
+  const [user] = await sql<
+    {
+      id: number;
+      username: string;
+      passwordHash: string;
+      name: string;
+      email: string;
+      phoneNumber: string;
+    }[]
+  >`
     DELETE FROM
       users
     WHERE
@@ -61,7 +70,16 @@ export async function updateUserByUsername(
   email: string,
   phoneNumber: number,
 ) {
-  const [user] = await sql<User[]>`
+  const [user] = await sql<
+    {
+      id: number;
+      username: string;
+      passwordHash: string;
+      name: string;
+      email: string;
+      phoneNumber: string;
+    }[]
+  >`
     UPDATE
       users
     SET
@@ -83,7 +101,9 @@ export async function updateUserByUsername(
 export async function getUserById(id: number) {
   if (!id) return undefined;
 
-  const [user] = await sql<UserWithoutPassword[]>`
+  const [user] = await sql<
+    { username: string; name: string; email: string; phoneNumber: string }[]
+  >`
   SELECT
     username,
     name,
@@ -101,7 +121,9 @@ export async function getUserById(id: number) {
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
-  const [user] = await sql<UserWithoutPassword[]>`
+  const [user] = await sql<
+    { username: string; name: string; email: string; phoneNumber: string }[]
+  >`
   SELECT
     username,
     name,
@@ -119,7 +141,9 @@ export async function getUserByUsername(username: string) {
 export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
-  const [user] = await sql<UserWithoutPassword[]>`
+  const [user] = await sql<
+    { username: string; name: string; email: string; phoneNumber: string }[]
+  >`
   SELECT
     username,
     name,
@@ -137,7 +161,16 @@ export async function getUserByEmail(email: string) {
 export async function getUserWithPasswordHashByUsername(username: string) {
   if (!username) return undefined;
 
-  const [user] = await sql<User[]>`
+  const [user] = await sql<
+    {
+      id: number;
+      username: string;
+      passwordHash: string;
+      name: string;
+      email: string;
+      phoneNumber: string;
+    }[]
+  >`
   SELECT
     *
   FROM
@@ -158,7 +191,7 @@ export async function getUserBySessionToken(token: string) {
       username: string;
       name: string;
       email: string;
-      phoneNumber: string | null;
+      phoneNumber: string;
     }[]
   >`
   SELECT
@@ -194,7 +227,7 @@ export async function createUser(
       passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: string | null;
+      phoneNumber: string;
     }[]
   >`
   INSERT INTO users

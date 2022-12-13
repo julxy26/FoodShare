@@ -34,7 +34,7 @@ export async function getPostsWithLimit(limit: number) {
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
    SELECT
@@ -79,7 +79,7 @@ export async function getAllPosts() {
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
    SELECT
@@ -136,7 +136,7 @@ export async function deletePostByPostId(id: number) {
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
     DELETE FROM
@@ -165,7 +165,7 @@ export async function updatePostById(
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
     UPDATE
@@ -195,7 +195,7 @@ export async function getPostByPostId(
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
   SELECT
@@ -255,7 +255,7 @@ export async function getPostsByUserId(
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
   SELECT
@@ -325,7 +325,7 @@ export async function createPost(
       description: string;
       street: string;
       district: number;
-      userId: number | null;
+      userId: number;
     }[]
   >`
   INSERT INTO posts

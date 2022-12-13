@@ -73,13 +73,13 @@ export default function NavigationBar(props: Props) {
               />
             </a>
           </Link>
-          <Link href="/faq">
+          <Link href="/events">
             <a>
               <Image
-                src="/question.png"
+                src="/calendar.png"
                 width="33px"
                 height="33px"
-                alt="questions icon"
+                alt="calendar icon"
               />
             </a>
           </Link>

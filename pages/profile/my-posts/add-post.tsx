@@ -214,8 +214,8 @@ const messageContainer = css`
   display: flex;
   justify-content: center;
   color: #c07e6e;
-
   position: relative;
+
   p {
     position: absolute;
     top: -17px;
@@ -291,8 +291,7 @@ export default function AddPost(props: Props) {
       }),
     });
 
-    const addPostResponseBody = await response.json();
-    // const addPostResponseBody = (await response.json()) as AddPostResponseBody;
+    const addPostResponseBody = (await response.json()) as AddPostResponseBody;
 
     if ('errors' in addPostResponseBody) {
       setErrors(addPostResponseBody.errors);

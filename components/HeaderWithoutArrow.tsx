@@ -198,6 +198,9 @@ export default function HeaderWithoutArrow() {
               <Link href="/profile/my-posts">My Posts</Link>
             </li>
             <li>
+              <Link href="/profile/my-events">My Events</Link>
+            </li>
+            <li>
               <Link href="/faq">Q&A</Link>
             </li>
           </div>
