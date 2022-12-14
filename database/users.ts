@@ -50,7 +50,7 @@ export async function deleteUserByUsername(username: string) {
       passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: string;
+      phoneNumber: string | null;
     }[]
   >`
     DELETE FROM
@@ -77,7 +77,7 @@ export async function updateUserByUsername(
       passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: string;
+      phoneNumber: string | null;
     }[]
   >`
     UPDATE
@@ -102,7 +102,12 @@ export async function getUserById(id: number) {
   if (!id) return undefined;
 
   const [user] = await sql<
-    { username: string; name: string; email: string; phoneNumber: string }[]
+    {
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: string | null;
+    }[]
   >`
   SELECT
     username,
@@ -122,7 +127,12 @@ export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
   const [user] = await sql<
-    { username: string; name: string; email: string; phoneNumber: string }[]
+    {
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: string | null;
+    }[]
   >`
   SELECT
     username,
@@ -142,7 +152,12 @@ export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
   const [user] = await sql<
-    { username: string; name: string; email: string; phoneNumber: string }[]
+    {
+      username: string;
+      name: string;
+      email: string;
+      phoneNumber: string | null;
+    }[]
   >`
   SELECT
     username,
@@ -168,7 +183,7 @@ export async function getUserWithPasswordHashByUsername(username: string) {
       passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: string;
+      phoneNumber: string | null;
     }[]
   >`
   SELECT
@@ -191,7 +206,7 @@ export async function getUserBySessionToken(token: string) {
       username: string;
       name: string;
       email: string;
-      phoneNumber: string;
+      phoneNumber: string | null;
     }[]
   >`
   SELECT
@@ -227,7 +242,7 @@ export async function createUser(
       passwordHash: string;
       name: string;
       email: string;
-      phoneNumber: string;
+      phoneNumber: string | null;
     }[]
   >`
   INSERT INTO users

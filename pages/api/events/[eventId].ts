@@ -40,6 +40,7 @@ export default async function handler(
     const token = request.cookies.sessionToken;
     const user = token && (await getUserBySessionToken(token));
     const attendees = [];
+
     if (user) {
       const userId = user.id;
       const newAttendee = attendees.push(await createAttendee(eventId, userId));
